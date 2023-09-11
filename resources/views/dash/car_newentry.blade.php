@@ -294,28 +294,25 @@
                                 <input type="text" name="max_load" placeholder="Maximum Loading Capacity">
                             </div>
 
-                            <div class="col-md-12">
+                            {{-- <div class="col-md-12">
                                 <label>Accesories</label>
 
-                                {{-- <div class="col-md-12 mb-4">
-                                    <h6>Multiple Select with Remove Button</h6> --}}
-                                    <div class="form-group"> 
-                                        <select class="choices form-select multiple-remove" name="accessory[]" multiple=>
-                                            <optgroup label="Figures">
-                                                <option value="romboid">Romboid</option>
-                                                <option value="trapeze" selected>Trapeze</option>
-                                                <option value="triangle">Triangle</option>
-                                                <option value="polygon">Polygon</option>
-                                            </optgroup>
-                                            <optgroup label="Colors">
-                                                <option value="red">Red</option>
-                                                <option value="green">Green</option>
-                                                <option value="blue" selected>Blue</option>
-                                                <option value="purple">Purple</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                {{-- </div> --}}
+                                <div class="form-group"> 
+                                    <select class="choices form-select multiple-remove" name="accessory[]" multiple=>
+                                        <optgroup label="Figures">
+                                            <option value="romboid">Romboid</option>
+                                            <option value="trapeze" selected>Trapeze</option>
+                                            <option value="triangle">Triangle</option>
+                                            <option value="polygon">Polygon</option>
+                                        </optgroup>
+                                        <optgroup label="Colors">
+                                            <option value="red">Red</option>
+                                            <option value="green">Green</option>
+                                            <option value="blue" selected>Blue</option>
+                                            <option value="purple">Purple</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
 
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
@@ -325,7 +322,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <script>
                                 bankdiv = document.getElementById('bankdiv');
@@ -365,6 +362,19 @@
                             
                             <div class="form-group modal_footer">
                                 <button type="submit" name="store_action" value="add_vehicle" class="load_btn"><i class="fa fa-save"></i>&nbsp; Save</button>
+                            </div>
+                        </form>
+
+
+                        <form action="{{ action('CardashController@store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="filter_div">
+                                <i class="fa fa-camera"></i> &nbsp; Test Photos
+                                <input type="file" name="photo[]" multiple required>
+                            </div>
+                            
+                            <div class="form-group modal_footer">
+                                <button type="submit" name="store_action" value="test_photos" class="load_btn"><i class="fa fa-save"></i>&nbsp; Save</button>
                             </div>
                         </form>
                         

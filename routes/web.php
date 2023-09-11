@@ -16,11 +16,17 @@ use App\Models\Homepage;
 |
 */ 
 
+// usage inside a laravel route
+// Route::get('/', function() {
+//     $img = Image::make('foo.jpg')->resize(300, 200);
+//     return $img->response('jpg');
+// });
 
 
 /* Start Car */ 
 
 Route::get('/', 'PagesController@index');
+Route::get('/runs', 'PagesController@runs');
 Route::get('/about', 'PagesController@car_about');
 Route::get('/how_to_buy', 'PagesController@car_about');
 Route::get('/services', 'PagesController@car_about');

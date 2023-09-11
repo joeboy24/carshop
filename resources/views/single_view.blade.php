@@ -225,7 +225,7 @@
                 <tr class="tr_br">
                   <td>Shipment</td>
                   <td class="align_right color6">
-                    <select name="" id="ship" onchange="shipment({{$vr[0]->freight}}, {{$vr[0]->inspection}}, {{$vr[0]->insurance}}, {{$vr[1]->freight}}, {{$vr[1]->inspection}}, {{$vr[1]->insurance}})">
+                    <select name="" id="ship" onchange="shipment({{$car->price}}, {{$vr[0]->freight}}, {{$vr[0]->inspection}}, {{$vr[0]->insurance}}, {{$vr[1]->freight}}, {{$vr[1]->inspection}}, {{$vr[1]->insurance}})">
                       <option value="1">Container</option>
                       <option value="2">RoRo</option>
                     </select>
@@ -255,7 +255,11 @@
         </div>
 
         <script>
-          function shipment(u, v, w, x, y, z) {
+
+          tot = t + x + y + z;
+          tot_price.innerHTML = tot.toLocaleString('en-US');
+
+          function shipment(t, u, v, w, x, y, z) {
             // alert(z);
             ship = document.getElementById('ship');
             freight = document.getElementById('freight');
@@ -274,13 +278,13 @@
               freight.innerHTML = u.toLocaleString('en-US');
               insp.innerHTML = v.toLocaleString('en-US');
               insure.innerHTML = w.toLocaleString('en-US');
-              tot = u + v + w;
+              tot = t + u + v + w;
               tot_price.innerHTML = tot.toLocaleString('en-US');
             } else {
               freight.innerHTML = x.toLocaleString('en-US');
               insp.innerHTML = y.toLocaleString('en-US');
               insure.innerHTML = z.toLocaleString('en-US');
-              tot = x + y + z;
+              tot = t + x + y + z;
               tot_price.innerHTML = tot.toLocaleString('en-US');
             }
 
@@ -301,9 +305,9 @@
               
                 <form action="{{ action('CardashController@store') }}" method="POST">
                   @csrf
-                  <input class="inq" type="text" name="name" placeholder="Name">
-                  <input class="inq" type="phone" name="phone" placeholder="Phone">
-                  <input class="inq" type="email" name="email" placeholder="Email">
+                  <input class="inq" type="text" name="name" placeholder="Name" required>
+                  <input class="inq" type="phone" name="phone" placeholder="Phone" required>
+                  <input class="inq" type="email" name="email" placeholder="Email" required>
                   <textarea class="inq" name="message" id="" cols="30" rows="3" placeholder="Message"></textarea>
                   <button type="submit" name="store_action" value="inquire" class="sb_btn ds2"><i class="fa fa-search"></i>&nbsp; Submit</button>
                 </form>

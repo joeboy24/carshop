@@ -40,9 +40,9 @@
 
 @section('content')
 
-<section class="car_header" style="background: url(/maindir/images/picanto/c2.webp); background-size: 100%; height: 750px">
+<section class="car_header" style="background: url(/maindir/images/picanto/c2.jpeg); background-size: 100%; height: 750px">
   <div class="container">
-    {{-- <img src="/maindir/images/picanto/c2.webp" width="100%" alt=""> --}}
+    {{-- <img src="/maindir/images/picanto/c2.jpeg" width="100%" alt=""> --}}
     <div style="height: 100px"></div>
     <form action="{{ action('CarsController@index') }}">
       <div class="row">
@@ -80,7 +80,7 @@
           <div class="double_select">
             <select class="ds ds1" name="from" id="">
               <option value="0" selected>From Year</option>
-              @for ($i = date('Y')-10; $i <= date('Y'); $i++)
+              @for ($i = date('Y')-25; $i <= date('Y'); $i++)
                   <option>{{$i}}</option>
               @endfor
             </select>

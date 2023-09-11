@@ -42,7 +42,7 @@
 
 <section class="car_header" style="background: rgb(53, 53, 53); background-size: 100%">
   <div class="container">
-    {{-- <img src="/maindir/images/picanto/c2.webp" width="100%" alt=""> --}}
+    {{-- <img src="/maindir/images/picanto/c2.jpeg" width="100%" alt=""> --}}
     <div style="height: 100px"></div>
     {{-- <div class="row">
       <div class="col2_25">
@@ -172,7 +172,7 @@
           <div class="double_select">
             <select class="ds ds1" name="from" id="">
               <option value="0" selected>From Year</option>
-              @for ($i = date('Y')-10; $i <= date('Y'); $i++)
+              @for ($i = date('Y')-25; $i <= date('Y'); $i++)
                   <option>{{$i}}</option>
               @endfor
             </select>

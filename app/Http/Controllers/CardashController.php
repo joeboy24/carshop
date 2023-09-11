@@ -19,6 +19,7 @@ use App\Models\Variable;
 use Exception;
 use Session;
 use Auth;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class CardashController extends Controller
 {
@@ -362,6 +363,36 @@ class CardashController extends Controller
                     ]);
                 } catch (\Throwable $th) {
                     throw $th;
+                }
+                return redirect(url()->previous())->with('success', '`'.$add_submodel->sub_name.'` Successfully Added to Submodels');
+
+            break;
+
+            case 'test_photos':
+                
+                try {
+                    if($files = $request->file('photo')){
+                        foreach ($files as $file) {
+                            # code...
+                            $this->validate($request, [
+                                'photo'  => 'max:2000'
+                            ]);
+                            $filenameWithExt = $file->getClientOriginalName();
+                            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                            $fileExt = $file->getClientOriginalExtension();
+                            $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.'.$fileExt;
+                            $path = $file->storeAs('public/classified/cars/car'.date('is'), $filenameToStore);
+                                
+                            $gallery = Gallery::firstOrCreate([
+                                'user_id' => auth()->user()->id,
+                                'car_id' => $car_insert->id,
+                                'img' => $filenameToStore
+                            ]);
+                        }
+                    }
+                    return redirect(url()->previous())->with('success', 'Upload Successfull!');
+                } catch (Exception $ex) {
+                    return redirect(url()->previous())->with('error', 'Ooops..! Check file type and size');
                 }
                 return redirect(url()->previous())->with('success', '`'.$add_submodel->sub_name.'` Successfully Added to Submodels');
 

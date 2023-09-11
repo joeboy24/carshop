@@ -20,6 +20,7 @@ use App\Models\Company;
 // use App\Models\Program;
 use DateTime;
 use Session;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PagesController extends Controller
 {
@@ -123,6 +124,15 @@ class PagesController extends Controller
         ];
         return view('car_cart')->with($patch);
     }
+
+    public function runs() {
+        // return 'Good';
+        $img = Image::make('/Users/jbazz/Downloads/IMG_6094.jpg')->resize(3000, 3000)->insert('/maindir/images/maca_wt.png');
+        return $img->response('jpg');
+    }
+
+
+
 
 
 
