@@ -915,6 +915,9 @@ body input:focus, .ds:focus, button:focus {
 @media (max-width: 576px) {
 
 
+  .by_type {
+    display: none;
+  }
 
   .header_space2 {
     height: 70px;
