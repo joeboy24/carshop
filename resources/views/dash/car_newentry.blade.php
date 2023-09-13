@@ -366,7 +366,7 @@
                         </form>
 
 
-                        <form action="{{ action('CardashController@store') }}" method="POST" enctype="multipart/form-data">
+                        {{-- <form action="{{ action('CardashController@store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="filter_div">
                                 <i class="fa fa-camera"></i> &nbsp; Test Photos
@@ -376,7 +376,7 @@
                             <div class="form-group modal_footer">
                                 <button type="submit" name="store_action" value="test_photos" class="load_btn"><i class="fa fa-save"></i>&nbsp; Save</button>
                             </div>
-                        </form>
+                        </form> --}}
                         
                     </div>
 

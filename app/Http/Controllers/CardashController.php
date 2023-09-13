@@ -371,27 +371,37 @@ class CardashController extends Controller
             case 'test_photos':
                 
                 try {
+                    // \Storage::move(storage_path("/storage/classified/cars/SM052300/0523_f42a37d.jpg"), storage_path("/storage/classified"));
+                    $img = \Image::make("/public/storage/classified/cars/SM052300/0523_f42a37d.jpg");
+                    $img->save("/storage/classified/cars/SM052300/newcar.jpg");
+                    return 'Done..!';
                     if($files = $request->file('photo')){
                         foreach ($files as $file) {
                             # code...
                             $this->validate($request, [
-                                'photo'  => 'max:2000'
+                                'photo'  => 'max:1000'
                             ]);
                             $filenameWithExt = $file->getClientOriginalName();
                             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                             $fileExt = $file->getClientOriginalExtension();
                             $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.'.$fileExt;
-                            $path = $file->storeAs('public/classified/cars/car'.date('is'), $filenameToStore);
-                                
-                            $gallery = Gallery::firstOrCreate([
-                                'user_id' => auth()->user()->id,
-                                'car_id' => $car_insert->id,
-                                'img' => $filenameToStore
-                            ]);
+                            $img = Image::make($file);
+                            // $img = Image::make($file)->insert('/Users/jbazz/Documents/Lara/carshop/public/maindir/images/maca_wt.png');
+                            
+                            // $img->save(\public_path($filenameToStore), 30);
+                            $img->save(storage_path().$filenameToStore, 30);
+                            // \Storage::move('public/0923_085ccad.jpg', 'public/new');
+                            // \Storage::move('/Users/jbazz/Documents/Lara/carshop/public/0923_085ccad.jpg', 'public/classified');
+                            // \Storage::disk('local')->put('public/classified', $file);
+                            // \Storage::disk('local')->put('public/classified', 'public/'.$filenameToStore);
+                            // $img->save(\Storage::disk('local')->put($filenameToStore,), 30);
+
                         }
                     }
                     return redirect(url()->previous())->with('success', 'Upload Successfull!');
+                    
                 } catch (Exception $ex) {
+                    return $ex;
                     return redirect(url()->previous())->with('error', 'Ooops..! Check file type and size');
                 }
                 return redirect(url()->previous())->with('success', '`'.$add_submodel->sub_name.'` Successfully Added to Submodels');
