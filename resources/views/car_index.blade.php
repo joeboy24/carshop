@@ -5,7 +5,7 @@
 @section('navlist')
 
   <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
-  <li class="nav-item dropbtn"><a href="/about" class="nav-link">Why Choose Us</a></li>
+  <li class="nav-item dropbtn"><a href="/about" class="nav-link">About Us</a></li>
   <li class="nav-item dropbtn"><a href="/how_to_buy" class="nav-link">How to buy</a></li>
   <li class="nav-item dropbtn"><a href="/services" class="nav-link">Services</a></li>
   <!--<li class="nav-item dropdown"><a href="" class="nav-link dropbtn">How to buy</a>

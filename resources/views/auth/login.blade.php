@@ -3,7 +3,7 @@
 
 @section('header_text')
   <div class="header_top_col">
-    <p class="logo_text1"><i class="fa fa-grav" style="font-size:1.4em"></i>&nbsp; PIVO<b class="logo_text2">APPS</b></p>
+    <p class="logo_text1"><i class="fa fa-grav" style="font-size:1.4em"></i>&nbsp; MACADEMIA<b class="logo_text2">GROUP</b></p>
   </div>
 @endsection
 

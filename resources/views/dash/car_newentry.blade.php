@@ -149,8 +149,8 @@
                             <div class="filter_div" id="">
                                 <i class="fa fa-thumb-tack"></i> &nbsp; Inventory Location
                                 <select name="inv_loc" id="inv_loc" onchange="">
-                                    <option selected>Japan - City 1</option>
-                                    <option>Japan - City 2</option>
+                                    <option selected>Nagoya</option>
+                                    {{-- <option>Japan - City 2</option> --}}
                                 </select>
                             </div>
 
@@ -184,7 +184,7 @@
                                                     
                             <div class="filter_div">
                                 <i class="fa fa-pencil-square"></i> &nbsp; Flash (%)
-                                <input type="number" min="0" step="any" name="flash" value="0">
+                                <input type="number" min="0" step="any" name="flash" value="0" required>
                             </div>
                 
                             <div class="filter_div" id="">
@@ -294,10 +294,10 @@
                                 <input type="text" name="max_load" placeholder="Maximum Loading Capacity">
                             </div>
 
-                            {{-- <div class="col-md-12">
+                            <div class="col-md-12">
                                 <label>Accesories</label>
 
-                                <div class="form-group"> 
+                                {{-- <div class="form-group"> 
                                     <select class="choices form-select multiple-remove" name="accessory[]" multiple=>
                                         <optgroup label="Figures">
                                             <option value="romboid">Romboid</option>
@@ -312,7 +312,7 @@
                                             <option value="purple">Purple</option>
                                         </optgroup>
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
@@ -322,7 +322,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <script>
                                 bankdiv = document.getElementById('bankdiv');

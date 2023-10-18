@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Carshop</title>
+    <title>MacademiaGroup</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -74,7 +74,7 @@
             <div class="col-md-3">
               <h6>Company</h6>
               <a href="/"><p>Home</p></a>
-              <a href="/about"><p>Why Choose Us?</p></a>
+              <a href="/about"><p>About Us?</p></a>
               <a href="/how_to_buy"><p>How to buy</p></a>
               {{-- <a href="#"><p>News & Promos</p></a> --}}
               <a href="/services"><p>Services</p></a>

@@ -219,11 +219,13 @@
                                                     </td>
                                                 @else
                                                     <td class="text-bold-500 align_right action_size">
-                                                        @if ($car->promote == 'no')
-                                                            <button type="submit" name="update_action" value="publish_car" class="my_trash_small" onclick="return confirm('Click ok to promote this car to front page?')"><i class="fa fa-clipboard"></i></button>
-                                                        @else
-                                                            <button type="submit" name="update_action" value="unpublish_car" class="my_trash_small bg7" onclick="return confirm('Do you want to remove this car from front page?')"><i class="fa fa-clipboard"></i></button>
-                                                            {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#leave{{$car->id}}" class="my_trash_small"><i class="fa fa-clipboard"></i></button> --}}
+                                                        @if ($car->flash < 1)
+                                                            @if ($car->promote == 'no')
+                                                                <button type="submit" name="update_action" value="publish_car" class="my_trash_small" onclick="return confirm('Click ok to promote this car to front page?')"><i class="fa fa-clipboard"></i></button>
+                                                            @else
+                                                                <button type="submit" name="update_action" value="unpublish_car" class="my_trash_small bg7" onclick="return confirm('Do you want to remove this car from front page?')"><i class="fa fa-clipboard"></i></button>
+                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#leave{{$car->id}}" class="my_trash_small"><i class="fa fa-clipboard"></i></button> --}}
+                                                            @endif
                                                         @endif
                                                         <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{$car->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
                                                         <button type="submit" name="update_action" value="del_car" class="my_trash_small" onclick="return confirm('Are you sure you want to delete this record?')"><i class="fa fa-trash"></i></button>
@@ -259,7 +261,7 @@
                                                             </div>
                                                 
                                                             <div class="filter_div" id="">
-                                                                <i class="fa fa-thumb-tack"></i> &nbsp; Inventory Location
+                                                                <i class="fa fa-thumb-tack"></i> &nbsp; Inventory Loc.
                                                                 <select name="inv_loc" id="inv_loc" onchange="">
                                                                     <option selected>Japan - City 1</option>
                                                                     <option>Japan - City 2</option>

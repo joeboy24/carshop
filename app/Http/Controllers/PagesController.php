@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Car;
 use App\Models\Type;
@@ -11,13 +11,7 @@ use App\Models\Make;
 use App\Models\About;
 use App\Models\Service;
 use App\Models\Company;
-// use App\Models\Student;
-// use App\Models\Question;
-// use App\Models\Homepage;
-// use App\Models\NewsBlog;
-// use App\Models\Testimony;
-// use App\Models\Department;
-// use App\Models\Program;
+use App\Models\Gallery;
 use DateTime;
 use Session;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -126,9 +120,29 @@ class PagesController extends Controller
     }
 
     public function runs() {
-        // return 'Good';
-        $img = Image::make('/Users/jbazz/Downloads/IMG_6094.jpg')->resize(3000, 3000)->insert('/maindir/images/maca_wt.png');
-        return $img->response('jpg');
+        // // return 'Good';
+
+        $images = Gallery::all();
+        foreach ($images as $gal) {
+            // return $gal->car->stock_id;
+            if (!is_dir(storage_path("app/public/classified/cars/".$gal->car->stock_id))) {
+                mkdir(storage_path("app/public/classified/cars/".$gal->car->stock_id), 0775, true);
+            }
+            // Upload (IMAGE INTERVENTION - LARAVEL)
+            $img = Image::make(storage_path("app/public/classified/cars/".$gal->car->stock_id.'/'.$gal->img))->resize(500, 375)
+            ->insert(storage_path('app/public/classified/maca_wt.png'))
+            ->save(storage_path("app/public/classified/cars/".$gal->car->stock_id.'/'.$gal->img));
+        }
+        return 'Resizing compleete..!';
+
+        // if (!is_dir(storage_path("app/public/classified/cars"))) {
+        //     mkdir(storage_path("app/public/classified/cars"), 0775, true);
+        // }
+        // // Upload (IMAGE INTERVENTION - LARAVEL)
+        // $img = Image::make('/Users/jbazz/Downloads/IMG_6094.jpg')->resize(500, 375)
+        // ->insert(storage_path('app/public/classified/maca_wt.png'))
+        // ->save(storage_path("app/public/classified/cars/".date('is').".jpg"));
+        // return $img->response('jpg');
     }
 
 

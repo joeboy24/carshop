@@ -484,13 +484,22 @@ class CardashController extends Controller
                             foreach ($files as $file) {
                                 # code...
                                 $this->validate($request, [
-                                    'photo'  => 'max:5000'
+                                    'photo'  => 'max:3000'
                                 ]);
                                 $filenameWithExt = $file->getClientOriginalName();
                                 $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                                 $fileExt = $file->getClientOriginalExtension();
-                                $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.'.$fileExt;
-                                $path = $file->storeAs('public/classified/cars/'.$car_insert->stock_id, $filenameToStore);
+                                // $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.'.$fileExt;
+                                $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.jpg';
+                                // $path = $file->storeAs('public/classified/cars/'.$car_insert->stock_id, $filenameToStore);
+                                
+                                if (!is_dir(storage_path("app/public/classified/cars/".$car_insert->stock_id))) {
+                                    mkdir(storage_path("app/public/classified/cars/".$car_insert->stock_id), 0775, true);
+                                }
+                                // Upload (IMAGE INTERVENTION - LARAVEL)
+                                $img = Image::make($file)->resize(500, 375)
+                                ->insert(storage_path('app/public/classified/maca_wt.png'))
+                                ->save(storage_path("app/public/classified/cars/".$car_insert->stock_id.'/'.$filenameToStore));
                                     
                                 $gallery = Gallery::firstOrCreate([
                                     'user_id' => auth()->user()->id,
@@ -506,6 +515,7 @@ class CardashController extends Controller
                         
 
                     } catch (\Throwable $th) {
+                        return redirect(url()->previous())->with('error', 'Ooops..! An error occured');
                         throw $th;
                     }
 
