@@ -495,6 +495,7 @@ class CardashController extends Controller
                                 
                                 if (!is_dir(storage_path("app/public/classified/cars/".$car_insert->stock_id))) {
                                     mkdir(storage_path("app/public/classified/cars/".$car_insert->stock_id), 0775, true);
+                                    mkdir(storage_path("app/public/classified"), 0775, true);
                                 }
                                 // Upload (IMAGE INTERVENTION - LARAVEL)
                                 $img = Image::make($file)->resize(500, 375)
