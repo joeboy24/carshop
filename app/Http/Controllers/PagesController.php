@@ -126,7 +126,7 @@ class PagesController extends Controller
         foreach ($images as $gal) {
             // return $gal->car->stock_id;
             if (!is_dir(storage_path("app/public/classified/cars/".$gal->car->stock_id))) {
-                mkdir(storage_path("app/public/classified/cars/".$gal->car->stock_id), 0775, true);
+                mkdir(storage_path("app/public/classified/cars/".$gal->car->stock_id), 0755, true);
             }
             // Upload (IMAGE INTERVENTION - LARAVEL)
             $img = Image::make(storage_path("app/public/classified/cars/".$gal->car->stock_id.'/'.$gal->img))->resize(500, 375)
