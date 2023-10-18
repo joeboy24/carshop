@@ -95,7 +95,7 @@
               @endforeach
             </div>
 
-            <div class="tbl_cont"> 
+            <div class="tbl_cont">   
               <table class="vehicle_det">
                 <p>&nbsp;</p>
                 <h6 class="vehicle_det_header">{{ $car->make->model_name.' '.$car->submodel->sub_name }} - Car Details</h6>
