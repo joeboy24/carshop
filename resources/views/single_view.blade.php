@@ -86,82 +86,83 @@
             
             <div class="related_imgs" id="related_imgs">
               @foreach ($car_imgs as $item)
-                <img src="/storage/classified/cars/{{$car->stock_id}}/{{$item->img}}" width="16%" alt="" onclick="changeImg{{$item->id}}()">
+                <img src="/storage/classified/cars/{{$car->stock_id}}/{{$item->img}}" width="15.5%" alt="" onclick="changeImg{{$item->id}}()">
                 <script>
                   function changeImg{{$item->id}}() {
                     document.getElementById("single_view").style.backgroundImage = "url(/storage/classified/cars/{{$car->stock_id}}/{{$item->img}})";
                   }
                 </script>
               @endforeach
-              
             </div>
 
-            <table class="vehicle_det">
-              <p>&nbsp;</p>
-              <h6 class="vehicle_det_header">{{ $car->make->model_name.' '.$car->submodel->sub_name }} - Car Details</h6>
-              <tbody>
-                <tr>
-                  <td class="td1">Stock Id:</td>
-                  <td>{{$car->stock_id}}</td>
-                  <td class="td1">Inventory Location:</td>
-                  <td>{{$car->inv_loc}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Model Code:</td>
-                  <td>{{$car->model_code}}</td>
-                  <td class="td1">Year:</td>
-                  <td>{{$car->year}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Mileage:</td>
-                  <td>{{$car->mileage}}</td>
-                  <td class="td1">Color:</td>
-                  <td>{{$car->color}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Transmission:</td>
-                  <td>{{$car->trans}}</td>
-                  <td class="td1">Drive:</td>
-                  <td>{{$car->drive}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Steering:</td>
-                  <td>{{$car->steer}}</td>
-                  <td class="td1">Seats:</td>
-                  <td>{{$car->seat}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Engine Type:</td>
-                  <td>{{$car->eng_type}}</td>
-                  <td class="td1">Door:</td>
-                  <td>{{$car->door}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Engine Size:</td>
-                  <td>{{$car->eng_size}}</td>
-                  <td class="td1">Body Type:</td>
-                  <td>{{$car->body_type}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Fuel:</td>
-                  <td>{{$car->fuel}}</td>
-                  <td class="td1">Body Length:</td>
-                  <td>{{$car->body_len}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Vehicle Weight:</td>
-                  <td>{{$car->vweight}}</td>
-                  <td class="td1">Gross Vehicle Weight:</td>
-                  <td>{{$car->gvweight}}</td>
-                </tr>
-                <tr>
-                  <td class="td1">Max Loading Capacity:</td>
-                  <td>{{$car->max_load}}</td>
-                  {{-- <td class="td1">Body Type:</td>
-                  <td>Station Wagon</td> --}}
-                </tr>
-              </tbody>
-            </table>
+            <div class="tbl_cont">
+              <table class="vehicle_det">
+                <p>&nbsp;</p>
+                <h6 class="vehicle_det_header">{{ $car->make->model_name.' '.$car->submodel->sub_name }} - Car Details</h6>
+                <tbody>
+                  <tr>
+                    <td class="td1">Stock Id:</td>
+                    <td>{{$car->stock_id}}</td>
+                    <td class="td1">Inventory Location:</td>
+                    <td>{{$car->inv_loc}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Model Code:</td>
+                    <td>{{$car->model_code}}</td>
+                    <td class="td1">Year:</td>
+                    <td>{{$car->year}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Mileage:</td>
+                    <td>{{$car->mileage}}</td>
+                    <td class="td1">Color:</td>
+                    <td>{{$car->color}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Transmission:</td>
+                    <td>{{$car->trans}}</td>
+                    <td class="td1">Drive:</td>
+                    <td>{{$car->drive}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Steering:</td>
+                    <td>{{$car->steer}}</td>
+                    <td class="td1">Seats:</td>
+                    <td>{{$car->seat}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Engine Type:</td>
+                    <td>{{$car->eng_type}}</td>
+                    <td class="td1">Door:</td>
+                    <td>{{$car->door}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Engine Size:</td>
+                    <td>{{$car->eng_size}}</td>
+                    <td class="td1">Body Type:</td>
+                    <td>{{$car->body_type}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Fuel:</td>
+                    <td>{{$car->fuel}}</td>
+                    <td class="td1">Body Length:</td>
+                    <td>{{$car->body_len}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Vehicle Weight:</td>
+                    <td>{{$car->vweight}}</td>
+                    <td class="td1">Gross Vehicle Weight:</td>
+                    <td>{{$car->gvweight}}</td>
+                  </tr>
+                  <tr>
+                    <td class="td1">Max Loading Capacity:</td>
+                    <td>{{$car->max_load}}</td>
+                    {{-- <td class="td1">Body Type:</td>
+                    <td>Station Wagon</td> --}}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <div class="car_accessory">
               <h6 class="vehicle_det_header">Accessories</h6>

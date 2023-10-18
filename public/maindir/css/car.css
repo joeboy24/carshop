@@ -431,8 +431,12 @@ body input:focus, .ds:focus, button:focus {
 
 .related_imgs {
   width: 100%;
-  height: 100px;
+  /* height: 120px; */
   overflow-x: auto;
+}
+
+.related_imgs img {
+  padding-bottom: 5px;
 }
 
 .related_imgs img:hover {
@@ -514,8 +518,14 @@ body input:focus, .ds:focus, button:focus {
   border-top: 1px solid #eee;
 }
 
+.tbl_cont {
+  /* background: turquoise; */
+  width: 100%;
+}
+
 .vehicle_det {
-  width: 98%;
+  width: 100%;
+  /* width: calc(100% - 120px); */
   /* margin: 0 auto; */
   /* overflow-x: auto; */
   margin: 0 0 10px 0;
@@ -1018,6 +1028,10 @@ body input:focus, .ds:focus, button:focus {
   .footer_left p:hover {
     border-left: none;
     border-bottom: 1px solid rgb(255, 76, 31);
+  }
+
+  .vehicle_det td {
+    padding: 5px;
   }
 
 }
