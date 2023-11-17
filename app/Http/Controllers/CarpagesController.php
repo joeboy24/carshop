@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Models\About;
 use App\Models\Service;
 use App\Models\Inquire;
-use App\Models\SubModel;
+use App\Models\Submodel;
 use App\Models\Variable;
 use Session;
 
