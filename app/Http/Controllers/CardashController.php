@@ -437,6 +437,7 @@ class CardashController extends Controller
                 } else {
                 
                     try {
+
                         $car_insert = Car::firstOrCreate([
                             'user_id' => auth()->user()->id,
                             'stock_id' => $request->input('stock_id'),
@@ -465,21 +466,8 @@ class CardashController extends Controller
                             'accessory' => $request->input('accessory')
                             // 'loan_date_started','loan_bal','loan_montly_ded'
                         ]);
-                
-                        // $emp_insert->allowance_id = $alw_insert->id;
-                        // $emp_insert->save();
 
-                        // if ($request->input('bank2') != '') {
-                        //     $bank_insert = Bank::firstOrCreate([
-                        //         'user_id' => auth()->user()->id,
-                        //         'bank_abr' => $emp_insert->bank,
-                        //         'bank_fullname' => $emp_insert->bank,
-                        //     ]);
-                        //     $emp_insert->bank_id = $bank_insert->id;
-                        //     $emp_insert->save();
-                        // }
-
-                    try {
+                    // try {
                         if($files = $request->file('photo')){
                             foreach ($files as $file) {
                                 # code...
@@ -495,7 +483,7 @@ class CardashController extends Controller
                                 
                                 if (!is_dir(storage_path("app/public/classified/cars/".$car_insert->stock_id))) {
                                     mkdir(storage_path("app/public/classified/cars/".$car_insert->stock_id), 0775, true);
-                                    mkdir(storage_path("app/public/classified"), 0775, true);
+                                    // mkdir(storage_path("app/public/classified"), 0775, true);
                                 }
                                 // Upload (IMAGE INTERVENTION - LARAVEL)
                                 $img = Image::make($file)->resize(500, 375)
@@ -510,15 +498,16 @@ class CardashController extends Controller
                             }
                         }
                         return redirect(url()->previous())->with('success', 'Upload Successfull!');
-                    } catch (Exception $ex) {
-                        return redirect(url()->previous())->with('error', 'Ooops..! Check file type and size');
+                    } catch (\Throwable $th) {
+                        throw $th;
+                        return redirect(url()->previous())->with('error', 'Ooops..! Check inputs, file type and size');
                     }
                         
 
-                    } catch (\Throwable $th) {
-                        return redirect(url()->previous())->with('error', 'Ooops..! An error occured');
-                        throw $th;
-                    }
+                    // } catch (\Throwable $th) {
+                    //     return redirect(url()->previous())->with('error', 'Ooops..! An error occured');
+                    //     throw $th;
+                    // }
 
                     return redirect(url()->previous())->with('success', 'Vehicle details successfully added');
                 }
