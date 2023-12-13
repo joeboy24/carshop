@@ -23,13 +23,14 @@ use App\Models\Homepage;
 // });
 
 
-/* Start Car Here */ 
+/* Start Car Here */  
  
 Route::get('/', 'PagesController@index');
 Route::get('/runs', 'PagesController@runs');
 Route::get('/about', 'PagesController@car_about');
-Route::get('/how_to_buy', 'PagesController@car_about');
-Route::get('/services', 'PagesController@car_about');
+// Route::get('/how_to_buy', 'PagesController@car_about');
+Route::get('/services', 'PagesController@car_services');
+Route::get('/contact', 'PagesController@car_contact');
 Route::get('/more_flash', 'PagesController@car_more_flash');
 Route::get('/more_makes', 'PagesController@car_more_makes');
 Route::get('/cart', 'PagesController@car_cart');

@@ -5,8 +5,8 @@
 @section('navlist')
 
   <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
-  <li class="nav-item dropbtn"><a href="/about" class="nav-link">Why Choose Us</a></li>
-  <li class="nav-item dropbtn"><a href="/how_to_buy" class="nav-link">How to buy</a></li>
+  <li class="nav-item dropbtn"><a href="/about" class="nav-link">About Us</a></li>
+  {{-- <li class="nav-item dropbtn"><a href="/how_to_buy" class="nav-link">How to buy</a></li> --}}
   <li class="nav-item dropbtn"><a href="/services" class="nav-link">Services</a></li>
   <!--<li class="nav-item dropdown"><a href="" class="nav-link dropbtn">How to buy</a>
     <div class="dropdown-content">
@@ -31,7 +31,7 @@
       <a href="/admin_portal"><i class="fa fa-unlock-alt li_icon"></i>&nbsp;&nbsp;&nbsp; Administration</a>
     </div>
   </li--> 
-  <li class="nav-item"><a href="/about#contact" class="nav-link">Contact</a></li>
+  <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
   {{-- <li class="nav-item"><a href="/gallery" class="nav-link">Gallery</a></li> --}}
   <li class="nav-item cta"><a href="/cart" class="nav-link"><i class="fa fa-shopping-basket color8"></i>&nbsp;&nbsp;<span>Cart</span></a></li>
 	        

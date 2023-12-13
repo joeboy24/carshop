@@ -68,25 +68,7 @@
           <div class="col-md-12">
             <div class="sv_header">
 
-              <div id="about">
-                <h4>About Us</h4>
-                @if (count($about) > 0)
-                    @foreach ($about as $abt)
-                      <p class="about_para">
-                        @if ($abt->title != '')
-                          <span>{{$abt->title}}</span>
-                        @endif
-                        {{$abt->body}}
-                      </p>
-                    @endforeach
-                @else
-                  <div class="alert alert-danger">
-                    No Records Found
-                  </div>   
-                @endif
-              </div>
-
-              {{-- <h4>Our Services</h4>
+              <h4>Our Services</h4>
               @if (count($services) > 0)
                 <div class="row service_cont" id="contact">
                     @foreach ($services as $srv)
@@ -113,7 +95,7 @@
               @endif
 
               <p>&nbsp;</p>
-              <h2 class="h4" id="contact">Contact Us</h2>
+              {{-- <h2 class="h4" id="contact">Contact Us</h2> --}}
               <div class="row">
                 <div class="col-md-8">
                   <form class="container" action="{{ action('CardashController@store') }}" method="POST">
@@ -134,6 +116,7 @@
                         <button type="submit" name="store_action" value="inquire"  class="btn btn-primary py-3 px-5">Send Message</button>
                       </div>
                     </form>
+                  {{-- <div class="col-md-6 padding20" id="map"></div> --}}
                 </div>
                 
                 <div class="col-md-4">
@@ -145,7 +128,7 @@
                     <p><i class="fa fa-globe"></i>&nbsp;&nbsp; <a href="#">{{session('company')->website}}</a></p>
                   @endif
                 </div>
-              </div> --}}
+              </div>
 
             </div>
           </div>

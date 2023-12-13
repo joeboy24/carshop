@@ -74,6 +74,48 @@ class PagesController extends Controller
         return view('car_about')->with($patch);
     }
     
+    public function car_services(){
+        $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
+        session::put('about', About::find(1));
+        // return session('about');
+        session::put('avail', $available);
+        session::put('company', Company::find(1));
+        session::put('cars', Car::where('del', 'no')->limit(3)->get());
+
+        $patch = [
+            // 'c' => 1,
+            // 'y' => 1,
+            'types' => Type::all(),
+            'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
+            'about' => About::orderBy('id', 'ASC')->get(),
+            'services' => Service::orderBy('id', 'ASC')->get(),
+            // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+        ];
+        return view('car_services')->with($patch);
+    }
+    
+    public function car_contact(){
+        $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
+        session::put('about', About::find(1));
+        // return session('about');
+        session::put('avail', $available);
+        session::put('company', Company::find(1));
+        session::put('cars', Car::where('del', 'no')->limit(3)->get());
+
+        $patch = [
+            // 'c' => 1,
+            // 'y' => 1,
+            'types' => Type::all(),
+            'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
+            'about' => About::orderBy('id', 'ASC')->get(),
+            'services' => Service::orderBy('id', 'ASC')->get(),
+            // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+        ];
+        return view('car_contact')->with($patch);
+    }
+    
     public function car_more_flash(){
         $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
         session::put('about', About::find(1));
