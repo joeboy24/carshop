@@ -116,6 +116,7 @@
       @include('inc.makes')
 
       <div class="col-md-10 by_model_right" id="search_veh">
+
         <div class="key_search">
           <form action="{{ action('CardashController@store') }}" method="POST">
             @csrf
@@ -147,6 +148,10 @@
           @endif
         </div>
 
+        <!-- Carousel -->
+        {{-- <h6 class="pannel_header2"><span>Vehicle Parts</span> </h6> --}}
+        @include('inc.carousel2')
+
         <div class="col-12 by_type">
           <p>&nbsp;</p>
           <h6 class="pannel_header"><span>Search By Type</span> </h6>
@@ -168,81 +173,9 @@
   </div>
 </section>
 
-<!-- Appointment -->
-{{-- <section class="ftco-intro">
-  <div class="container">
-    <div class="row no-gutters">
-            
-      <div id="my_appointment" class="col-md-8 color-3 p-4">
-        <h3 class="mb-2">Make an Appointment</h3>
-        <form action="#" class="appointment-form">
-          <div class="row">
-              <div class="col-sm-4">
-              <div class="form-group">
-                  <div class="select-wrap">
-              <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-              <select name="" id="" class="form-control">
-                <option>Department</option>
-                @if (count($department) != 0)
-                  @foreach ($department as $dept)
-                    <option>{{$dept->dept_name}}</option>
-                  @endforeach
-                @endif
-              </select>
-              </div>
-                  </div>
-          </div>
-          <div class="col-sm-4">
-              <div class="form-group">
-                  <div class="icon"><span class="icon-user"></span></div>
-                  <input type="text" class="form-control" id="appointment_name" placeholder="Name">
-                  </div>
-          </div>
-          <div class="col-sm-4">
-              <div class="form-group">
-                  <div class="icon"><span class="icon-paper-plane"></span></div>
-                  <input type="text" class="form-control" id="appointment_email" placeholder="Email">
-                  </div>
-          </div>
-          </div>
-          <div class="row">
-          <div class="col-sm-4">
-              <div class="form-group">
-                  <div class="icon"><span class="ion-ios-calendar"></span></div>
-              <input type="text" class="form-control appointment_date" placeholder="Date">
-              </div>    
-          </div>
-          <div class="col-sm-4">
-              <div class="form-group">
-                  <div class="icon"><span class="ion-ios-clock"></span></div>
-              <input type="text" class="form-control appointment_time" placeholder="Time">
-              </div>
-          </div>
-          <div class="col-sm-4">
-              <div class="form-group">
-                  <div class="icon"><span class="icon-phone2"></span></div>
-              <input type="text" class="form-control" id="phone" placeholder="Phone">
-              </div>
-          </div>
-          </div>
-          
-          <div class="form-group">
-          <input type="submit" value="Make an Appointment" class="btn btn-primary">
-          </div>
-        </form>
-      </div>
-      <div class="col-md-4 color-1 p-4">
-        <h3 class="mb-4">Our Contact Details</h3>
-        <p>Email:mrJay@pivoapps.net <br>Loc. Las Vegas </p>
-        <span class="phone-number">PivoApps</span>
-      </div>
-    </div>
-  </div>
-</section> --}}
 
 <!-- Flash Deals -->
 @include('inc.flash_deals')
-
 
 @endsection
     

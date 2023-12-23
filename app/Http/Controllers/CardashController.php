@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Car;
+use App\Models\Part;
 use App\Models\User;
 use App\Models\Make;
 use App\Models\Type;
@@ -413,21 +414,6 @@ class CardashController extends Controller
                 if ($request->input('year') == 0) {
                     return redirect(url()->previous())->with('error', 'Oops..! Select Year to Proceed');
                 }
-                // if ($request->input('position') == 'all' || $request->input('sub_div') == 'all' || $request->input('salary_cat') == 'all' || $request->input('dept') == 'all') {
-                //     return redirect(url()->previous())->with('error', 'Oops..! Position / Sub Div. / Salary Cat. & Department fields are required');
-                // }
-
-                // if ($request->input('bank') == 'na') {
-                //     $bank = $request->input('bank2');
-                // } else {
-                //     $bank = $request->input('bank');
-                // }
-
-                // if ($request->input('bank_branch') == 'na') {
-                //     $branch = $request->input('branch2');
-                // } else {
-                //     $branch = $request->input('branch');
-                // }
 
                 $model_code = $request->input('model_code');
                 $emp_check = Car::where('model_code', $model_code)->get();
@@ -502,15 +488,57 @@ class CardashController extends Controller
                         throw $th;
                         return redirect(url()->previous())->with('error', 'Ooops..! Check inputs, file type and size');
                     }
-                        
-
-                    // } catch (\Throwable $th) {
-                    //     return redirect(url()->previous())->with('error', 'Ooops..! An error occured');
-                    //     throw $th;
-                    // }
 
                     return redirect(url()->previous())->with('success', 'Vehicle details successfully added');
                 }
+
+            break;
+
+            case 'add_part':
+                // return 100921;
+                try {
+
+                    $part_insert = Part::firstOrCreate([
+                        'user_id' => auth()->user()->id,
+                        'stock_id' => $request->input('stock_id'),
+                        'name' => $request->input('name'),
+                        'desc' => $request->input('desc')
+                    ]);
+
+                
+                    if($files = $request->file('photo')){
+                        foreach ($files as $file) {
+                            # code...
+                            $this->validate($request, [
+                                'photo'  => 'max:3000'
+                            ]);
+                            $filenameWithExt = $file->getClientOriginalName();
+                            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                            $fileExt = $file->getClientOriginalExtension();
+                            $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.jpg';
+                            
+                            if (!is_dir(storage_path("app/public/classified/parts/".$part_insert->stock_id))) {
+                                mkdir(storage_path("app/public/classified/parts/".$part_insert->stock_id), 0775, true);
+                            }
+                            $img = Image::make($file)->resize(500, 375)
+                            ->insert(storage_path('app/public/classified/maca_wt.png'))
+                            ->save(storage_path("app/public/classified/parts/".$part_insert->stock_id.'/'.$filenameToStore));
+                                
+                            $gallery = Gallery::firstOrCreate([
+                                'user_id' => auth()->user()->id,
+                                'part_id' => $part_insert->id,
+                                'img' => $filenameToStore
+                            ]);
+                        }
+                    }
+                    return redirect(url()->previous())->with('success', 'Vehicle Part Upload Successfull!');
+                } catch (\Throwable $th) {
+                    $part_insert->delete();
+                    throw $th;
+                    return redirect(url()->previous())->with('error', 'Ooops..! Check inputs, file type and size');
+                }
+
+                return redirect(url()->previous())->with('success', 'Vehicle part successfully added');
 
             break;
 
@@ -647,7 +675,7 @@ class CardashController extends Controller
             'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
             'cars' => Car::where('make_id', $id)->where('del', 'no')->orderBy('id', 'DESC')->paginate(20)
         ];
-        return view('showcase')->with($patch);
+        // return view('showcase')->with($patch);
     }
 
     /**
@@ -740,6 +768,20 @@ class CardashController extends Controller
                 }
             break;
 
+            case 'update_part':
+                // return 7;
+                try {
+                    $veh = Part::find($id);
+                    // $veh->stock_id = $request->input('stock_id');
+                    $veh->name = $request->input('name');
+                    $veh->desc = $request->input('desc');
+                    $veh->save();
+                    return redirect('/view_parts')->with('success', $request->input('name')."'s details successfully updated!");
+                } catch (\Throwable $th) {
+                    return redirect(url()->previous())->with('error', 'Oops..! Something went wrong');
+                }
+            break;
+
             case 'publish_car':
                 $veh = Car::find($id);
                 $veh->promote = 'yes';
@@ -763,6 +805,22 @@ class CardashController extends Controller
 
             case 'restore_car':
                 $veh = Car::find($id);
+                $veh->del = 'no';
+                $veh->save();
+                return redirect(url()->previous())->with('success', $veh->model_code.' Restored!');
+            break;
+
+            case 'del_part':
+                $veh = Part::find($id);
+                $veh->status = 'Inactive';
+                $veh->del = 'yes';
+                $veh->save();
+                return redirect(url()->previous())->with('success', $veh->model_code.' Deleted!');
+            break;
+
+            case 'restore_part':
+                $veh = Part::find($id);
+                $veh->status = 'Active';
                 $veh->del = 'no';
                 $veh->save();
                 return redirect(url()->previous())->with('success', $veh->model_code.' Restored!');

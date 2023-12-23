@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 // use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Car;
+use App\Models\Part;
 use App\Models\Type;
 use App\Models\Make;
 use App\Models\About;
@@ -46,6 +47,7 @@ class PagesController extends Controller
             // 'y' => 1,
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
+            'parts' => Part::orderBy('id', 'ASC')->limit(4)->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
             'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
             'cars' => Car::where('del', 'no')->where('promote', 'yes')->where('flash', '0')->orderBy('id', 'DESC')->limit(10)->get()

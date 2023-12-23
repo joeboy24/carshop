@@ -8,6 +8,7 @@ use App\Models\Make;
 use App\Models\Car;
 use App\Models\Type;
 use App\Models\User;
+use App\Models\Part;
 use App\Models\About;
 use App\Models\Service;
 use App\Models\Inquire;
@@ -90,6 +91,10 @@ class CarpagesController extends Controller
         return view('dash.car_newentry')->with($patch);
     }
 
+    public function car_add_part(){
+        return view('dash.car_newpart');
+    }
+
     public function car_company(){
         $company = Company::find(1);
         return view('dash.car_company')->with('company', $company);
@@ -118,6 +123,34 @@ class CarpagesController extends Controller
             'submodels' => Submodel::orderBy('sub_name', 'ASC')->get()
         ];
         return view('dash.car_vehicle_view')->with($patch);
+    }
+
+    public function car_view_parts(){
+        // $users = User::where('status', '!=', 'Student')->get();
+        $parts = Part::orderBy('id', 'DESC')->paginate(20);
+        $patch = [
+            'c' => 1,
+            'parts' => $parts,
+        ];
+        return view('dash.car_vehicle_viewpart')->with($patch);
+    }
+
+    public function car_more_parts()
+    {
+        // $car = Car::find($id);
+        $patch = [
+            // 'c' => 1,
+            // 'car' => $car,
+            'types' => Type::all(),
+            'vr' => Variable::all(),
+            'parts' => Part::orderBy('id', 'DESC')->paginate(30),
+            // 'accessory' => explode(',', $car->accessory),
+            // 'car_imgs' => Gallery::where('car_id', $id)->get(),
+            'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
+            // 'countries' => Country::orderBy('id', 'ASC')->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+        ];
+        return view('car_more_parts')->with($patch);
     }
 
     public function car_vehicle_types(){

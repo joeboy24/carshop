@@ -121,7 +121,8 @@
 
     <div class="page-heading">
         <h3><i class="fa fa-file-text color2"></i>&nbsp;&nbsp;Vehicle Management</h3>
-        <a href="/new_entry"><p class="print_report">&nbsp;<i class="fa fa-print"></i>&nbsp; Add Vehicle</p></a>
+        <a href="/new_entry"><p class="print_report">&nbsp;<i class="fa fa-file-text"></i>&nbsp; Add Vehicle</p></a>
+        <a href="/view_parts"><p class="print_report">&nbsp;<i class="fa fa-gears"></i>&nbsp; View Part</p></a>
         <a href="#"><button type="submit" class="print_btn_small"><i class="fa fa-refresh"></i></button></a>
         <div class="row">
             <div class="col-12 col-md-8">

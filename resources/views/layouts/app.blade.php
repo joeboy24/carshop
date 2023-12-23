@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="/maindir/css/icomoon.css">
     <link rel="stylesheet" href="/maindir/css/style.css">
     <link rel="stylesheet" href="/maindir/css/car.css">
+    <link rel="stylesheet" href="/maindir/css/carousel.css">
+
     {{-- <link rel="stylesheet" href="/maindir/css/feed_style_clean.css"> --}}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 

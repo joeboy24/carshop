@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGalleriesTable extends Migration
+class CreatePartsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateGalleriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('galleries', function (Blueprint $table) {
+        Schema::create('parts', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('car_id')->nullable();
-            $table->string('part_id')->nullable();
-            $table->string('img');
+            $table->string('stock_id');
+            $table->string('name');
+            $table->string('desc');
             $table->string('status')->default('active');
             $table->string('del')->default('no');
             $table->timestamps();
@@ -32,6 +32,6 @@ class CreateGalleriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('galleries');
+        Schema::dropIfExists('parts');
     }
 }

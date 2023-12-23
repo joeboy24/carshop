@@ -912,6 +912,30 @@ body input:focus, .ds:focus, button:focus {
   border-bottom: 1px solid rgb(255, 76, 31);
 }
 
+.more-parts {
+  width: 100%;
+  /* background: yellowgreen; */
+}
+
+.more-parts img {
+  width: calc(25% - 20px);
+  margin: 8px;
+  border-radius: 15px;
+  /* border: 1px solid #000; */
+  
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.more-parts img:hover {
+  border: 7px solid #ffffffa4;
+  transition: all .4s ease-in-out!important;
+  scale: 180%;
+}
+
+
+
 
 
 
@@ -925,6 +949,9 @@ body input:focus, .ds:focus, button:focus {
 
 @media (max-width: 576px) {
 
+  .more-parts img {
+    width: calc(50% - 20px);
+  }
 
   .by_type {
     display: none;
