@@ -135,24 +135,6 @@ class CarpagesController extends Controller
         return view('dash.car_vehicle_viewpart')->with($patch);
     }
 
-    public function car_more_parts()
-    {
-        // $car = Car::find($id);
-        $patch = [
-            // 'c' => 1,
-            // 'car' => $car,
-            'types' => Type::all(),
-            'vr' => Variable::all(),
-            'parts' => Part::orderBy('id', 'DESC')->paginate(30),
-            // 'accessory' => explode(',', $car->accessory),
-            // 'car_imgs' => Gallery::where('car_id', $id)->get(),
-            'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
-            // 'countries' => Country::orderBy('id', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
-        ];
-        return view('car_more_parts')->with($patch);
-    }
-
     public function car_vehicle_types(){
         $company = Make::find(1);
         $patch = [
