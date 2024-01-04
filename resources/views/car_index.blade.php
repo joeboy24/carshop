@@ -140,7 +140,7 @@
             @endforeach
 
             <p class="clear_both"></p>
-            <a href="#"><button class="show_more_gray"><i class="fa fa-folder-open">&nbsp;</i>&nbsp;View More</button></a>
+            <a href="https://macademiagroup.com/cardash/Sedan/edit"><button class="show_more_gray"><i class="fa fa-folder-open">&nbsp;</i>&nbsp;View More</button></a>
           @else
             <div class="alert alert-danger">
               No Records Found

@@ -675,7 +675,7 @@ class CardashController extends Controller
             'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
             'cars' => Car::where('make_id', $id)->where('del', 'no')->orderBy('id', 'DESC')->paginate(20)
         ];
-        // return view('showcase')->with($patch);
+        return view('showcase')->with($patch);
     }
 
     /**

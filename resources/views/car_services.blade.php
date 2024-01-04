@@ -72,7 +72,7 @@
               @if (count($services) > 0)
                 <div class="row service_cont" id="contact">
                     @foreach ($services as $srv)
-                      <div class="col-md-4">
+                      {{-- <div class="col-md-4">
                         <p class="service_box">
                           @if ($srv->id == 1)
                             <i class="fa fa-car"></i>   
@@ -85,7 +85,37 @@
                           @endif
                           {{$srv->title}}
                         </p>
-                      </div>
+                      </div> --}}
+                      
+                        @if ($srv->id == 1)
+                          <a href="/more_makes"><div class="col-md-4">
+                            <p class="service_box">
+                                <i class="fa fa-car"></i> 
+                                {{$srv->title}}
+                            </p>
+                          </div></a>
+                        @elseif ($srv->id == 2)
+                          <a href="/cardash/Truck/edit"><div class="col-md-4">
+                            <p class="service_box">
+                              <i class="fa fa-leaf"></i> 
+                              {{$srv->title}}
+                            </p>
+                          </div></a>
+                        @elseif ($srv->id == 3)
+                          <a href="/more_parts"><div class="col-md-4">
+                            <p class="service_box">
+                              <i class="fa fa-cogs"></i> 
+                              {{$srv->title}}
+                            </p>
+                          </div></a>
+                        @else
+                          <a href="#"><div class="col-md-4">
+                            <p class="service_box">
+                              <i class="fa fa-gear"></i> 
+                              {{$srv->title}}
+                            </p>
+                          </div></a>
+                        @endif
                     @endforeach
                 </div>
               @else
