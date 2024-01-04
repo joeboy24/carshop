@@ -88,28 +88,28 @@
                       </div> --}}
                       
                         @if ($srv->id == 1)
-                          <a href="/more_makes"><div class="col-md-4">
+                          <a href="/more_makes" class="col-md-4"><div>
                             <p class="service_box">
                                 <i class="fa fa-car"></i> 
                                 {{$srv->title}}
                             </p>
                           </div></a>
                         @elseif ($srv->id == 2)
-                          <a href="/cardash/Truck/edit"><div class="col-md-4">
+                          <a href="/cardash/Truck/edit" class="col-md-4"><div>
                             <p class="service_box">
                               <i class="fa fa-leaf"></i> 
                               {{$srv->title}}
                             </p>
                           </div></a>
                         @elseif ($srv->id == 3)
-                          <a href="/more_parts"><div class="col-md-4">
+                          <a href="/more_parts" class="col-md-4"><div>
                             <p class="service_box">
                               <i class="fa fa-cogs"></i> 
                               {{$srv->title}}
                             </p>
                           </div></a>
                         @else
-                          <a href="#"><div class="col-md-4">
+                          <a href="#" class="col-md-4"><div>
                             <p class="service_box">
                               <i class="fa fa-gear"></i> 
                               {{$srv->title}}
