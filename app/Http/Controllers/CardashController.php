@@ -668,6 +668,7 @@ class CardashController extends Controller
     public function show($id)
     {
         //
+        // return $id;
         $patch = [
             // 'c' => 1,
             // 'y' => 1,

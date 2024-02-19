@@ -209,6 +209,22 @@ class PagesController extends Controller
         // return $img->response('jpg');
     }
 
+    public function view_more(){
+        
+        $where = [
+            'flash' => 5
+        ];
+        $patch = [
+            // 'c' => 1,
+            // 'y' => 1,
+            'types' => Type::all(),
+            'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'cars' => Car::where('del', 'no')->orderBy('id', 'DESC')->limit(10)->paginate(20)
+        ];
+        return view('showcase')->with($patch);
+    }
+
 
 
 

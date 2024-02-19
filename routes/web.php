@@ -33,6 +33,7 @@ Route::get('/services', 'PagesController@car_services');
 Route::get('/contact', 'PagesController@car_contact');
 Route::get('/more_flash', 'PagesController@car_more_flash');
 Route::get('/more_makes', 'PagesController@car_more_makes');
+Route::get('/more_cars', 'PagesController@view_more');
 Route::get('/cart', 'PagesController@car_cart');
 Route::get('/more_parts', 'PagesController@car_more_parts');
 // Route::get('/contact', 'PagesController@car_about');
