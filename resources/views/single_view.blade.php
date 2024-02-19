@@ -71,7 +71,7 @@
               <h4>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h4>
               <p class="color7"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i>
               </p>
-              <p id="xx">{{date('s', strtotime($car->created_at))}} Views</p>
+              {{-- <p id="xx">{{date('s', strtotime($car->created_at))}} Views</p> --}}
               
               <script>
               </script>

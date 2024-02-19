@@ -148,7 +148,7 @@
                   <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
                   {{-- <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
                   <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
-                  <p>{{date('s', strtotime($car->created_at))}} Views</p>
+                  {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
                   <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
                 </div></a>
               @else
@@ -156,7 +156,7 @@
                   <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
                   <h5 class="flash_tag">{{$car->flash}}% off</h5>
                   <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
-                  <p>{{date('s', strtotime($car->created_at))}} Views</p>
+                  {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
                   <h5>Price <span>USD&nbsp;{{ number_format($car->price+(($car->flash/100)*$car->price)) }}</span></h5>
                 </div></a>
               @endif

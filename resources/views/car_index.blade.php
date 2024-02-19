@@ -142,7 +142,7 @@
                 {{-- <h4>{{ $car->make->model_name }}3423sdf</h4>
                 <h6>{{ $car->submodel->sub_name }}</h6> --}}
                 <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
-                <p>{{date('s', strtotime($car->created_at))}} Views</p>
+                {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
                 <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
               </div></a>
             @endforeach
