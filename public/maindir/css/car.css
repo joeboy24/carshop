@@ -233,6 +233,7 @@ body input:focus, .ds:focus, button:focus {
 }
 
 .car_thumb img {
+  z-index: 0;
   width: 100%;
   height: 125px;
   margin-bottom: 10px;
@@ -276,6 +277,10 @@ body input:focus, .ds:focus, button:focus {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.car_thumb {
+  position: relative;
 }
 
 .car_thumb span {
@@ -392,16 +397,26 @@ body input:focus, .ds:focus, button:focus {
   margin: -10px 0 10px 0;
 }
 
-.flash_tag {
-  z-index: 1;
+.flash_tagx {
+  z-index: 10;
   color: #fff;
   font-weight: 500!important;
   float: right;
   /* position: absolute;
   top: 0;
   right: 0; */
-  margin: -40px 0 10px 0!important;
+  margin: -20px 0 10px 0!important;
   /* width: 90px; */
+  padding: 5px 15px!important;
+  background: rgb(255, 76, 31);
+}
+
+.flash_tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  font-weight: 500!important;
   padding: 5px 15px!important;
   background: rgb(255, 76, 31);
 }
