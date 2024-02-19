@@ -73,7 +73,7 @@ class CardashController extends Controller
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('showcase')->with($patch);
     }
@@ -557,7 +557,7 @@ class CardashController extends Controller
                     'types' => Type::all(),
                     'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
                     // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-                    'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+                    'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
                     // 'cars' => Car::where('del', 'no')->where('promote', 'yes')->where('flash', '0')->orderBy('id', 'DESC')->limit(10)->get()
                 ];
                 
@@ -675,7 +675,7 @@ class CardashController extends Controller
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
             'cars' => Car::where('make_id', $id)->where('del', 'no')->orderBy('id', 'DESC')->paginate(20)
         ];
         return view('showcase')->with($patch);
@@ -698,7 +698,7 @@ class CardashController extends Controller
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
             'cars' => Car::where('body_type', 'LIKE', '%'.$id.'%')->where('del', 'no')->orderBy('id', 'DESC')->paginate(20)
         ];
         return view('showcase')->with($patch);

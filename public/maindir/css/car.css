@@ -272,7 +272,7 @@ body input:focus, .ds:focus, button:focus {
 .car_thumb h5 {
   margin: 0;
   padding: 0 5px;
-  font-size: 0.9em;
+  /* font-size: 0.9em; */
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;

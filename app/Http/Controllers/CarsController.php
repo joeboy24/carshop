@@ -62,7 +62,7 @@ class CarsController extends Controller
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('showcase')->with($patch);
     }
@@ -115,7 +115,7 @@ class CarsController extends Controller
             'car_imgs' => Gallery::where('car_id', $id)->get(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             'countries' => Country::orderBy('id', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('single_view')->with($patch);
     }

@@ -50,7 +50,7 @@ class PagesController extends Controller
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             'parts' => Part::orderBy('id', 'ASC')->limit(4)->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
             'cars' => Car::where('del', 'no')->where('promote', 'yes')->where('flash', '0')->orderBy('id', 'DESC')->limit(10)->get()
         ];
         return view('car_index')->with($patch);
@@ -72,7 +72,7 @@ class PagesController extends Controller
             'about' => About::orderBy('id', 'ASC')->get(),
             'services' => Service::orderBy('id', 'ASC')->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('car_about')->with($patch);
     }
@@ -93,7 +93,7 @@ class PagesController extends Controller
             'about' => About::orderBy('id', 'ASC')->get(),
             'services' => Service::orderBy('id', 'ASC')->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('car_services')->with($patch);
     }
@@ -114,7 +114,7 @@ class PagesController extends Controller
             'about' => About::orderBy('id', 'ASC')->get(),
             'services' => Service::orderBy('id', 'ASC')->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('car_contact')->with($patch);
     }
@@ -137,7 +137,7 @@ class PagesController extends Controller
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
             // 'cars' => Car::where('make_id', $id)->where('del', 'no')->orderBy('id', 'DESC')->paginate(20),
             'cars' => Car::where('del', 'no')->where('flash', '!=', '0')->paginate(20),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('showcase')->with($patch);
     }
@@ -177,7 +177,7 @@ class PagesController extends Controller
             // 'car_imgs' => Gallery::where('car_id', $id)->get(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             // 'countries' => Country::orderBy('id', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
         ];
         return view('car_more_parts')->with($patch);
     }
@@ -219,7 +219,7 @@ class PagesController extends Controller
             // 'y' => 1,
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
             'cars' => Car::where('del', 'no')->orderBy('id', 'DESC')->limit(10)->paginate(20)
         ];
         return view('showcase')->with($patch);
