@@ -223,7 +223,7 @@
                     
             <div class="item active">
                 <a href="#"><div class="cust_col car_thumb">
-                    <img src="https://www.pixground.com/wp-content/uploads/2023/10/Colorful-Background-Dynamic-Waves-AI-Generated-4K-Wallpaper-1536x864.webp" class="img-responsive">
+                    <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
                     
                     <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
                     
@@ -236,7 +236,7 @@
         @else
         <div class="item">
             <a href="#"><div class="cust_col car_thumb">
-                <img src="https://img.freepik.com/premium-photo/green-branch-plant-with-neon-orange-glow-against-dark-starry-sky-generative-ai_76964-10382.jpg" class="img-responsive">
+                <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
                 
                 <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
                 
