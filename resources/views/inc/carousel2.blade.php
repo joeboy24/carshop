@@ -14,11 +14,12 @@
             @if (count($parts) > 0)
               @foreach ($parts as $part)
                 {{-- <a href="/cars/{{$part->id}}"> --}}
+                <a href="/more_parts">
                     <div class="col_25 car_thumb">
                       <img src="/storage/classified/parts/{{$part->stock_id}}/{{$part->gallery[0]->img}}" alt="">
                       <h6>{{ $part->name }}</h6>
                   </div>
-                {{-- </a> --}}
+                </a>
               @endforeach
             @else
               <div class="alert alert-danger">

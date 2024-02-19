@@ -177,16 +177,17 @@
                                                 <!--a href="/cardash/" class="color10"></a-->
                                                 <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
                                                 <p class="small_p">Model Code: {{ $car->model_code }}</p>
+                                                <p class="small_p_black">Chassis No.: {{ $car->chassis_no }}</p>
                                                 <p class="small_p_black">Color: {{ $car->color }}</p>
                                                 <p class="small_p_black">Year: {{ $car->year }}</p>
                                                 <p class="small_p_black">Mileage: {{ $car->mileage }}</p>
                                                 <p class="small_p_black">Transmission: {{ $car->trans }}</p>
                                                 <p class="small_p_black">Inventory Loc: {{ $car->inv_loc }}</p>
-                                                <p class="small_p_black">Drive: {{ $car->drive }}</p>
                                             </td>
                                             <td class="text-bold-500"><br>
                                                 <h6>${{ number_format($car->price, 2) }}</h6>
                                                 <p class="small_p">Flash ($): {{ $car->flash }}</p>
+                                                <p class="small_p_black">Drive: {{ $car->drive }}</p>
                                                 <p class="small_p_black">Steering: {{ $car->steer }}</p>
                                                 <p class="small_p_black">Seats: {{ $car->seat }}</p>
                                                 <p class="small_p_black">Doors: {{ $car->door }}</p>
@@ -259,6 +260,11 @@
                                                             <div class="filter_div">
                                                                 <i class="fa fa-pencil-square"></i> &nbsp; Stock ID
                                                                 <input type="text" name="stock_id" value="{{$car->stock_id}}" readonly required>
+                                                            </div>
+                                                            
+                                                            <div class="filter_div">
+                                                                <i class="fa fa-pencil-square"></i> &nbsp; Chassis No.
+                                                                <input type="text" name="chassis_no" value="{{$car->chassis_no}}">
                                                             </div>
                                                 
                                                             <div class="filter_div" id="">

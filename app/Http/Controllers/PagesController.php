@@ -27,7 +27,7 @@ class PagesController extends Controller
         // return view('auth.cust_register');
         // return view('auth.cust_login');
         // return view('single_view');
-        // return view('showcase');
+        // return view('inc.carousel3');
 
         $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
         $car_color = Car::select('color')->distinct('color')->get();

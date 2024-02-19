@@ -42,7 +42,7 @@
         <img class="sch_logo" src="/storage/classified/Nursing/n0.png">
 	      <a class="navbar-brand" href="/"><span>1</span>-2
         <p class="sch_name">{{ session('company')->id }}</p></a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars"></span>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-align-right"></span>
 	      </button>
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">

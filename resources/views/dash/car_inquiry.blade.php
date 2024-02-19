@@ -130,12 +130,13 @@
 
     {{ $inqs->links() }}
     <div class="row">
-        <div class="col-12 col-xl-10">
+        <div class="col-12 col-xl-12">
+            @include('inc.messages') 
             <div class="card">
                 <div class="card-body">
 
                     <p>&nbsp;</p>
-                    <div class="col-md-10 offset-md-1">
+                    {{-- <div class="col-md-10 offset-md-1"> --}}
                         <!-- Leaves View -->
                         <div class="table-responsive">
                             @if (count($inqs) > 0)
@@ -143,9 +144,8 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Contact</th>
+                                            <th>Name / Contact</th>
+                                            <th>Message</th>
                                             <th class="align_right">Action</th>
                                         </tr>
                                     </thead>   
@@ -158,8 +158,10 @@
                                                     <tr>
                                                 @endif
                                                     <td class="text-bold-500">{{$c++}}</td>
-                                                    <td class="text-bold-500">{{ $inq->name }}</td>
-                                                    <td class="text-bold-500">{{ $inq->email }}<p class="small_p">{{ $inq->phone }}</p></td>
+                                                    <td class="text-bold-500">{{ $inq->name }}
+                                                        <p class="gray_p">{{ $inq->email }}</p>
+                                                        <p class="small_p">{{ $inq->phone }}</p>
+                                                    </td>
                                                     <td class="text-bold-500">{{ $inq->message }}</td>
                                                     {{-- <td class="text-bold-500">@if ($lv->dob != '') {{date('D.. M, d Y', strtotime($lv->dob))}} @endif</td> --}}
                                                     <td class="text-bold-500 align_right">
@@ -190,7 +192,7 @@
                                 </div>
                             @endif
                         </div>
-                    </div>
+                    {{-- </div> --}}
 
                 </div>
             </div>

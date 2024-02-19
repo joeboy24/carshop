@@ -8,7 +8,7 @@
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700" rel="stylesheet">
 
-    <link rel="stylesheet" href="/maindir/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/maindir/css/animate.css">
     
     <link rel="stylesheet" href="/maindir/css/owl.carousel.min.css">
@@ -50,7 +50,7 @@
             <p class="sch_name">Company Fullname Here</p>
           </a>
         @endif
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars"></span>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-align-right"></span>
 	      </button>
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">

@@ -146,6 +146,11 @@
                                 <i class="fa fa-pencil-square"></i> &nbsp; Stock ID
                                 <input type="text" name="stock_id" value="SM{{date('my').'0'.$cars_tot}}" readonly required>
                             </div>
+                    
+                            <div class="filter_div">
+                                <i class="fa fa-edit"></i> &nbsp; Chassis No.
+                                <input type="text" name="chassis_no" required>
+                            </div>
                 
                             <div class="filter_div" id="">
                                 <i class="fa fa-thumb-tack"></i> &nbsp; Inventory Location

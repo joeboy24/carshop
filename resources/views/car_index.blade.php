@@ -40,9 +40,8 @@
 
 @section('content')
 
-<section class="car_header" style="background: url(/maindir/images/picanto/c2.jpeg); background-size: 100%; height: 750px">
+{{-- <section class="car_header" style="background: url(/maindir/images/picanto/c2.jpeg); background-size: 100%; height: 750px">
   <div class="container">
-    {{-- <img src="/maindir/images/picanto/c2.jpeg" width="100%" alt=""> --}}
     <div style="height: 100px"></div>
     <form action="{{ action('CarsController@index') }}">
       <div class="row">
@@ -100,14 +99,21 @@
           
           <button type="submit" class="sb_btn"><i class="fa fa-search"></i>&nbsp; Search</button>
 
-          {{-- <div></div>
-          <input type="range"> --}}
-
         </div>
       </div>
     </form>
   </div>
+</section> --}}
+
+<section class="car_header" style="background: rgb(53, 53, 53); background-size: 100%">
+  <div class="container">
+    <div style="height: 100px"></div>
+  </div>
 </section>
+
+<!-- Showcase By Model -->
+@include('inc.showcase_searchby')
+
 
 <!-- By Model -->
 <section class="by_model">
@@ -130,9 +136,11 @@
 
           @if (count($cars) > 0)
             @foreach ($cars as $car)
-              <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb">
+              <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
                 <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
                 {{-- <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
+                {{-- <h4>{{ $car->make->model_name }}3423sdf</h4>
+                <h6>{{ $car->submodel->sub_name }}</h6> --}}
                 <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
                 <p>{{date('s', strtotime($car->created_at))}} Views</p>
                 <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
@@ -167,9 +175,12 @@
             <p>Others</p></a>
           </div>
         </div>
+
+        {{-- @include('inc.carousel3') --}}
         
       </div>
     </div>
+
   </div>
 </section>
 

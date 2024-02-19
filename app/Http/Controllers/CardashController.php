@@ -416,7 +416,8 @@ class CardashController extends Controller
                 }
 
                 $model_code = $request->input('model_code');
-                $emp_check = Car::where('model_code', $model_code)->get();
+                $chassis_no = $request->input('chassis_no');
+                $emp_check = Car::where('chassis_no', $chassis_no)->get();
                 
                 if (count($emp_check) > 0) {
                     return redirect(url()->previous())->with('error', 'Oops..! Details already exist');
@@ -427,6 +428,7 @@ class CardashController extends Controller
                         $car_insert = Car::firstOrCreate([
                             'user_id' => auth()->user()->id,
                             'stock_id' => $request->input('stock_id'),
+                            'chassis_no' => $request->input('chassis_no'),
                             'make_id' => $request->input('make_id'),
                             'submodel_id' => $request->input('submodel_id'),
                             'inv_loc' => $request->input('inv_loc'),
@@ -490,7 +492,7 @@ class CardashController extends Controller
                     }
 
                     return redirect(url()->previous())->with('success', 'Vehicle details successfully added');
-                }
+                }                                                                                                                                                                                      
 
             break;
 
@@ -738,6 +740,7 @@ class CardashController extends Controller
                 try {
                     $veh = Car::find($id);
                     // $veh->stock_id = $request->input('stock_id');
+                    $veh->chassis_no = $request->input('chassis_no');
                     $veh->make_id = $request->input('make_id');
                     $veh->submodel_id = $request->input('submodel_id');
                     $veh->inv_loc = $request->input('inv_loc');
@@ -830,14 +833,14 @@ class CardashController extends Controller
                 $inq = Inquire::find($id);
                 $inq->status = 'active';
                 $inq->save();
-                return redirect(url()->previous())->with('success', $inq->name.'`s inquiry status changed to `Read`!');
+                return redirect(url()->previous())->with('success', $inq->name.'`s inquiry status changed to `Not Read`!');
             break;
 
             case 'close_inq':
                 $inq = Inquire::find($id);
                 $inq->status = 'inactive';
                 $inq->save();
-                return redirect(url()->previous())->with('success', $inq->name.'1s inquiry status changed to `Not Read`!');
+                return redirect(url()->previous())->with('success', $inq->name.'`s inquiry status changed to `Read`!');
             break;
 
             case 'update_about':

@@ -9,8 +9,11 @@
         <div class="col-md-10 by_model_right">
   
           <div class="col-12">
-  
+            
             <h6 class="pannel_header2"><span>Flash Deals</span> </h6>
+            @include('inc.carousel3')
+  
+            {{-- 
             @if (count($flash_deals) > 0)
               @foreach ($flash_deals as $car)
                 <a href="/cars/{{$car->id}}"><div class="col_25 car_thumb">
@@ -25,7 +28,7 @@
               <div class="alert alert-danger">
                   No Records Found
               </div>   
-            @endif
+            @endif --}}
           
             <p class="clear_both"></p>
             <a href="/more_flash"><button class="show_more_gray"><i class="fa fa-folder-open">&nbsp;</i>&nbsp;View More</button></a>
