@@ -145,7 +145,7 @@
             @foreach ($cars as $car)
               @if ($car->flash == 0)
                 <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                  <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
+                  <img src="https://www.pixground.com/wp-content/uploads/2023/10/Colorful-Background-Dynamic-Waves-AI-Generated-4K-Wallpaper-1536x864.webp" alt="">
                   {{-- <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
                   <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
                   {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
@@ -153,7 +153,7 @@
                 </div></a>
               @else
                 <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                  <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
+                  <img src="https://img.freepik.com/premium-photo/green-branch-plant-with-neon-orange-glow-against-dark-starry-sky-generative-ai_76964-10382.jpg" alt="">
                   <h5 class="flash_tag">{{$car->flash}}% off</h5>
                   <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
                   {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}

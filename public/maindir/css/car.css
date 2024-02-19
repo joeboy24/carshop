@@ -228,6 +228,10 @@ body input:focus, .ds:focus, button:focus {
   margin: 0 0.5%;
 }
 
+.car_thumb {
+  position: relative;
+}
+
 .car_thumb:hover {
   box-shadow: 0 1px 13px 4px rgba(82, 82, 82, 0.21);
 }
@@ -277,10 +281,6 @@ body input:focus, .ds:focus, button:focus {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-}
-
-.car_thumb {
-  position: relative;
 }
 
 .car_thumb span {
