@@ -248,7 +248,7 @@ body input:focus, .ds:focus, button:focus {
   margin: 0;
   width: 100%;
   height: 50px;
-  background: greenyellow;
+  /* background: greenyellow; */
   color: rgb(83, 83, 83);
   padding: 0 5px;
   font-size: 0.9em;

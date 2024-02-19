@@ -139,7 +139,7 @@
           </form>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 car_display" id="car_display">
 
           @if (count($cars) != 0)
             @foreach ($cars as $car)
@@ -152,7 +152,7 @@
                   <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
                 </div></a>
               @else
-                <a href="/cars/{{$car->id}}"><div class="col_25 car_thumb">
+                <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
                   <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
                   <h5 class="flash_tag">{{$car->flash}}% off</h5>
                   <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
