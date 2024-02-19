@@ -144,7 +144,7 @@
           @if (count($cars) != 0)
             @foreach ($cars as $car)
               @if ($car->flash == 0)
-                <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb">
+                <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
                   <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
                   {{-- <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
                   <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>

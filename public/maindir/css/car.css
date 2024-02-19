@@ -234,7 +234,7 @@ body input:focus, .ds:focus, button:focus {
 
 .car_thumb img {
   width: 100%;
-  /* height: 125px; */
+  height: 125px;
   margin-bottom: 10px;
 }
 
@@ -248,7 +248,7 @@ body input:focus, .ds:focus, button:focus {
   margin: 0;
   width: 100%;
   height: 50px;
-  /* background: greenyellow; */
+  background: greenyellow;
   color: rgb(83, 83, 83);
   padding: 0 5px;
   font-size: 0.9em;
@@ -400,7 +400,7 @@ body input:focus, .ds:focus, button:focus {
   /* position: absolute;
   top: 0;
   right: 0; */
-  margin: -15px 0 10px 0!important;
+  margin: -40px 0 10px 0!important;
   /* width: 90px; */
   padding: 5px 15px!important;
   background: rgb(255, 76, 31);
