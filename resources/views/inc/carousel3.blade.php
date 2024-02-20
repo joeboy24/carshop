@@ -223,7 +223,7 @@
                     <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
                         <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
                         
-                        <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
+                        <h3 class="flash_price_tag">PRICE ${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
                         
                         <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
                         {{-- <h6>{{ $flash_deals[$i]->make->model_name.' '.$flash_deals[$i]->submodel->sub_name }}</h6>
@@ -236,7 +236,7 @@
                     <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
                         <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
                         
-                        <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
+                        <h3 class="flash_price_tag">PRICE ${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
                         
                         <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
                         {{-- <h6>{{ $flash_deals[$i]->make->model_name.' '.$flash_deals[$i]->submodel->sub_name }}</h6>
