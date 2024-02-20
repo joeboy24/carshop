@@ -216,39 +216,37 @@
 <div class="carousel slide" data-ride="carousel" data-type="multi" data-interval="5000" id="myCarousel">
   <div class="col-md-12 carousel-inner">
     
-    
-    @for ($i=0; $i<count($flash_deals); $i++)
-
-        @if ($i == 0)
-                    
-            <div class="item active">
-                <a href="/cars/{{$car->id}}"><div class="cust_col car_thumb">
-                    <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
-                    
-                    <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
-                    
-                    <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
-                    {{-- <h6>{{ $flash_deals[$i]->make->model_name.' '.$flash_deals[$i]->submodel->sub_name }}</h6>
-                    <p>{{date('s', strtotime($flash_deals[$i]->created_at))}} Views</p>
-                    <h5>Price <span>USD&nbsp;{{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</span></h5> --}}
-                </div></a>
-            </div>
-        @else
-        <div class="item">
-            <a href="/cars/{{$car->id}}"><div class="cust_col car_thumb">
-                <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
-                
-                <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
-                
-                <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
-                {{-- <h6>{{ $flash_deals[$i]->make->model_name.' '.$flash_deals[$i]->submodel->sub_name }}</h6>
-                <p>{{date('s', strtotime($flash_deals[$i]->created_at))}} Views</p>
-                <h5>Price <span>USD&nbsp;{{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</span></h5> --}}
-            </div></a>
-        </div>
-        @endif
-        
-    @endfor
+    @if (count($flash_deals) > 0)
+        @for ($i=0; $i<count($flash_deals); $i++)
+            @if ($i == 0)
+                <div class="item active">
+                    <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
+                        <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
+                        
+                        <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
+                        
+                        <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
+                        {{-- <h6>{{ $flash_deals[$i]->make->model_name.' '.$flash_deals[$i]->submodel->sub_name }}</h6>
+                        <p>{{date('s', strtotime($flash_deals[$i]->created_at))}} Views</p>
+                        <h5>Price <span>USD&nbsp;{{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</span></h5> --}}
+                    </div></a>
+                </div>
+            @else
+                <div class="item">
+                    <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
+                        <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
+                        
+                        <h3 class="flash_price_tag">${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
+                        
+                        <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
+                        {{-- <h6>{{ $flash_deals[$i]->make->model_name.' '.$flash_deals[$i]->submodel->sub_name }}</h6>
+                        <p>{{date('s', strtotime($flash_deals[$i]->created_at))}} Views</p>
+                        <h5>Price <span>USD&nbsp;{{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</span></h5> --}}
+                    </div></a>
+                </div>
+            @endif
+        @endfor
+    @endif
 
     {{-- @foreach ($flash_deals as $car)
     <div class="item">

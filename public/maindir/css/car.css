@@ -1023,6 +1023,11 @@ body input:focus, .ds:focus, button:focus {
     width: 50%!important;
   } */
   
+
+  .cust_col img {
+    height: auto;
+  }
+  
   .cust_col {
     width: 100%;
   }
