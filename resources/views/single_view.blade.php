@@ -250,7 +250,8 @@
                 </tr>
               </tbody>
             </table>
-            <button class="inquiry_btn bg11 color8" data-toggle="modal" data-target="#inqure"><i class="fa fa-envelope-open-o">&nbsp;</i>&nbsp;&nbsp;Inquiry</button>
+            {{-- <button class="inquiry_btn bg11 color8" data-toggle="modal" data-target="#inqure"><i class="fa fa-envelope-open-o">&nbsp;</i>&nbsp;&nbsp;Inquiry</button> --}}
+            <a href="javascript:void(Tawk_API.toggle())"><button type="button" class="inquiry_btn bg11 color8"><i class="fa fa-envelope-open-o">&nbsp;</i>&nbsp;&nbsp;Inquiry</button>
             <a href="/cart"><button type="button" class="buynow_btn bg6 color8"><i class="fa fa-shopping-basket">&nbsp;</i>&nbsp;&nbsp;Buy Now</button></a>
           </div>
         </div>
