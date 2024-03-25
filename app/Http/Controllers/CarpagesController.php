@@ -119,6 +119,7 @@ class CarpagesController extends Controller
         $patch = [
             'c' => 1,
             'cars' => $cars,
+            'types' => Type::all(),
             'makes' => Make::orderBy('model_name', 'ASC')->get(),
             'submodels' => Submodel::orderBy('sub_name', 'ASC')->get()
         ];

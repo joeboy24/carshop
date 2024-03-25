@@ -199,6 +199,7 @@
                                                 <p class="small_p_black">Fuel Type: {{ $car->fuel }}</p>
                                                 <p class="small_p_black">Body Length: {{ $car->body_len }}</p>
                                                 <p class="small_p_black">Vehicle Weight: {{ $car->vweight }}</p>
+                                                <p class="small_p_black">Width/Height/Length: {{ $car->vwidth }}</p>
                                                 <p class="small_p_black">Gross Veh. Weight: {{ $car->gvweight }}</p>
                                                 <p class="small_p_black">Max. Load Cap.: {{ $car->max_load }}</p>
                                              </td>
@@ -402,9 +403,12 @@
                                                             <div class="filter_div" id="">
                                                                 <i class="fa fa-bus"></i> &nbsp; Body Type
                                                                 <select name="body_type" id="body_type" onchange="">
-                                                                    <option selected>Sedan</option>
-                                                                    <option>3</option>
-                                                                    <option>2</option>
+                                                                    <option selected>{{$car->body_type}}</option>
+                                                                    @foreach ($types as $type)
+                                                                        @if ($type->name != $car->body_type)
+                                                                            <option>{{$type->name}}</option>
+                                                                        @endif
+                                                                    @endforeach
                                                                 </select>
                                                             </div>
                                                 
@@ -442,7 +446,12 @@
                                                     
                                                             <div class="filter_div" id="">
                                                                 <i class="fa fa-edit"></i> &nbsp; Vehicle Weight
-                                                                <input type="text" name="veh_weight" value="{{$car->vweight}}" required>
+                                                                <input type="text" name="veh_weight" value="{{$car->vweight}}">
+                                                            </div>
+                    
+                                                            <div class="filter_div" id="">
+                                                                <i class="fa fa-edit"></i> &nbsp; Vehicle Width
+                                                                <input type="text" name="veh_width" value="{{$car->vwidth}}">
                                                             </div>
                                                     
                                                             <div class="filter_div" id="">

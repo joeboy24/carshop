@@ -12,7 +12,7 @@ class Car extends Model
     protected $fillable = [
         'user_id','stock_id','chassis_no','make_id','submodel_id','inv_loc','model_code','year',
         'mileage','color','trans','drive','steer','seat','eng_type','door','eng_size',
-        'body_type','fuel','body_len','vweight','gvweight','max_load','accessory','price','flash','promote'
+        'body_type','fuel','body_len','vweight','vwidth','gvweight','max_load','accessory','price','flash','promote'
     ];
 
     public function make(){

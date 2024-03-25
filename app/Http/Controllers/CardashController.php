@@ -449,6 +449,7 @@ class CardashController extends Controller
                             'fuel' => $request->input('fuel'),
                             'body_len' => $request->input('body_len'),
                             'vweight' => $request->input('veh_weight'),
+                            'vwidth' => $request->input('veh_width'),
                             'gvweight' => $request->input('gross_weight'),
                             'max_load' => $request->input('max_load'),
                             'accessory' => $request->input('accessory')
@@ -762,6 +763,7 @@ class CardashController extends Controller
                     $veh->fuel = $request->input('fuel');
                     $veh->body_len = $request->input('body_len');
                     $veh->vweight = $request->input('veh_weight');
+                    $veh->vwidth = $request->input('veh_width');
                     $veh->gvweight = $request->input('gross_weight');
                     $veh->max_load = $request->input('max_load');
                     $veh->accessory = $request->input('accessory');

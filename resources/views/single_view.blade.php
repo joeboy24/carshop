@@ -151,6 +151,8 @@
                   <tr>
                     <td class="td1">Vehicle Weight:</td>
                     <td>{{$car->vweight}}</td>
+                    <td class="td1">Width/Height/Length:</td>
+                    <td>{{$car->vwidth}}</td>
                     <td class="td1">Gross Vehicle Weight:</td>
                     <td>{{$car->gvweight}}</td>
                   </tr>

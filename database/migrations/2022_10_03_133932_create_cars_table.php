@@ -35,9 +35,10 @@ class CreateCarsTable extends Migration
             $table->string('body_type');
             $table->string('fuel');
             $table->string('body_len');
-            $table->string('vweight');
-            $table->string('gvweight');
-            $table->string('max_load');
+            $table->string('vweight')->nullable();
+            $table->string('vwidth')->nullable();
+            $table->string('gvweight')->nullable();
+            $table->string('max_load')->nullable();
             $table->string('accessory', 500);
             $table->string('flash', 25)->default(0);
             $table->string('promote')->default('no');

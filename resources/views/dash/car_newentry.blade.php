@@ -287,7 +287,17 @@
                     
                             <div class="filter_div" id="">
                                 <i class="fa fa-edit"></i> &nbsp; Vehicle Weight
-                                <input type="text" name="veh_weight" required>
+                                <input type="text" name="veh_weight">
+                            </div>
+                    
+                            <div class="filter_div" id="">
+                                <i class="fa fa-edit"></i> &nbsp; Vehicle Width
+                                <input type="text" name="veh_width">
+                            </div>
+                    
+                            <div class="filter_div" id="">
+                                <i class="fa fa-edit"></i> &nbsp; Width/Height/length
+                                <input type="text" name="veh_width">
                             </div>
                     
                             <div class="filter_div" id="">
