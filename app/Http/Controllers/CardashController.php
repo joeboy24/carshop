@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Car;
 use App\Models\Part;
@@ -17,6 +18,8 @@ use App\Models\Inquire;
 use App\Models\About;
 use App\Models\Service;
 use App\Models\Variable;
+use App\Mail\InquiryMailer;
+use App\Mail\InquiryResponse;
 use Exception;
 use Session;
 use Auth;
@@ -410,6 +413,7 @@ class CardashController extends Controller
             break;
 
             case 'add_vehicle':
+                $add = $request->input('add');
 
                 if ($request->input('year') == 0) {
                     return redirect(url()->previous())->with('error', 'Oops..! Select Year to Proceed');
@@ -447,8 +451,10 @@ class CardashController extends Controller
                             'eng_size' => $request->input('eng_size'),
                             'body_type' => $request->input('body_type'),
                             'fuel' => $request->input('fuel'),
-                            'body_len' => $request->input('body_len'),
-                            'vweight' => $request->input('veh_weight'),
+                            // 'body_len' => $request->input('body_len'),
+                            // 'vweight' => $request->input('veh_weight'),
+                            'body_len' => '-',
+                            'vweight' => '-',
                             'vwidth' => $request->input('veh_width'),
                             'gvweight' => $request->input('gross_weight'),
                             'max_load' => $request->input('max_load'),
@@ -488,12 +494,11 @@ class CardashController extends Controller
                         }
                         return redirect(url()->previous())->with('success', 'Upload Successfull!');
                     } catch (\Throwable $th) {
-                        throw $th;
                         return redirect(url()->previous())->with('error', 'Ooops..! Check inputs, file type and size');
                     }
 
                     return redirect(url()->previous())->with('success', 'Vehicle details successfully added');
-                }                                                                                                                                                                                      
+                }                                                                                                                                                                                  
 
             break;
 
@@ -545,6 +550,74 @@ class CardashController extends Controller
 
             break;
 
+            case 'add_new_part':
+                
+                try {
+                    $car_insert = Car::firstOrCreate([
+                        'user_id' => auth()->user()->id,
+                        'stock_id' => $request->input('stock_id'),
+                        'chassis_no' => '-',
+                        'make_id' => '-',
+                        'submodel_id' => '-',
+                        'inv_loc' => '-',
+                        'model_code' => '-',
+                        'price' => $request->input('price'),
+                        'flash' => 0,
+                        'year' => '-',
+                        'mileage' => '-',
+                        'color' => '-',
+                        'trans' => '-',
+                        'drive' => '-',
+                        'steer' => '-',
+                        'seat' => '-',
+                        'eng_type' => '-',
+                        'door' => '-',
+                        'eng_size' => '-',
+                        'body_type' => '-',
+                        'fuel' => '-',
+                        'body_len' => '-',
+                        'vweight' => '-',
+                        'vwidth' => $request->input('part_name'),
+                        'gvweight' => 'vpart',
+                        'max_load' => $request->input('part_desc'),
+                        'accessory' => '-',
+                        'del' => 'vpart',
+                    ]);
+
+                    if($files = $request->file('photo')){
+                        foreach ($files as $file) {
+                            $this->validate($request, [
+                                'photo'  => 'max:3000'
+                            ]);
+                            $filenameWithExt = $file->getClientOriginalName();
+                            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                            $fileExt = $file->getClientOriginalExtension();
+                            $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.jpg';
+                            
+                            if (!is_dir(storage_path("app/public/classified/cars/".$car_insert->stock_id))) {
+                                mkdir(storage_path("app/public/classified/cars/".$car_insert->stock_id), 0775, true);
+                            }
+                            
+                            $img = Image::make($file)->resize(500, 375)
+                            ->insert(storage_path('app/public/classified/maca_wt.png'))
+                            ->save(storage_path("app/public/classified/cars/".$car_insert->stock_id.'/'.$filenameToStore));
+                                
+                            $gallery = Gallery::firstOrCreate([
+                                'user_id' => auth()->user()->id,
+                                'car_id' => $car_insert->id,
+                                'img' => $filenameToStore
+                            ]);
+                        }
+                    }
+
+                    return redirect(url()->previous())->with('success', 'Vehicle Part(s) Upload Successfull!');
+                } catch (\Throwable $th) {
+                    throw $th;
+                    return redirect(url()->previous())->with('error', 'Ooops..! An error occured: '.$th);
+                }                                                                                                                                                                               
+
+            break;
+
             case 'search_veh':
 
                 // return 99;
@@ -592,6 +665,11 @@ class CardashController extends Controller
                         'email' => $request->input('email'),
                         'message' => $request->input('message'),
                     ]);
+
+                    Session::put('mailTo', $inquire->name);
+                    Session::put('mailMsg', 'Thank you for contacting macademiagroup.com. Our customer service team will reach out to you in less than 24 hours.');
+                    Mail::to($inquire->email)->send(new InquiryResponse);
+
                 } catch (\Throwable $th) {
                     throw $th;
                 }
@@ -742,6 +820,7 @@ class CardashController extends Controller
                 try {
                     $veh = Car::find($id);
                     // $veh->stock_id = $request->input('stock_id');
+                    $veh->status = $request->input('status');
                     $veh->chassis_no = $request->input('chassis_no');
                     $veh->make_id = $request->input('make_id');
                     $veh->submodel_id = $request->input('submodel_id');
@@ -761,8 +840,8 @@ class CardashController extends Controller
                     $veh->eng_size = $request->input('eng_size');
                     $veh->body_type = $request->input('body_type');
                     $veh->fuel = $request->input('fuel');
-                    $veh->body_len = $request->input('body_len');
-                    $veh->vweight = $request->input('veh_weight');
+                    // $veh->body_len = $request->input('body_len');
+                    // $veh->vweight = $request->input('veh_weight');
                     $veh->vwidth = $request->input('veh_width');
                     $veh->gvweight = $request->input('gross_weight');
                     $veh->max_load = $request->input('max_load');
@@ -783,6 +862,22 @@ class CardashController extends Controller
                     $veh->desc = $request->input('desc');
                     $veh->save();
                     return redirect('/view_parts')->with('success', $request->input('name')."'s details successfully updated!");
+                } catch (\Throwable $th) {
+                    return redirect(url()->previous())->with('error', 'Oops..! Something went wrong');
+                }
+            break;
+
+            case 'update_new_part':
+                // return 7;
+                try {
+                    $veh = Car::find($id);
+                    // $veh->stock_id = $request->input('stock_id');
+                    $veh->vwidth = $request->input('part_name');
+                    $veh->max_load = $request->input('part_desc');
+                    $veh->price = $request->input('price');
+                    // $veh->del = $request->input('part_del');
+                    $veh->save();
+                    return redirect('/view_parts')->with('success', "Update Successful");
                 } catch (\Throwable $th) {
                     return redirect(url()->previous())->with('error', 'Oops..! Something went wrong');
                 }
@@ -832,6 +927,22 @@ class CardashController extends Controller
                 return redirect(url()->previous())->with('success', $veh->model_code.' Restored!');
             break;
 
+            case 'del_new_part':
+                $veh = Car::find($id);
+                $veh->status = 'Inactive';
+                $veh->del = 'yes';
+                $veh->save();
+                return redirect(url()->previous())->with('success', $veh->model_code.' Deleted!');
+            break;
+
+            case 'restore_new_part':
+                $veh = Car::find($id);
+                $veh->status = 'Active';
+                $veh->del = 'vpart';
+                $veh->save();
+                return redirect(url()->previous())->with('success', $veh->model_code.' Restored!');
+            break;
+
             case 'open_inq':
                 $inq = Inquire::find($id);
                 $inq->status = 'active';
@@ -841,9 +952,14 @@ class CardashController extends Controller
 
             case 'close_inq':
                 $inq = Inquire::find($id);
+                $inq->reply = $request->input('reply_msg');
                 $inq->status = 'inactive';
                 $inq->save();
-                return redirect(url()->previous())->with('success', $inq->name.'`s inquiry status changed to `Read`!');
+
+                Session::put('mailTo', $inq->name);
+                Session::put('mailMsg', $request->input('reply_msg'));
+                Mail::to($inq->email)->send(new InquiryResponse);
+                return redirect(url()->previous())->with('success', $inq->name.'`s inquiry reply successful');
             break;
 
             case 'update_about':

@@ -21,6 +21,9 @@ use Intervention\Image\ImageManagerStatic as Image;
 class PagesController extends Controller
 {
     //
+    public function __construct(){
+        $this->middleware(['load_auth']);
+    }
 
     public function index(){
 
@@ -48,7 +51,8 @@ class PagesController extends Controller
             // 'y' => 1,
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
-            'parts' => Part::orderBy('id', 'ASC')->limit(4)->get(),
+            // 'parts' => Part::orderBy('id', 'ASC')->limit(4)->get(),
+            'parts' => Car::where('del', 'vpart')->orderBy('id', 'DESC')->limit(4)->get(),
             // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
             'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
             'cars' => Car::where('del', 'no')->where('promote', 'yes')->where('flash', '0')->orderBy('id', 'DESC')->limit(10)->get()
@@ -172,7 +176,7 @@ class PagesController extends Controller
             // 'car' => $car,
             'types' => Type::all(),
             'vr' => Variable::all(),
-            'parts' => Part::orderBy('id', 'DESC')->paginate(30),
+            'parts' => Car::where('gvweight', 'vpart')->orderBy('id', 'DESC')->paginate(30),
             // 'accessory' => explode(',', $car->accessory),
             // 'car_imgs' => Gallery::where('car_id', $id)->get(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),

@@ -141,204 +141,228 @@
                         <!-- Add Employee -->
                         <form action="{{ action('CardashController@store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-pencil-square"></i> &nbsp; Stock ID
-                                <input type="text" name="stock_id" value="SM{{date('my').'0'.$cars_tot}}" readonly required>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-edit"></i> &nbsp; Chassis No.
-                                <input type="text" name="chassis_no" required>
-                            </div>
                 
-                            <div class="filter_div" id="">
-                                <i class="fa fa-thumb-tack"></i> &nbsp; Inventory Location
-                                <select name="inv_loc" id="inv_loc" onchange="">
-                                    <option selected>Nagoya</option>
-                                    {{-- <option>Japan - City 2</option> --}}
+                            {{-- <div class="filter_div" id="">
+                                <i class="fa fa-plus-circle"></i> &nbsp; Add
+                                <select name="add" id="add" onchange="add_onchange()">
+                                    <option value="">Vehicle</option>
+                                    <option value="vpart" selected>Vehicle Part(s)</option>
                                 </select>
-                            </div>
+                            </div> --}}
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-pencil-square"></i> &nbsp; Stock ID
+                                    <input type="text" name="stock_id" value="SM{{date('my').'0'.$cars_tot}}" readonly required>
+                                </div>
 
-                            <div class="filter_div" id="">
-                                <i class="fa fa-car"></i> &nbsp; Model
-                                <select name="make_id" id="" onchange="" required>
-                                    @foreach ($makes as $item)
-                                        <option value="{{$item->id}}">{{$item->model_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="filter_div" id="">
-                                <i class="fa fa-pencil-square"></i> &nbsp; Sub Model
-                                <select name="submodel_id" id="" onchange="" required>
-                                    @foreach ($submodels as $item)
-                                        <option value="{{$item->id}}">{{$item->sub_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <div class="vehicle" id="vehicle">
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-edit"></i> &nbsp; Chassis No.
+                                    <input type="text" name="chassis_no" required>
+                                </div>
                     
-                            <div class="filter_div">
-                                <i class="fa fa-edit"></i> &nbsp; Model Code
-                                <input type="text" name="model_code" required>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-cc-visa"></i> &nbsp; Price ($)
-                                <input type="number" min="0" step="any" name="price" placeholder="eg. 5000" required>
-                            </div>
-                                                    
-                            <div class="filter_div">
-                                <i class="fa fa-pencil-square"></i> &nbsp; Flash (%)
-                                <input type="number" min="0" step="any" name="flash" value="0" required>
-                            </div>
-                
-                            <div class="filter_div" id="">
-                                <i class="fa fa-calendar"></i> &nbsp; Year
-                                <select name="year" id="" onchange="">
-                                    <option value="0" selected>Select Year</option>
-                                    @for ($i = date('Y')-30; $i <= date('Y'); $i++)
-                                        <option>{{$i}}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-edit"></i> &nbsp; Mileage
-                                <input type="text" name="mileage" required>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-pencil-square"></i> &nbsp; Color
-                                <input type="text" name="color" required>
-                            </div>
-                
-                            <div class="filter_div" id="">
-                                <i class="fa fa-edit"></i> &nbsp; Transmission
-                                <select name="trans" id="trans" onchange="">
-                                    <option selected>Auto</option>
-                                    <option>Manual</option>
-                                </select>
-                            </div>
-                
-                            <div class="filter_div" id="">
-                                <i class="fa fa-car"></i> &nbsp; Drive
-                                <select name="drive" id="drive" onchange="">
-                                    <option selected>2WD</option>
-                                    <option>4WD</option>
-                                </select>
-                            </div>
-                
-                            <div class="filter_div" id="">
-                                <i class="fa fa-edit"></i> &nbsp; Steering
-                                <select name="steer" id="steer" onchange="">
-                                    <option selected>LHD</option>
-                                    <option>RHD</option>
-                                </select>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-pencil-square"></i> &nbsp; Seats
-                                <input type="number" min="0" max="8" name="seat" required>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-gears"></i> &nbsp; Engine Type
-                                <input type="text" name="eng_type" required>
-                            </div>
-                
-                            <div class="filter_div" id="">
-                                <i class="fa fa-edit"></i> &nbsp; Doors
-                                <select name="door" id="steer" onchange="">
-                                    <option selected>5</option>
-                                    <option>3</option>
-                                    <option>2</option>
-                                </select>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-gear"></i> &nbsp; Engine Size
-                                <input type="text" name="eng_size" required>
-                            </div>
-                
-                            <div class="filter_div" id="">
-                                <i class="fa fa-bus"></i> &nbsp; Body Type
-                                <select name="body_type" id="body_type" onchange="">
-                                    @foreach ($types as $type)
-                                        <option>{{$type->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                
-                            <div class="filter_div" id="">
-                                <i class="fa fa-calculator"></i> &nbsp; Fuel Type
-                                <select name="fuel" id="fuel" onchange="">
-                                    <option selected>Petrol</option>
-                                    <option>Diesel</option>
-                                    <option>Hybrid</option>
-                                    <option>Gas</option>
-                                </select>
-                            </div>
-                    
-                            <div class="filter_div">
-                                <i class="fa fa-pencil-square"></i> &nbsp; Body Length
-                                <input type="text" name="body_len" required>
-                            </div>
-                    
-                            <div class="filter_div" id="">
-                                <i class="fa fa-edit"></i> &nbsp; Vehicle Weight
-                                <input type="text" name="veh_weight">
-                            </div>
-                    
-                            <div class="filter_div" id="">
-                                <i class="fa fa-edit"></i> &nbsp; Vehicle Width
-                                <input type="text" name="veh_width">
-                            </div>
-                    
-                            <div class="filter_div" id="">
-                                <i class="fa fa-edit"></i> &nbsp; Width/Height/length
-                                <input type="text" name="veh_width">
-                            </div>
-                    
-                            <div class="filter_div" id="">
-                                <i class="fa fa-pencil-square"></i> &nbsp; Gross Veh. Weight
-                                <input type="text" name="gross_weight">
-                            </div>
-                    
-                            <div class="filter_div" id="">
-                                <i class="fa fa-edit"></i> &nbsp; Max. Load Cap.
-                                <input type="text" name="max_load" placeholder="Maximum Loading Capacity">
-                            </div>
-
-                            <div class="col-md-12">
-                                <label>Accesories</label>
-
-                                {{-- <div class="form-group"> 
-                                    <select class="choices form-select multiple-remove" name="accessory[]" multiple=>
-                                        <optgroup label="Figures">
-                                            <option value="romboid">Romboid</option>
-                                            <option value="trapeze" selected>Trapeze</option>
-                                            <option value="triangle">Triangle</option>
-                                            <option value="polygon">Polygon</option>
-                                        </optgroup>
-                                        <optgroup label="Colors">
-                                            <option value="red">Red</option>
-                                            <option value="green">Green</option>
-                                            <option value="blue" selected>Blue</option>
-                                            <option value="purple">Purple</option>
-                                        </optgroup>
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-thumb-tack"></i> &nbsp; Inventory Location
+                                    <select name="inv_loc" id="inv_loc" onchange="">
+                                        <option selected>Nagoya</option>
+                                        {{-- <option>Japan - City 2</option> --}}
                                     </select>
-                                </div> --}}
+                                </div>
 
-                                <div class="form-group has-icon-left">
-                                    <div class="position-relative">
-                                        <div class="form-group with-title mb-3">
-                                            <textarea name="accessory" class="form-control" rows="3" required></textarea>
-                                            <label>Separate each accessory with comma(,)</label>
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-car"></i> &nbsp; Model
+                                    <select name="make_id" id="" onchange="" required>
+                                        @foreach ($makes as $item)
+                                            <option value="{{$item->id}}">{{$item->model_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-pencil-square"></i> &nbsp; Sub Model
+                                    <select name="submodel_id" id="" onchange="" required>
+                                        @foreach ($submodels as $item)
+                                            <option value="{{$item->id}}">{{$item->sub_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-edit"></i> &nbsp; Model Code
+                                    <input type="text" name="model_code" required>
+                                </div>
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-cc-visa"></i> &nbsp; Price ($)
+                                    <input type="number" min="0" step="any" name="price" placeholder="eg. 5000" required>
+                                </div>
+                                                        
+                                <div class="filter_div">
+                                    <i class="fa fa-pencil-square"></i> &nbsp; Flash (%)
+                                    <input type="number" min="0" step="any" name="flash" value="0" required>
+                                </div>
+                    
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-calendar"></i> &nbsp; Year
+                                    <select name="year" id="" onchange="">
+                                        <option value="0" selected>Select Year</option>
+                                        @for ($i = date('Y')-30; $i <= date('Y'); $i++)
+                                            <option>{{$i}}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-edit"></i> &nbsp; Mileage
+                                    <input type="text" name="mileage" required>
+                                </div>
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-pencil-square"></i> &nbsp; Color
+                                    <input type="text" name="color" required>
+                                </div>
+                    
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-edit"></i> &nbsp; Transmission
+                                    <select name="trans" id="trans" onchange="">
+                                        <option selected>Auto</option>
+                                        <option>Manual</option>
+                                    </select>
+                                </div>
+                    
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-car"></i> &nbsp; Drive
+                                    <select name="drive" id="drive" onchange="">
+                                        <option selected>2WD</option>
+                                        <option>4WD</option>
+                                    </select>
+                                </div>
+                    
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-edit"></i> &nbsp; Steering
+                                    <select name="steer" id="steer" onchange="">
+                                        <option selected>LHD</option>
+                                        <option>RHD</option>
+                                    </select>
+                                </div>
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-pencil-square"></i> &nbsp; Seats
+                                    <input type="number" min="0" max="8" name="seat" required>
+                                </div>
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-gears"></i> &nbsp; Engine Type
+                                    <input type="text" name="eng_type" required>
+                                </div>
+                    
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-edit"></i> &nbsp; Doors
+                                    <select name="door" id="steer" onchange="">
+                                        <option selected>5</option>
+                                        <option>3</option>
+                                        <option>2</option>
+                                    </select>
+                                </div>
+                        
+                                <div class="filter_div">
+                                    <i class="fa fa-gear"></i> &nbsp; Engine Size
+                                    <input type="text" name="eng_size" required>
+                                </div>
+                    
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-bus"></i> &nbsp; Body Type
+                                    <select name="body_type" id="body_type" onchange="">
+                                        @foreach ($types as $type)
+                                            <option>{{$type->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                    
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-calculator"></i> &nbsp; Fuel Type
+                                    <select name="fuel" id="fuel" onchange="">
+                                        <option selected>Petrol</option>
+                                        <option>Diesel</option>
+                                        <option>Hybrid</option>
+                                        <option>LPG</option>
+                                        <option>EV</option>
+                                    </select>
+                                </div>
+                        
+                                {{-- <div class="filter_div">
+                                    <i class="fa fa-pencil-square"></i> &nbsp; Body Length
+                                    <input type="text" name="body_len" required>
+                                </div>
+                        
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-edit"></i> &nbsp; Vehicle Weight
+                                    <input type="text" name="veh_weight">
+                                </div> --}}
+                        
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-edit"></i> &nbsp; Vehicle Width
+                                    <input type="text" name="veh_width">
+                                </div>
+                        
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-edit"></i> &nbsp; Width/Height/length
+                                    <input type="text" name="veh_width">
+                                </div>
+                        
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-pencil-square"></i> &nbsp; Gross Veh. Weight
+                                    <input type="text" name="gross_weight">
+                                </div>
+                        
+                                <div class="filter_div" id="">
+                                    <i class="fa fa-edit"></i> &nbsp; Max. Load Cap.
+                                    <input type="text" name="max_load" placeholder="Maximum Loading Capacity">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label>Accesories</label>
+
+                                    {{-- <div class="form-group"> 
+                                        <select class="choices form-select multiple-remove" name="accessory[]" multiple=>
+                                            <optgroup label="Figures">
+                                                <option value="romboid">Romboid</option>
+                                                <option value="trapeze" selected>Trapeze</option>
+                                                <option value="triangle">Triangle</option>
+                                                <option value="polygon">Polygon</option>
+                                            </optgroup>
+                                            <optgroup label="Colors">
+                                                <option value="red">Red</option>
+                                                <option value="green">Green</option>
+                                                <option value="blue" selected>Blue</option>
+                                                <option value="purple">Purple</option>
+                                            </optgroup>
+                                        </select>
+                                    </div> --}}
+
+                                    <div class="form-group has-icon-left">
+                                        <div class="position-relative">
+                                            <div class="form-group with-title mb-3">
+                                                <textarea name="accessory" class="form-control" rows="3" required></textarea>
+                                                <label>Separate each accessory with comma(,)</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            {{-- <div class="col-md-12" id="veh_parts">
+                                <label>Description</label>
+                                <div class="form-group has-icon-left">
+                                    <div class="position-relative">
+                                        <div class="form-group with-title mb-3">
+                                            <textarea name="accessory" class="form-control" rows="3" maxlength="200" required></textarea>
+                                            <label>Short description of vehicle part(s)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
 
                             <script>
                                 bankdiv = document.getElementById('bankdiv');
@@ -369,6 +393,18 @@
                                         newbranch.style.display = 'none';
                                     }
                                 }
+
+                                // function add_onchange() {
+                                //     if (document.getElementById('add').value == 'vpart') {
+                                //         // alert('Yes');
+                                //         document.getElementById('veh_parts').style.display = "block";
+                                //         document.getElementById('vehicle').style.display = "none";
+                                //     } else {
+                                //         // alert('No');
+                                //         document.getElementById('veh_parts').style.display = "none";
+                                //         document.getElementById('vehicle').style.display = "block";
+                                //     }
+                                // }
                             </script>
                     
                             <div class="filter_div">

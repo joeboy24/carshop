@@ -143,7 +143,7 @@
                         <textarea name="message" id="" cols="30" rows="3" class="form-control" placeholder="Message" required></textarea>
                       </div>
                       <div class="form-group">
-                        <button type="submit" name="store_action" value="inquire"  class="btn btn-primary py-3 px-5">Send Message</button>
+                        <button type="submit" name="store_action" value="inquire"  class="btn btn-primary py-3 px-5">SEND MESSAGE</button>
                       </div>
                     </form>
                   {{-- <div class="col-md-6 padding20" id="map"></div> --}}

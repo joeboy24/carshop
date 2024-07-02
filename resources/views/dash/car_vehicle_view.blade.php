@@ -122,7 +122,7 @@
     <div class="page-heading">
         <h3><i class="fa fa-file-text color2"></i>&nbsp;&nbsp;Vehicle Management</h3>
         <a href="/new_entry"><p class="print_report">&nbsp;<i class="fa fa-file-text"></i>&nbsp; Add Vehicle</p></a>
-        <a href="/view_parts"><p class="print_report">&nbsp;<i class="fa fa-gears"></i>&nbsp; View Part</p></a>
+        <a href="/add_part"><p class="print_report">&nbsp;<i class="fa fa-gears"></i>&nbsp; Add Part</p></a>
         <a href="#"><button type="submit" class="print_btn_small"><i class="fa fa-refresh"></i></button></a>
         <div class="row">
             <div class="col-12 col-md-8">
@@ -168,10 +168,13 @@
                                                 <tr>
                                             @endif
                                         @endif
-                                            <td class="text-bold-500">{{$c++}} <br><br>
-                                                <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt="">
-                                                <p class="small_p">&nbsp;</p>
-                                                <p class="small_p">{{count($car->gallery)}} Photos</p>
+                                            <td class="text-bold-500">{{$c++}} <br>
+                                                @if ($car->status == 'Sold')
+                                                    <button type="button" class="my_trash_small color8 bg6"><i class="fa fa-times">&nbsp;SOLD</i></button>
+                                                @endif
+                                                <img class="car_prev" src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt="">
+                                                
+                                                <p class="small_p"><br>{{count($car->gallery)}} Photos</p>
                                             </td>
                                             <td class="text-bold-500">
                                                 <!--a href="/cardash/" class="color10"></a-->
@@ -224,7 +227,7 @@
                                                     <td class="text-bold-500 align_right action_size">
                                                         @if ($car->flash < 1)
                                                             @if ($car->promote == 'no')
-                                                                <button type="submit" name="update_action" value="publish_car" class="my_trash_small" onclick="return confirm('Click ok to promote this car to front page?')"><i class="fa fa-clipboard"></i></button>
+                                                                <button type="submit" name="update_action" value="publish_car" class="my_trash_small" onclick="return confirm('Click ok to promote this car to front page?')" title="Publish"><i class="fa fa-clipboard"></i></button>
                                                             @else
                                                                 <button type="submit" name="update_action" value="unpublish_car" class="my_trash_small bg7" onclick="return confirm('Do you want to remove this car from front page?')"><i class="fa fa-clipboard"></i></button>
                                                                 {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#leave{{$car->id}}" class="my_trash_small"><i class="fa fa-clipboard"></i></button> --}}
@@ -257,6 +260,25 @@
                                                         <input type="hidden" name="_method" value="PUT">
                                                         @csrf
                                                         <div class="modal-body">
+                                                
+                                                            <div class="filter_div" id="">
+                                                                <i class="fa fa-warning"></i> &nbsp; Status
+                                                                <select name="status" id="status" onchange="">
+                                                                    @if ($car->status == 'Sold')
+                                                                        <option value="{{$car->status}}" selected>{{$car->status}}</option>
+                                                                        <option>Active</option>
+                                                                        <option>Inactive</option>
+                                                                    @elseif ($car->status == 'Inactive')
+                                                                        <option value="{{$car->status}}" selected>{{$car->status}}</option>
+                                                                        <option>Active</option>
+                                                                        <option>Sold</option>
+                                                                    @else
+                                                                        <option>Sold</option>
+                                                                        <option selected>Active</option>
+                                                                        <option>Inactive</option>
+                                                                    @endif
+                                                                </select>
+                                                            </div>
                                                             
                                                             <div class="filter_div">
                                                                 <i class="fa fa-pencil-square"></i> &nbsp; Stock ID
@@ -439,7 +461,7 @@
                                                                 </select>
                                                             </div>
                                                     
-                                                            <div class="filter_div">
+                                                            {{-- <div class="filter_div">
                                                                 <i class="fa fa-pencil-square"></i> &nbsp; Body Length
                                                                 <input type="text" name="body_len" value="{{$car->body_len}}" required>
                                                             </div>
@@ -447,7 +469,7 @@
                                                             <div class="filter_div" id="">
                                                                 <i class="fa fa-edit"></i> &nbsp; Vehicle Weight
                                                                 <input type="text" name="veh_weight" value="{{$car->vweight}}">
-                                                            </div>
+                                                            </div> --}}
                     
                                                             <div class="filter_div" id="">
                                                                 <i class="fa fa-edit"></i> &nbsp; Vehicle Width

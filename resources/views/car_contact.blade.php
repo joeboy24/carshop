@@ -69,8 +69,9 @@
             <div class="sv_header">
               
               <h2 class="h4" id="contact">Contact Us</h2>
+              <button id="sendMsg" onclick="sendMessage()" type="button" class="btn btn-primary py-3 px-5">CLICK TO SEND US A MESSAGE</button>
               <div class="row">
-                <div class="col-md-8">
+                <div id="msgForm" class="col-md-8">
                   <form class="container" action="{{ action('CardashController@store') }}" method="POST">
                     @csrf
                       <div class="form-group">
@@ -86,7 +87,7 @@
                         <textarea name="message" id="" cols="30" rows="3" class="form-control" placeholder="Message" required></textarea>
                       </div>
                       <div class="form-group">
-                        <button type="submit" name="store_action" value="inquire"  class="btn btn-primary py-3 px-5">Send Message</button>
+                        <button type="submit" name="store_action" value="inquire"  class="btn btn-primary py-3 px-5">SEND MESSAGE</button>
                       </div>
                     </form>
                   {{-- <div class="col-md-6 padding20" id="map"></div> --}}
@@ -102,6 +103,14 @@
                   @endif
                 </div>
               </div>
+
+              <script>
+                function sendMessage() {
+                  document.getElementById('msgForm').style.display = "block";
+                  document.getElementById('sendMsg').style.display = "none";
+                  // alert('Works')
+                }
+              </script>
 
             </div>
           </div>

@@ -104,6 +104,7 @@ body input:focus, .ds:focus, button:focus {
 .color8 { color: rgb(255, 255, 255) }
 .color10 { color: rgb(46, 46, 46) }
 .color11 { color: rgb(255, 76, 31) }
+.color12 { color: rgb(152, 152, 152) }
 
 .bg1 { background: rgb(255, 0, 106); }
 .bg2 { background: rgb(234, 0, 255); }
@@ -233,14 +234,34 @@ body input:focus, .ds:focus, button:focus {
 }
 
 .car_thumb:hover {
+  scale: 120%;
+  z-index: 4;
+  border-radius: 5px;
+  background: white;
   box-shadow: 0 1px 13px 4px rgba(82, 82, 82, 0.21);
+}
+
+.car_thumb_img_container {
+  display: flex;
+  overflow-x: auto;
+}
+
+/* .car_thumb_img_container:hover {
+  scale: 130%;
+  z-index: 4;
+  border-radius: 5px;
+  background: white;
+} */
+
+.car_thumb_img_container img {
+  width: 80%;
 }
 
 .car_thumb img {
   z-index: 0;
   width: 100%;
   height: 125px;
-  margin-bottom: 10px;
+  margin: 0 10px 10px 0;
 }
 
 .car_thumb h4 {
@@ -283,6 +304,13 @@ body input:focus, .ds:focus, button:focus {
   letter-spacing: 0.5px;
 }
 
+.car_thumb h3 {
+  margin: 0;
+  font-size: 1em;
+  padding: 0 5px;
+  text-transform: capitalize;
+}
+
 .car_thumb span {
   float: right;
   color: rgb(255, 76, 31);
@@ -291,6 +319,11 @@ body input:focus, .ds:focus, button:focus {
 .by_type h6 {
   margin: 30px 0;
   border-bottom: 1px solid rgb(255, 76, 31);
+}
+
+.car_thumb_details {
+  height: 100px;
+  overflow-y: auto;
 }
 
 .by_type img, .by_type i {
@@ -398,7 +431,7 @@ body input:focus, .ds:focus, button:focus {
 }
 
 .flash_tagx {
-  z-index: 10;
+  z-index: 3;
   color: #fff;
   font-weight: 500!important;
   float: right;
@@ -416,9 +449,29 @@ body input:focus, .ds:focus, button:focus {
   top: 0;
   left: 0;
   color: #fff;
+  border-radius: 2px;
   font-weight: 500!important;
   padding: 5px 15px!important;
   background: rgb(255, 76, 31);
+}
+
+.sold_tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  border-radius: 3px;
+  font-weight: 500!important;
+  padding: 5px 15px!important;
+  background: rgb(255, 0, 0);
+}
+
+.sold_tag2 {
+  color: #fff;
+  border-radius: 3px;
+  font-weight: 500!important;
+  padding: 4px 15px!important;
+  background: rgb(255, 0, 0);
 }
 
 .showcase_searchby {
@@ -961,7 +1014,7 @@ body input:focus, .ds:focus, button:focus {
 .more-parts img:hover {
   border: 7px solid #ffffffa4;
   transition: all .4s ease-in-out!important;
-  scale: 180%;
+  scale: 120%;
 }
 
 /* .carousel-inner {
@@ -995,7 +1048,21 @@ body input:focus, .ds:focus, button:focus {
   margin: -8px 0 0 5px!important;
 }
 
+#msgForm {
+  display: none;
+}
 
+.parts_price {
+  margin: 3px 0;
+  width: 65%;
+  padding: 5px 7px;
+  font-size: 1em;
+  color: #000!important;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgb(255, 229, 210);
+  border-radius: 3px;
+}
 
 
 

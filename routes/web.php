@@ -55,7 +55,7 @@ Route::resource('/cars', 'CarsController');
 Route::resource('/cardash', 'CardashController');
 /* End Car */
 
-/* Start Fuel */ 
+/* Start Fuel */  
 
 // Route::get('/', 'FuelPagesController@index');
 // Route::get('/fuel', 'FuelPagesController@index');

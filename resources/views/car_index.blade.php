@@ -40,71 +40,6 @@
 
 @section('content')
 
-{{-- <section class="car_header" style="background: url(/maindir/images/picanto/c2.jpeg); background-size: 100%; height: 750px">
-  <div class="container">
-    <div style="height: 100px"></div>
-    <form action="{{ action('CarsController@index') }}">
-      <div class="row">
-        <div class="car_searchby col-md-4">
-          <h2 class="sb_h2">Find your dream car <i class="fa fa-car color11"></i></h2>
-          <select class="search_sel" name="make" id="">
-            <option value="0">Select Make</option>
-            @foreach ($makes as $item)
-              <option value="{{$item->id}}">{{$item->model_name}}</option>
-            @endforeach
-          </select>
-
-          <select class="search_sel" name="type" id="">
-            <option value="0">Type</option>
-            @foreach ($types as $item)
-              <option>{{$item->name}}</option>
-            @endforeach
-          </select>
-
-          <select class="search_sel" name="trans" id="">
-            <option value="0">Transmission</option>
-            <option value="Auto">Automatic</option>
-            <option>Manual</option>
-          </select>
-          
-          <select class="search_sel" name="color" id="">
-            <option value="0">Color</option>
-            @if (session('car_color'))
-              @foreach (session('car_color') as $item)
-                <option>{{$item->color}}</option>
-              @endforeach
-            @endif
-          </select>
-
-          <div class="double_select">
-            <select class="ds ds1" name="from" id="">
-              <option value="0" selected>From Year</option>
-              @for ($i = date('Y')-25; $i <= date('Y'); $i++)
-                  <option>{{$i}}</option>
-              @endfor
-            </select>
-
-            <select class="ds ds2" name="to" id="">
-              <option value="{{date('Y')}}" selected>To Year</option>
-              @for ($i = date('Y')-24; $i <= date('Y'); $i++)
-                  <option>{{$i}}</option>
-              @endfor
-            </select>
-          </div>
-
-          <div class="">
-            <input class="search_input ds1" type="number" min="0" name="min_price" placeholder="Min Price">
-            <input class="search_input ds2" type="number" min="0" name="max_price" placeholder="Max Price" id="">
-          </div>
-          
-          <button type="submit" class="sb_btn"><i class="fa fa-search"></i>&nbsp; Search</button>
-
-        </div>
-      </div>
-    </form>
-  </div>
-</section> --}}
-
 <section class="car_header" style="background: rgb(53, 53, 53); background-size: 100%">
   <div class="container">
     <div style="height: 100px"></div>
@@ -137,14 +72,23 @@
           @if (count($cars) > 0)
             @foreach ($cars as $car)
               <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
-                {{-- <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
-                {{-- <h4>{{ $car->make->model_name }}3423sdf</h4>
-                <h6>{{ $car->submodel->sub_name }}</h6> --}}
+                <img src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
                 <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
                 {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
                 <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
+                @if ($car->status == 'Sold')
+                  <h5 class="sold_tag">Sold</h5>
+                @endif
               </div></a>
+              {{-- <div class="item">
+                  <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
+                    <img src="https://macademiagroup.com/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
+                    
+                    <h3 class="flash_price_tag">PRICE ${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
+                    
+                    <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
+                  </div></a>
+              </div> --}}
             @endforeach
 
             <p class="clear_both"></p>
@@ -158,14 +102,16 @@
 
         <!-- Carousel -->
         {{-- <h6 class="pannel_header2"><span>Vehicle Parts</span> </h6> --}}
-        @include('inc.carousel2')
+        
+        @include('inc.carousel4')
+        {{-- @include('inc.carousel2') --}}
 
         <div class="col-12 by_type">
           <p>&nbsp;</p>
           <h6 class="pannel_header"><span>Search By Type</span> </h6>
           @foreach ($types as $item)
             <a href="/cardash/{{$item->name}}/edit"><div class="by_type_cont">
-              <img src="/storage/classified/types/{{$item->img}}" alt="">
+              <img src="https://macademiagroup.com/storage/classified/types/{{$item->img}}" alt="">
               <p>{{$item->name}}</p>
           </div></a>
           @endforeach

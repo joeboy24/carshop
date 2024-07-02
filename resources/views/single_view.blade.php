@@ -68,7 +68,11 @@
           <div class="col-md-12">
             <div class="sv_header">
               <p>Stock Id: {{$car->stock_id}}</p>
-              <h4>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h4>
+              <h4>{{ $car->make->model_name.' '.$car->submodel->sub_name }} &nbsp;
+                @if ($car->status == 'Sold')
+                    <span class="sold_tag2">SOLD</span>
+                @endif
+              </h4>
               <p class="color7"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i>
               </p>
               {{-- <p id="xx">{{date('s', strtotime($car->created_at))}} Views</p> --}}
@@ -80,16 +84,16 @@
           
           <div class="col-md-8">
             <div class="single_img_cont" id="single_view"
-             style="background: url(/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}); background-size: 100%; background-position: center;
+             style="background: url(https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}); background-size: 100%; background-position: center;
              background-repeat: no-repeat;">
             </div>
             
             <div class="related_imgs" id="related_imgs">
               @foreach ($car_imgs as $item)
-                <img src="/storage/classified/cars/{{$car->stock_id}}/{{$item->img}}" width="15.5%" alt="" onclick="changeImg{{$item->id}}()">
+                <img src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$item->img}}" width="15.5%" alt="" onclick="changeImg{{$item->id}}()">
                 <script>
                   function changeImg{{$item->id}}() {
-                    document.getElementById("single_view").style.backgroundImage = "url(/storage/classified/cars/{{$car->stock_id}}/{{$item->img}})";
+                    document.getElementById("single_view").style.backgroundImage = "url(https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$item->img}})";
                   }
                 </script>
               @endforeach
@@ -145,18 +149,20 @@
                   <tr>
                     <td class="td1">Fuel:</td>
                     <td>{{$car->fuel}}</td>
-                    <td class="td1">Body Length:</td>
-                    <td>{{$car->body_len}}</td>
+                    {{-- <td class="td1">Body Length:</td>
+                    <td>{{$car->body_len}}</td> --}}
+                    <td class="td1">Width/Height/Length:</td>
+                    <td>{{$car->vwidth}}</td>
                   </tr>
-                  <tr>
+                  {{-- <tr>
                     <td class="td1">Vehicle Weight:</td>
                     <td>{{$car->vweight}}</td>
                     <td class="td1">Width/Height/Length:</td>
                     <td>{{$car->vwidth}}</td>
+                  </tr> --}}
+                  <tr>
                     <td class="td1">Gross Vehicle Weight:</td>
                     <td>{{$car->gvweight}}</td>
-                  </tr>
-                  <tr>
                     <td class="td1">Max Loading Capacity:</td>
                     <td>{{$car->max_load}}</td>
                     {{-- <td class="td1">Body Type:</td>

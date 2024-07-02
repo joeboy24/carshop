@@ -20,7 +20,7 @@ class CarpagesController extends Controller
 {
     //  
     public function __construct(){
-        $this->middleware(['auth']);
+        $this->middleware(['auth', 'load_auth']);
     }
 
     public function car_dashboard(){
@@ -92,7 +92,11 @@ class CarpagesController extends Controller
     }
 
     public function car_add_part(){
-        return view('dash.car_newpart');
+        $patch = [
+            'c' => 1,
+            'cars_tot' => Car::all()->count(),
+        ];
+        return view('dash.car_newpart')->with($patch);
     }
 
     public function car_company(){
@@ -115,7 +119,7 @@ class CarpagesController extends Controller
 
     public function car_view_vehicle(){
         // $users = User::where('status', '!=', 'Student')->get();
-        $cars = Car::orderBy('id', 'DESC')->paginate(20);
+        $cars = Car::where('gvweight', '!=', 'vpart')->orderBy('id', 'DESC')->paginate(20);
         $patch = [
             'c' => 1,
             'cars' => $cars,
@@ -128,7 +132,7 @@ class CarpagesController extends Controller
 
     public function car_view_parts(){
         // $users = User::where('status', '!=', 'Student')->get();
-        $parts = Part::orderBy('id', 'DESC')->paginate(20);
+        $parts = Car::where('gvweight', 'vpart')->orderBy('id', 'DESC')->paginate(20);
         $patch = [
             'c' => 1,
             'parts' => $parts,

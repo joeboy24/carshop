@@ -557,6 +557,7 @@ body{
 .color8 { color: rgb(255, 255, 255) }
 .color10 { color: rgb(46, 46, 46) }
 .color11 { color: rgb(255, 76, 31); }
+.color12 { color: rgb(152, 152, 152) }
 
 .bg1 { background: rgb(255, 0, 106); }
 .bg2 { background: rgb(234, 0, 255); }
@@ -1178,6 +1179,10 @@ body{
     /* background-size: 100%;
     background: url(../images/Bg-f1f1f1_2.jpg); */
 }
+
+/* #vehicle {
+    display: none;
+} */
 
 
 

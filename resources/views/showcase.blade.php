@@ -146,15 +146,15 @@
               @if ($car->del == 'no')
                 @if ($car->flash == 0)
                   <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                    <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
-                    {{-- <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
+                    <img src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
+                    {{-- <img class="car_prev" src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
                     <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
                     {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
                     <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
                   </div></a>
                 @else
                   <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                    <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
+                    <img src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
                     <h5 class="flash_tag">{{$car->flash}}% off</h5>
                     <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
                     {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
@@ -178,7 +178,7 @@
           <h6 class="pannel_header"><span>Search By Type</span> </h6>
           @foreach ($types as $item)
             <a href="/cardash/{{$item->name}}/edit"><div class="by_type_cont">
-              <img src="/storage/classified/types/{{$item->img}}" alt="">
+              <img src="https://macademiagroup.com/storage/classified/types/{{$item->img}}" alt="">
               <p>{{$item->name}}</p>
           </div></a>
           @endforeach

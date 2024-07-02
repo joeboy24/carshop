@@ -18,7 +18,7 @@ class DailyMessage extends Command
      *
      * @var string
      */
-    protected $description = 'Artisan Comman to Send message on daily basis';
+    protected $description = 'Artisan Comman to SEND MESSAGE on daily basis';
 
     /**
      * Create a new command instance.

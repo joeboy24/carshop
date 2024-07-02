@@ -107,7 +107,7 @@ class CarsController extends Controller
         //     return 2;
         // }
         $patch = [
-            // 'c' => 1,
+            // 'c' => 1, 
             'car' => $car,
             'types' => Type::all(),
             'vr' => Variable::all(),

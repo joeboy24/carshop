@@ -19,6 +19,7 @@ class CreateInquiresTable extends Migration
             $table->string('phone', 20);
             $table->string('email', 50);
             $table->string('message');
+            $table->string('reply')->nullable();
             $table->string('status')->default('active');
             $table->string('del')->default('no');
             $table->timestamps();
