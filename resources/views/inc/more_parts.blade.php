@@ -25,7 +25,7 @@
                     {{-- <img class="car_prev" src="/storage/classified/cars/{{$part->stock_id}}/{{$part->gallery[0]->img}}" width="100" alt=""> --}}
                 </div>
                 <div class="car_thumb_details">
-                    <h1 class="parts_price">${{$part->price}}</h1>
+                    <h1 class="parts_price">PRICE ${{$part->price}}</h1>
                     <h3>{{ $part->vwidth }}</h3>
                     <p class="gray_p">{{ $part->max_load }}</p>
                 </div>

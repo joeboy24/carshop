@@ -195,7 +195,7 @@
                         
                             <div class="filter_div">
                                 <i class="fa fa-cc-visa"></i> &nbsp; Price ($)
-                                <input type="number" min="0" step="any" name="price" placeholder="ex. 700 - 950" required>
+                                <input type="number" min="0" step="any" name="price" placeholder="ex. 950" required>
                             </div>
                     
                             <div class="filter_div">

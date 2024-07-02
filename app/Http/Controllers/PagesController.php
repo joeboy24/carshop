@@ -176,7 +176,7 @@ class PagesController extends Controller
             // 'car' => $car,
             'types' => Type::all(),
             'vr' => Variable::all(),
-            'parts' => Car::where('gvweight', 'vpart')->orderBy('id', 'DESC')->paginate(30),
+            'parts' => Car::where('del', 'vpart')->orderBy('id', 'DESC')->paginate(30),
             // 'accessory' => explode(',', $car->accessory),
             // 'car_imgs' => Gallery::where('car_id', $id)->get(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
