@@ -671,7 +671,8 @@ class CardashController extends Controller
                     Mail::to($inquire->email)->send(new InquiryResponse);
 
                 } catch (\Throwable $th) {
-                    throw $th;
+                    return redirect(url()->previous())->with('error', 'Oops..!  An error occured. Check input carefully to proceed');
+                    // throw $th;
                 }
                 return redirect(url()->previous())->with('success', 'Thank you '.$request->input('name').' for reaching out to us. Our customer service team will reach out to you soon on '.$request->input('email'));
 

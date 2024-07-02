@@ -126,8 +126,10 @@
 
               <p>&nbsp;</p>
               {{-- <h2 class="h4" id="contact">Contact Us</h2> --}}
+              <button id="sendMsg" onclick="sendMessage()" type="button" class="btn btn-primary py-3 px-5">CLICK TO SEND US A MESSAGE</button>
+
               <div class="row">
-                <div class="col-md-8">
+                <div id="msgForm" class="col-md-8">
                   <form class="container" action="{{ action('CardashController@store') }}" method="POST">
                     @csrf
                       <div class="form-group">
@@ -159,6 +161,14 @@
                   @endif
                 </div>
               </div>
+
+              <script>
+                function sendMessage() {
+                  document.getElementById('msgForm').style.display = "block";
+                  document.getElementById('sendMsg').style.display = "none";
+                  // alert('Works')
+                }
+              </script>
 
             </div>
           </div>
