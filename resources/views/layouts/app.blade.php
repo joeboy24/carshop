@@ -42,19 +42,22 @@
         @php
           $companyLogo = session('company') && session('company')->logo
             ? \App\Support\Media::url('classified/company/'.session('company')->logo)
-            : '/maindir/images/pivo.png';
+            : null;
+          $brand = session('company')->abrv ?? 'Car Shop';
+          $brandName = session('company')->name ?? 'Vehicles and parts';
         @endphp
-        @if (session('company'))
-          <img class="sch_logo" src="{{ $companyLogo }}" alt="">
-          <a class="navbar-brand" href="/">{{ session('company')->abrv }}<span></span>
-            <p class="sch_name">{{ session('company')->name }}</p>
-          </a>
-        @else
-          <img class="sch_logo" src="/maindir/images/pivo.png" alt="">
-          <a class="navbar-brand" href="/">Car Shop<span></span>
-            <p class="sch_name">Vehicles and parts</p>
-          </a>
-        @endif
+        <a class="nav_brand" href="/">
+          @if ($companyLogo)
+            <img class="sch_logo" src="{{ $companyLogo }}" alt="" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
+            <span class="nav_mark" hidden aria-hidden="true"><i class="fa fa-car"></i></span>
+          @else
+            <span class="nav_mark" aria-hidden="true"><i class="fa fa-car"></i></span>
+          @endif
+          <span class="nav_brand_text">
+            <strong>{{ $brand }}</strong>
+            <em>{{ $brandName }}</em>
+          </span>
+        </a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-align-right"></span>
 	      </button>
 
@@ -94,7 +97,11 @@
         <div class="site_footer_grid">
           <div class="site_footer_brand">
             <a class="site_footer_lockup" href="/">
-              <img src="{{ $companyLogo }}" alt="">
+              @if ($companyLogo)
+                <img src="{{ $companyLogo }}" alt="">
+              @else
+                <span class="nav_mark" aria-hidden="true"><i class="fa fa-car"></i></span>
+              @endif
               <span>
                 <strong>{{ $company->abrv ?? 'MACADEMIA' }}</strong>
                 <em>{{ $company->name ?? 'Vehicles and parts' }}</em>

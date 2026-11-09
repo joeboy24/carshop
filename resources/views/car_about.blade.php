@@ -28,92 +28,51 @@
           </form>
         </div> --}}
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="sv_header">
-
-              <div id="about">
-                <h4>About Us</h4>
-                @if (count($about) > 0)
-                    @foreach ($about as $abt)
-                      <p class="about_para">
-                        @if ($abt->title != '')
-                          <span>{{$abt->title}}</span>
-                        @endif
-                        {{$abt->body}}
-                      </p>
-                    @endforeach
-                @else
-                  <div class="alert alert-danger">
-                    No Records Found
-                  </div>   
-                @endif
-              </div>
-
-              {{-- <h4>Our Services</h4>
-              @if (count($services) > 0)
-                <div class="row service_cont" id="contact">
-                    @foreach ($services as $srv)
-                      <div class="col-md-4">
-                        <p class="service_box">
-                          @if ($srv->id == 1)
-                            <i class="fa fa-car"></i>   
-                          @elseif ($srv->id == 2)
-                            <i class="fa fa-leaf"></i> 
-                          @elseif ($srv->id == 3)
-                            <i class="fa fa-cogs"></i> 
-                          @else
-                            <i class="fa fa-gear"></i> 
-                          @endif
-                          {{$srv->title}}
-                        </p>
-                      </div>
-                    @endforeach
-                </div>
-              @else
-                <div class="alert alert-danger">
-                  No Records Found
-                </div>  
-              @endif
-
-              <p>&nbsp;</p>
-              <h2 class="h4" id="contact">Contact Us</h2>
-              <div class="row">
-                <div class="col-md-8">
-                  <form class="container" action="{{ action('CardashController@store') }}" method="POST">
-                    @csrf
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="name" placeholder="Your Name" required>
-                      </div>
-                      <div class="form-group">
-                        <input type="number" min="0" class="form-control" name="phone" placeholder="Your Phone" required>
-                      </div>
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="email" placeholder="Your Email" required>
-                      </div>
-                      <div class="form-group">
-                        <textarea name="message" id="" cols="30" rows="3" class="form-control" placeholder="Message" required></textarea>
-                      </div>
-                      <div class="form-group">
-                        <button type="submit" name="store_action" value="inquire"  class="btn btn-primary py-3 px-5">SEND MESSAGE</button>
-                      </div>
-                    </form>
-                </div>
-                
-                <div class="col-md-4">
-                  <h2 class="h4">&nbsp;</h2>
-                  @if (session('company') != '')
-                    <p>{{session('company')->location}}</p>
-                    <p><i class="fa fa-phone"></i>&nbsp;&nbsp; <a href="tel://{{session('company')->contact}}">{{session('company')->contact}}</a></p>
-                    <p><i class="fa fa-envelope"></i>&nbsp;&nbsp; <a href="mailto:{{session('company')->email}}">{{session('company')->email}}</a></p>
-                    <p><i class="fa fa-globe"></i>&nbsp;&nbsp; <a href="#">{{session('company')->website}}</a></p>
-                  @endif
-                </div>
-              </div> --}}
-
-            </div>
+        <div class="page_panel">
+          <div class="home_head">
+            <h2>About us</h2>
           </div>
-        
+
+          @if (count($about) > 0)
+            <div class="about_card">
+              @foreach ($about as $abt)
+                @php
+                  $aboutBody = trim(preg_replace('/\s+/', ' ', strip_tags($abt->body ?? '')));
+                  $aboutSentences = $aboutBody === '' ? [] : preg_split('/(?<=\.)\s+/', $aboutBody);
+                  $aboutLead = trim(($abt->title ?? '').' '.(array_shift($aboutSentences) ?? ''));
+                  $aboutRest = trim(implode(' ', $aboutSentences));
+                @endphp
+                @if ($aboutLead !== '')
+                  <p>{{ $aboutLead }}</p>
+                @endif
+                @if ($aboutRest !== '')
+                  <p>{{ $aboutRest }}</p>
+                @endif
+              @endforeach
+            </div>
+          @else
+            <p class="home_empty">Nothing to show right now.</p>
+          @endif
+
+          <div class="service_contact">
+            <div class="service_details">
+              @if (session('company'))
+                @if (session('company')->location)
+                  <p>{{ session('company')->location }}</p>
+                @endif
+                @if (session('company')->contact)
+                  <p><i class="fa fa-phone"></i> <a href="tel:{{ preg_replace('/[^\d+]/', '', strtok(session('company')->contact, '/')) }}">{{ session('company')->contact }}</a></p>
+                @endif
+                @if (session('company')->email)
+                  <p><i class="fa fa-envelope"></i> <a href="mailto:{{ session('company')->email }}">{{ session('company')->email }}</a></p>
+                @endif
+                @if (session('company')->website)
+                  <p><i class="fa fa-globe"></i> <a href="{{ session('company')->website }}" target="_blank" rel="noopener">{{ preg_replace('#^https?://#', '', rtrim(session('company')->website, '/')) }}</a></p>
+                @endif
+              @endif
+            </div>
+            <a class="service_msg" href="/contact">Send a message</a>
+          </div>
         </div>
 
       </div>

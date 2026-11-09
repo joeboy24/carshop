@@ -15,9 +15,12 @@
 <div class="home">
   <section class="home_hero" @if ($heroUrl) style="background-image: url('{{ $heroUrl }}')" @endif>
     <div class="container home_hero_copy">
-      <p class="home_kicker">{{ $companyName }}</p>
+      <p class="home_kicker">
+        <span class="home_kicker_full">{{ $companyName }}</span>
+        <span class="home_kicker_short">{{ optional(session('company'))->abrv ?: 'Macademia' }}</span>
+      </p>
       <h1>Find a vehicle</h1>
-      <p class="home_lead">Japanese stock. Search by make, type, year, or stock id.</p>
+      <p class="home_lead">Search vehicle or parts <span class="home_lead_break"></span>By make, type, year, or stock id.</p>
     </div>
     <div class="container">
       @include('inc.vehicle_search')

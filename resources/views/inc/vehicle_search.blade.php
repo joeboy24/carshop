@@ -1,9 +1,21 @@
+@php
+  $filtersOpen = false;
+  foreach (['make', 'type', 'trans', 'steer', 'color', 'from', 'to', 'min_price', 'max_price'] as $filterKey) {
+      $filterValue = request($filterKey);
+      if ($filterValue !== null && $filterValue !== '' && $filterValue !== '0') {
+          $filtersOpen = true;
+          break;
+      }
+  }
+@endphp
 <div class="home_finder">
   <form class="home_keyword" action="{{ action('CardashController@store') }}" method="POST">
     @csrf
     <input type="text" name="search_veh" placeholder="Stock id or keyword" value="{{ request('search_veh') }}">
     <button type="submit" name="store_action" value="search_veh">Search</button>
   </form>
+  <input class="finder_more" type="checkbox" id="finder_more" {{ $filtersOpen ? 'checked' : '' }}>
+  <label class="finder_more_btn" for="finder_more">Filters</label>
   <form class="home_fields" action="{{ action('CarsController@index') }}">
     <select name="make">
       <option value="0">Make</option>

@@ -28,57 +28,43 @@
           </form>
         </div> --}}
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="sv_header">
-              
-              <h2 class="h4" id="contact">Contact Us</h2>
-              <button id="sendMsg" onclick="sendMessage()" type="button" class="btn btn-primary py-3 px-5">CLICK TO SEND US A MESSAGE</button>
-              <div class="row">
-                <div id="msgForm" class="col-md-8">
-                  <form class="container" action="{{ action('CardashController@store') }}" method="POST">
-                    @csrf
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="name" placeholder="Your Name" required>
-                      </div>
-                      <div class="form-group">
-                        <input type="number" min="0" class="form-control" name="phone" placeholder="Your Phone" required>
-                      </div>
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="email" placeholder="Your Email" required>
-                      </div>
-                      <div class="form-group">
-                        <textarea name="message" id="" cols="30" rows="3" class="form-control" placeholder="Message" required></textarea>
-                      </div>
-                      <div class="form-group">
-                        <button type="submit" name="store_action" value="inquire"  class="btn btn-primary py-3 px-5">SEND MESSAGE</button>
-                      </div>
-                    </form>
-                  {{-- <div class="col-md-6 padding20" id="map"></div> --}}
-                </div>
-                
-                <div class="col-md-4">
-                  <h2 class="h4">&nbsp;</h2>
-                  @if (session('company') != '')
-                    <p>{{session('company')->location}}</p>
-                    <p><i class="fa fa-phone"></i>&nbsp;&nbsp; <a href="tel://{{session('company')->contact}}">{{session('company')->contact}}</a></p>
-                    <p><i class="fa fa-envelope"></i>&nbsp;&nbsp; <a href="mailto:{{session('company')->email}}">{{session('company')->email}}</a></p>
-                    <p><i class="fa fa-globe"></i>&nbsp;&nbsp; <a href="#">{{session('company')->website}}</a></p>
+        <div class="page_panel">
+          <div class="home_head">
+            <h2>Contact</h2>
+          </div>
+
+          <div class="contact_grid">
+            <form class="contact_form" action="{{ action('CardashController@store') }}" method="POST">
+              @csrf
+              <input type="text" name="name" placeholder="Your name" required>
+              <input type="number" min="0" name="phone" placeholder="Your phone" required>
+              <input type="email" name="email" placeholder="Your email" required>
+              <textarea name="message" rows="4" placeholder="Message" required></textarea>
+              <button type="submit" name="store_action" value="inquire">Send message</button>
+            </form>
+
+            <div class="about_card service_details">
+              @if (session('company'))
+                @if (session('company')->location)
+                  <p>{{ session('company')->location }}</p>
+                @endif
+                @if (session('company')->comp_add)
+                  <p>{{ session('company')->comp_add }}</p>
+                @endif
+                @foreach (preg_split('/\s*\/\s*/', session('company')->contact ?? '') as $phone)
+                  @if (trim($phone) !== '')
+                    <p><i class="fa fa-phone"></i> <a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}">{{ trim($phone) }}</a></p>
                   @endif
-                </div>
-              </div>
-
-              <script>
-                function sendMessage() {
-                  document.getElementById('msgForm').style.display = "block";
-                  document.getElementById('sendMsg').style.display = "none";
-                  // alert('Works')
-                }
-              </script>
-
+                @endforeach
+                @if (session('company')->email)
+                  <p><i class="fa fa-envelope"></i> <a href="mailto:{{ session('company')->email }}">{{ session('company')->email }}</a></p>
+                @endif
+                @if (session('company')->website)
+                  <p><i class="fa fa-globe"></i> <a href="{{ session('company')->website }}" target="_blank" rel="noopener">{{ preg_replace('#^https?://#', '', rtrim(session('company')->website, '/')) }}</a></p>
+                @endif
+              @endif
             </div>
           </div>
-        
         </div>
 
       </div>
