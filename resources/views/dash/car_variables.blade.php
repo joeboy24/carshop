@@ -1,214 +1,102 @@
-
 @extends('layouts.dashlay')
 
 @section('header_nav')
-    @include('inc.header_nav')  
+    @include('inc.header_nav')
 @endsection
 
 @section('sidebar_menu')
     @include('inc.cms_sidebar')
-@endsection 
+@endsection
 
 @section('content')
-
-
-    <div class="page-heading">
-        <h3><i class="fa fa-calculator color4"></i>&nbsp;&nbsp;Shipment Variables</h3>
-        {{-- <a href="/emp_report"><p class="print_report">&nbsp;<i class="fa fa-print"></i>&nbsp; Print Emp. Report</p></a>
-        <a href="#"><button type="submit" class="print_btn_small"><i class="fa fa-refresh"></i></button></a> --}}
+<div class="cms_page">
+    @include('inc.messages')
+    <div class="cms_list_head">
+        <div>
+            <h1><i class="fa fa-sliders"></i>Shipment variables</h1>
+            <p>Freight, inspection, and insurance amounts for container and RoRo.</p>
+        </div>
     </div>
 
     @if (count($variables) < 2)
-        <div class="row">
-            <div class="col-12 col-xl-10">
-                @include('inc.messages') 
-                <div class="card">
-                    <div class="card-body">
-
-                        <p>&nbsp;</p>
-                        <div class="col-md-10 offset-md-1">
-
-                            <!-- Add Employee -->
-                            <form action="{{ action('CardashController@store') }}" method="POST">
-                                @csrf
-                    
-                                <div class="filter_div" id="">
-                                    <i class="fa fa-car"></i> &nbsp; Shipment Type
-                                    <select name="item" id="" onchange="">
-                                        <option value="cont" selected>Container</option>
-                                        <option value="ro">Roro</option>
-                                    </select>
-                                </div>
-                        
-                                <div class="filter_div" id="">
-                                    <i class="fa fa-edit"></i> &nbsp; Freight Val($)
-                                    <input type="text" name="freight" placeholder="eg. 100" required>
-                                </div>
-                        
-                                <div class="filter_div" id="">
-                                    <i class="fa fa-pencil-square"></i> &nbsp; Inspection Val($)
-                                    <input type="text" name="inspection" placeholder="eg. 100" required>
-                                </div>
-                        
-                                <div class="filter_div" id="">
-                                    <i class="fa fa-edit"></i> &nbsp; Insurance Val($)
-                                    <input type="text" name="insurance" placeholder="eg. 100" required>
-                                </div>
-                    
-                                <div class="form-group modal_footer">
-                                    <button type="submit" name="store_action" value="add_variables" class="load_btn"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                </div>
-
-                            </form>
-                        </div>
-
-                    </div>
+        <form action="{{ action('CardashController@store') }}" method="POST">
+            @csrf
+            <section class="cms_panel">
+                <h2>New rate</h2>
+                <div class="cms_fields">
+                    <label>Shipment type
+                        <select name="item">
+                            <option value="cont" selected>Container</option>
+                            <option value="ro">RoRo</option>
+                        </select>
+                    </label>
+                    <label>Freight (USD)
+                        <input type="text" name="freight" placeholder="100" required>
+                    </label>
+                    <label>Inspection (USD)
+                        <input type="text" name="inspection" placeholder="100" required>
+                    </label>
+                    <label>Insurance (USD)
+                        <input type="text" name="insurance" placeholder="100" required>
+                    </label>
                 </div>
-            </div>
-        </div>
+                <button type="submit" name="store_action" value="add_variables" class="cms_save">Save rate</button>
+            </section>
+        </form>
     @endif
 
-    {{-- {{ $variables->links() }} --}}
-    <div class="row">
-        <div class="col-12 col-xl-10">
-            <div class="card">
-                <div class="card-body">
+    @if (count($variables) > 0)
+        <div class="cms_records">
+            @foreach ($variables as $var)
+                @if ($var->del != 'null')
+                    <article class="cms_rate">
+                        <span class="cms_mark"><i class="fa {{ $var->item == 'cont' ? 'fa-cube' : 'fa-ship' }}"></i></span>
+                        <div>
+                            <h2>{{ $var->item == 'cont' ? 'Container' : 'RoRo' }}</h2>
+                            <dl>
+                                <div><dt>Freight</dt><dd>{{ $var->freight }}</dd></div>
+                                <div><dt>Inspection</dt><dd>{{ $var->inspection }}</dd></div>
+                                <div><dt>Insurance</dt><dd>{{ $var->insurance }}</dd></div>
+                            </dl>
+                        </div>
+                        <button type="button" class="cms_icon_btn" data-bs-toggle="modal" data-bs-target="#edit_shp{{ $var->id }}" title="Edit"><i class="fa fa-pencil"></i></button>
+                    </article>
 
-                    <p>&nbsp;</p>
-                    <div class="col-md-10 offset-md-1">
-                        <!-- Leaves View -->
-                        <div class="table-responsive">
-                            @if (count($variables) > 0)
-                                <table class="table mb-0 table-lg">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Item</th>
-                                            <th>Freight</th>
-                                            <th>Inspection</th>
-                                            <th>Insurance</th>
-                                            <th class="align_right">Action</th>
-                                        </tr>
-                                    </thead>   
-                                    <tbody>
-                                        @foreach ($variables as $var)
-                                            @if ($var->del != 'null')
-                                                @if ($c % 2 == 1)
-                                                    <tr class="bg9">
-                                                @else
-                                                    <tr>
-                                                @endif
-                                                    <td class="text-bold-500">{{$c++}}</td>
-                                                    <td class="text-bold-500">
-                                                        @if ($var->item == 'cont')
-                                                            Container
-                                                        @else
-                                                            Roro
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-bold-500">{{ $var->freight }}</td>
-                                                    <td class="text-bold-500">{{ $var->inspection }}</td>
-                                                    <td class="text-bold-500">{{ $var->insurance }}</td>
-                                                    {{-- <td class="text-bold-500">@if ($lv->dob != '') {{date('D.. M, d Y', strtotime($lv->dob))}} @endif</td> --}}
-                                                    <td class="text-bold-500 align_right">
-
-                                                        <form action="{{ action('HrdashController@update', $var->id) }}" method="POST">
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_method" value="PUT">
-                                                            @csrf
-                                                            
-                                                            <button type="button" data-bs-toggle="modal" data-bs-target="#edit_shp{{$var->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
-
-                                                        </form>
-
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Update Users -->
-                                                <div class="modal fade" id="edit_shp{{$var->id}}" tabindex="-1" role="dialog"
-                                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                                                        role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalCenterTitle">
-                                                                    Edit
-                                                                    @if ($var->item == 'cont')
-                                                                        Container Variables
-                                                                    @else
-                                                                        Roro Variables
-                                                                    @endif
-                                                                </h5>
-                                                                <button type="button" class="close" data-bs-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                            <form action="{{ action('CardashController@update', $var->id) }}" method="POST">
-                                                                <input type="hidden" name="_method" value="PUT">
-                                                                @csrf
-                                                                <div class="modal-body">
-                                                                    
-                                                                    {{-- <div class="filter_div" id="">
-                                                                        <i class="fa fa-car"></i> &nbsp; Shipment Type
-                                                                        <select name="item" id="" onchange="">
-                                                                            @if ($var->item == 'cont')
-                                                                                <option value="cont" selected>Container</option>
-                                                                                <option value="ro">Roro</option>
-                                                                            @else
-                                                                                <option value="cont">Container</option>
-                                                                                <option value="ro" selected>Roro</option>
-                                                                            @endif
-                                                                        </select>
-                                                                    </div> --}}
-                                                            
-                                                                    <div class="filter_div" id="">
-                                                                        <i class="fa fa-edit"></i> &nbsp; Freight Val($)
-                                                                        <input type="text" name="freight" placeholder="eg. 100" value="{{$var->freight}}" required>
-                                                                    </div>
-                                                            
-                                                                    <div class="filter_div" id="">
-                                                                        <i class="fa fa-pencil-square"></i> &nbsp; Inspection Val($)
-                                                                        <input type="text" name="inspection" placeholder="eg. 100" value="{{$var->inspection}}" required>
-                                                                    </div>
-                                                            
-                                                                    <div class="filter_div" id="">
-                                                                        <i class="fa fa-edit"></i> &nbsp; Insurance Val($)
-                                                                        <input type="text" name="insurance" placeholder="eg. 100" value="{{$var->insurance}}" required>
-                                                                    </div>
-                                                                    
-                                                                </div> 
-
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                        <i class="fa fa-times d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span>
-                                                                    </button>
-                                                                    <!--button id="success" class="btn btn-outline-success btn-lg btn-block" type="submit" name="update_action" value="update_user">Update</button-->
-                                                                    <button type="submit" name="update_action" value="update_variables" class="btn btn-primary me-1 mb-1">Update</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                {{-- {{ $variables->links() }} --}}
-                            @else
-                                <div class="alert alert-danger">
-                                    No Records Found
+                    <div class="modal fade" id="edit_shp{{ $var->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit {{ $var->item == 'cont' ? 'container' : 'RoRo' }}</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
                                 </div>
-                            @endif
+                                <form action="{{ action('CardashController@update', $var->id) }}" method="POST">
+                                    <input type="hidden" name="_method" value="PUT">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="cms_fields">
+                                            <label>Freight (USD)
+                                                <input type="text" name="freight" value="{{ $var->freight }}" required>
+                                            </label>
+                                            <label>Inspection (USD)
+                                                <input type="text" name="inspection" value="{{ $var->inspection }}" required>
+                                            </label>
+                                            <label>Insurance (USD)
+                                                <input type="text" name="insurance" value="{{ $var->insurance }}" required>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="update_action" value="update_variables" class="cms_save">Update</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-
-                </div>
-            </div>
+                @endif
+            @endforeach
         </div>
-    </div>
-        
-
+    @else
+        <p class="cms_empty">No shipment rates yet.</p>
+    @endif
+</div>
 @endsection
-
- 

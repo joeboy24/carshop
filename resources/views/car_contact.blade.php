@@ -36,11 +36,19 @@
           <div class="contact_grid">
             <form class="contact_form" action="{{ action('CardashController@store') }}" method="POST">
               @csrf
-              <input type="text" name="name" placeholder="Your name" required>
-              <input type="number" min="0" name="phone" placeholder="Your phone" required>
-              <input type="email" name="email" placeholder="Your email" required>
-              <textarea name="message" rows="4" placeholder="Message" required></textarea>
-              <button type="submit" name="store_action" value="inquire">Send message</button>
+              @include('inc.inquiry_guard')
+              <input type="text" name="name" placeholder="Your name" value="{{ old('name') }}" required>
+              <input type="number" min="0" name="phone" placeholder="Your phone" value="{{ old('phone') }}" required>
+              <input type="email" name="email" placeholder="Your email" value="{{ old('email') }}" required>
+              <textarea name="message" rows="4" placeholder="Message" required>{{ old('message') }}</textarea>
+              <button type="submit" class="contact_send" name="store_action" value="inquire">Send message</button>
+              <div class="contact_confirm" hidden>
+                <p>Confirm this message before it is sent. Repeat messages from the same connection are held back.</p>
+                <div class="contact_actions">
+                  <button type="submit" name="store_action" value="inquire">Confirm and send</button>
+                  <button type="button" class="contact_back">Keep editing</button>
+                </div>
+              </div>
             </form>
 
             <div class="about_card service_details">

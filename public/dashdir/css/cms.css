@@ -724,6 +724,103 @@ tr.is_deleted .cms_record {
     gap: 6px;
 }
 
+.cms_list_head h1 i,
+.cms_form_head h1 i,
+.cms_mark {
+    color: rgb(255, 76, 31);
+}
+
+.cms_list_head h1 i,
+.cms_form_head h1 i {
+    margin-right: 8px;
+    font-size: 0.72em;
+}
+
+.cms_mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 12px;
+    background: #fff1ec;
+    font-size: 16px;
+}
+
+.cms_record.cms_note {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    align-items: flex-start;
+}
+
+.cms_copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: start;
+    padding: 16px;
+    border: 1px solid #e7e9ee;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.cms_copy h2,
+.cms_rate h2 {
+    margin: 0;
+    color: #1c1c1c;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.cms_copy p,
+.cms_note p {
+    margin: 6px 0 0;
+    color: #4b5160;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+.cms_reply {
+    color: #6b7280 !important;
+}
+
+.cms_rate {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid #e7e9ee;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.cms_rate dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+}
+
+.cms_rate dt {
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.cms_rate dd {
+    margin: 4px 0 0;
+    color: #1c1c1c;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.cms_fields textarea[readonly] {
+    background: #f3f4f6;
+}
+
 .cms_icon_btn {
     display: inline-flex;
     align-items: center;
@@ -733,7 +830,7 @@ tr.is_deleted .cms_record {
     border: 1px solid #e7e9ee;
     border-radius: 10px;
     background: #fff;
-    color: #1c1c1c !important;
+    color: rgb(255, 76, 31) !important;
     font-size: 14px;
 }
 
@@ -819,8 +916,21 @@ tr.is_deleted .cms_record {
 }
 
 #main .modal-body .col-md-12,
+#main .modal-body .cms_field,
+#main .modal-body .cms_fields,
 #main .modal-footer {
     grid-column: 1 / -1;
+}
+
+#main .form-group.with-title label {
+    position: static;
+    width: auto;
+    margin: 0 0 6px;
+    padding: 0;
+    background: transparent;
+    color: #1c1c1c;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 #main .modal-footer .load_btn,

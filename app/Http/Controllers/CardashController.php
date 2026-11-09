@@ -20,6 +20,7 @@ use App\Models\Service;
 use App\Models\Variable;
 use App\Mail\InquiryMailer;
 use App\Mail\InquiryResponse;
+use App\Support\InquiryGuard;
 use Exception;
 use Session;
 use Auth;
@@ -663,6 +664,14 @@ class CardashController extends Controller
 
             case 'inquire':
 
+                $blocked = InquiryGuard::rejection($request);
+                if ($blocked === 'quiet') {
+                    return redirect(url()->previous())->with('success', 'Thank you '.$request->input('name').' for reaching out to us. Our customer service team will reach out to you soon on '.$request->input('email'));
+                }
+                if ($blocked) {
+                    return redirect(url()->previous())->with('error', $blocked)->withInput();
+                }
+
                 try {
                     $inquire = Inquire::firstOrCreate([
                         'name' => $request->input('name'),
@@ -670,6 +679,7 @@ class CardashController extends Controller
                         'email' => $request->input('email'),
                         'message' => $request->input('message'),
                     ]);
+                    InquiryGuard::record($request);
 
                     Session::put('mailTo', $inquire->name);
                     Session::put('mailMsg', 'Thank you for contacting macademiagroup.com. Our customer service team will reach out to you in less than 24 hours.');

@@ -316,17 +316,9 @@
                                                                 <input type="text" name="max_load" value="{{$car->max_load}}" placeholder="Maximum Loading Capacity">
                                                             </div>
                                 
-                                                            <div class="col-md-12">
-                                                                <label>Accesories</label>
-                                                                <div class="form-group has-icon-left">
-                                                                    <div class="position-relative">
-                                                                        <div class="form-group with-title mb-3">
-                                                                            <textarea name="accessory" class="form-control" rows="3" required>{{$car->accessory}}</textarea>
-                                                                            <label>Separate each accessory with comma(,)</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <label class="cms_field">Accessories
+                                                                <textarea name="accessory" rows="3" required placeholder="Separate each accessory with a comma">{{ $car->accessory }}</textarea>
+                                                            </label>
                                                     
                                                             {{-- <div class="filter_div">
                                                                 <i class="fa fa-camera"></i> &nbsp; Photo

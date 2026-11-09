@@ -87,17 +87,9 @@
                                                                 <input type="text" name="part_desc" value="{{$part->max_load}}" placeholder="Description" required>
                                                             </div> --}}
 
-                                                            <div class="col-md-12">
-                                                                <label>Description</label>
-                                                                <div class="form-group has-icon-left">
-                                                                    <div class="position-relative">
-                                                                        <div class="form-group with-title mb-3">
-                                                                            <textarea name="part_desc" class="form-control" rows="3" maxlength="200" required>{{$part->max_load}}</textarea>
-                                                                            <label>Part Description</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <label class="cms_field">Description
+                                                                <textarea name="part_desc" rows="3" maxlength="200" required>{{ $part->max_load }}</textarea>
+                                                            </label>
                         
                                                             <div class="filter_div">
                                                                 <i class="fa fa-cc-visa"></i> &nbsp; Price ($)

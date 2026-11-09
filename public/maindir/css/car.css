@@ -3375,6 +3375,54 @@ img {
   width: auto;
 }
 
+.contact_hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact_form [hidden],
+.service_form [hidden] {
+  display: none !important;
+}
+
+.contact_confirm {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f7f7f7;
+}
+
+.contact_confirm p {
+  margin: 0;
+  color: #1c1c1c;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.contact_actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.contact_form .contact_back,
+.service_form .contact_back {
+  background: #fff;
+  color: #1c1c1c;
+  border: 1px solid #e5e5e5;
+}
+
+.contact_form .contact_back:hover,
+.service_form .contact_back:hover {
+  background: #fff;
+  color: #1c1c1c;
+  border-color: #1c1c1c;
+}
+
 .contact_grid .service_details p:last-child {
   margin-bottom: 0;
 }
