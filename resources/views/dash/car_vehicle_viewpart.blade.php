@@ -10,75 +10,52 @@
 @endsection
 
 @section('content')
-
-
-    <div class="page-heading">
-        <h3><i class="fa fa-file-text color2"></i>&nbsp;&nbsp;Vehicle Parts Mgt.</h3>
-        <a href="/add_part"><p class="print_report">&nbsp;<i class="fa fa-print"></i>&nbsp; Add Vehicle Part</p></a>
-        <a href="#"><button type="submit" class="print_btn_small"><i class="fa fa-refresh"></i></button></a>
+<div class="cms_page cms_wide">
+    @include('inc.messages')
+    <div class="cms_list_head">
+        <div>
+            <h1>Parts</h1>
+            <p>Parts saved from the desk. Edit the name, description, and price, or remove the record.</p>
+        </div>
+        <div class="cms_form_links">
+            <a href="/add_part">New part</a>
+            <a href="/view_vehicle">All vehicles</a>
+        </div>
     </div>
 
-    {{ $parts->links() }}
- 
-    <div class="row">
-        <div class="col-12 col-xl-8">
-            @include('inc.messages') 
-            <div class="card">
-                <div class="card-body">
-
-                    <!-- Vehicle View -->
-                    <div class="table-responsive">
-                        @if (count($parts) > 0)
-                            <table class="table mb-0 table-lg">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Part Details</th>
-                                        <th class="align_right">Actions</th>
-                                    </tr>
-                                </thead>   
-                                <tbody>
-                                    @foreach ($parts as $part)
-                                        @if ($part->del == 'yes')
-                                            <tr class="del_danger">
-                                        @else
-                                            @if ($c % 2 == 1)
-                                                <tr class="bg9">
-                                            @else
-                                                <tr>
-                                            @endif
-                                        @endif
-                                            <td class="text-bold-500">{{$c++}} <br><br>
-                                                <img class="car_prev" src="/storage/classified/cars/{{$part->stock_id}}/{{$part->gallery[0]->img}}" width="100" alt="">
-                                                <p class="small_p">&nbsp;</p>
-                                            </td>
-                                            <td class="text-bold-500">
-                                                <h6>{{ $part->vwidth.' - $'.$part->price }}</h6>
-                                                {{-- <p class="small_p">ID: {{ $part->stock_id }}</p> --}}
-                                                <p class="small_p_black">Desc: {{ $part->max_load }}</p>
-                                                <p class="small_p_black">{{count($part->gallery)}} Photos</p>
-                                                <p class="small_p">Status: {{ $part->status }}</p>
-                                            </td>
-
-                                            <form action="{{ action('CardashController@update', $part->id) }}" method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_method" value="PUT">
-                                                @csrf
-
-
-                                                @if ($part->del == 'yes')
-                                                    <td class="text-bold-500 align_right action_size">
-                                                        <button type="submit" name="update_action" value="restore_new_part" class="my_trash" onclick="return confirm('Do you want to restore this record?')"><i class="fa fa-reply"></i></button>
-                                                    </td>
-                                                @else
-                                                    <td class="text-bold-500 align_right action_size">
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{$part->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
-                                                        <button type="submit" name="update_action" value="del_new_part" class="my_trash_small" onclick="return confirm('Are you sure you want to delete this record?')"><i class="fa fa-trash"></i></button>
-                                                    </td>
-                                                @endif
-                                            </form>
-
-                                        </tr>
+    @if (count($parts) > 0)
+        <div class="cms_records">
+            @foreach ($parts as $part)
+                @php $shot = $part->gallery->first(); @endphp
+                <article class="cms_record">
+                    @if ($shot)
+                        <img src="{{ \App\Support\Media::url('classified/cars/'.$part->stock_id.'/'.$shot->img) }}" alt="">
+                    @else
+                        <img alt="">
+                    @endif
+                    <div>
+                        <div class="cms_record_top">
+                            <h2>{{ $part->vwidth }}</h2>
+                            <span class="cms_pill {{ $part->status == 'Active' ? 'on' : '' }}">{{ $part->status }}</span>
+                            @if ($part->del == 'yes')
+                                <span class="cms_pill">Deleted</span>
+                            @endif
+                        </div>
+                        <p>{{ $part->stock_id }} · {{ $shot ? count($part->gallery).' '.(count($part->gallery) === 1 ? 'photo' : 'photos') : 'No photos' }}</p>
+                        <p>{{ $part->max_load }}</p>
+                        <p class="cms_price">USD {{ number_format((float) $part->price, 0) }}</p>
+                    </div>
+                    <form action="{{ action('CardashController@update', $part->id) }}" method="POST">
+                        <input type="hidden" name="_method" value="PUT">
+                        @csrf
+                        @if ($part->del == 'yes')
+                            <button type="submit" name="update_action" value="restore_new_part" class="cms_icon_btn" title="Restore" onclick="return confirm('Restore this part?')"><i class="fa fa-reply"></i></button>
+                        @else
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{ $part->id }}" class="cms_icon_btn" title="Edit"><i class="fa fa-pencil"></i></button>
+                            <button type="submit" name="update_action" value="del_new_part" class="cms_icon_btn danger" title="Delete" onclick="return confirm('Delete this part?')"><i class="fa fa-trash"></i></button>
+                        @endif
+                    </form>
+                </article>
 
                                         <!-- Update Vehicle Part -->
                                         <div class="modal fade" id="edit{{$part->id}}" tabindex="-1" role="dialog"
@@ -149,40 +126,13 @@
                                             </div>
                                         </div>
 
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            {{ $parts->links() }}
-                        @else
-                            <div class="alert alert-danger">
-                                No Records Found on Vehicle Parts
-                            </div>
-                        @endif
-                    </div>
-
-                </div>
-            </div>
+            @endforeach
         </div>
-    </div>
-
-    <div class="search_div">
-        <form action="">
-            <input id="search_fd" type="text" class="search_field" placeholder="Search...">
-            <button type="button" onclick="showsearch()"><i class="fa fa-search"></i></button>
-        </form>
-        <script>
-            function showsearch() {
-                if (document.getElementById('search_fd').style.opacity != 1) {
-                    document.getElementById('search_fd').style.opacity = 1;
-                    // document.getElementById('search_fd').style.display = "none";
-                } else {
-                    document.getElementById('search_fd').style.opacity = 0;
-                }
-            }
-        </script>
-    </div>
-        
-
+        <div style="margin-top:16px">{{ $parts->links() }}</div>
+    @else
+        <p class="cms_empty">No parts yet.</p>
+    @endif
+</div>
 @endsection
 
  

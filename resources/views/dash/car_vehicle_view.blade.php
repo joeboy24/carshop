@@ -10,129 +10,66 @@
 @endsection
 
 @section('content')
-
-
-    <div class="page-heading">
-        <h3><i class="fa fa-file-text color2"></i>&nbsp;&nbsp;Vehicle Management</h3>
-        <a href="/new_entry"><p class="print_report">&nbsp;<i class="fa fa-file-text"></i>&nbsp; Add Vehicle</p></a>
-        <a href="/add_part"><p class="print_report">&nbsp;<i class="fa fa-gears"></i>&nbsp; Add Part</p></a>
-        <a href="#"><button type="submit" class="print_btn_small"><i class="fa fa-refresh"></i></button></a>
-        <div class="row">
-            <div class="col-12 col-md-8">
-                <form action="{{ action('CardashController@store') }}" method="POST">
-                    @csrf
-                    <input type="text" name="search_veh" class="search_emp" placeholder="Search">
-                    <button class="search_btn" name="store_action" value="dash_search_veh"><i class="fa fa-search"></i></button>
-                </form>
-            </div>
+<div class="cms_page cms_wide">
+    @include('inc.messages')
+    <div class="cms_list_head">
+        <div>
+            <h1>Vehicles</h1>
+            <p>Promote a listing to the homepage, edit its details, or remove it.</p>
+        </div>
+        <div class="cms_form_links">
+            <a href="/new_entry">New vehicle</a>
+            <a href="/add_part">New part</a>
         </div>
     </div>
+    <form class="cms_search" action="{{ action('CardashController@store') }}" method="POST">
+        @csrf
+        <input type="text" name="search_veh" placeholder="Stock id, chassis, or model">
+        <button type="submit" name="store_action" value="dash_search_veh">Search</button>
+    </form>
 
-    {{ $cars->links() }}
- 
-    <div class="row">
-        <div class="col-12 col-xl-12">
-            @include('inc.messages') 
-            <div class="card">
-                <div class="card-body">
-
-                    <!-- Vehicle View -->
-                    <div class="table-responsive">
-                        @if (count($cars) > 0)
-                            <table class="table mb-0 table-lg">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Model / Details</th>
-                                        <th></th>
-                                        <th></th>
-                                        <th>Accessories</th>
-                                        <th class="align_right">Actions</th>
-                                    </tr>
-                                </thead>   
-                                <tbody>
-                                    @foreach ($cars as $car)
-                                        @if ($car->del == 'yes')
-                                            <tr class="del_danger">
-                                        @else
-                                            @if ($c % 2 == 1)
-                                                <tr class="bg9">
-                                            @else
-                                                <tr>
-                                            @endif
-                                        @endif
-                                            <td class="text-bold-500">{{$c++}} <br>
-                                                @if ($car->status == 'Sold')
-                                                    <button type="button" class="my_trash_small color8 bg6"><i class="fa fa-times">&nbsp;SOLD</i></button>
-                                                @endif
-                                                <img class="car_prev" src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt="">
-                                                
-                                                <p class="small_p"><br>{{count($car->gallery)}} Photos</p>
-                                            </td>
-                                            <td class="text-bold-500">
-                                                <!--a href="/cardash/" class="color10"></a-->
-                                                <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
-                                                <p class="small_p">Model Code: {{ $car->model_code }}</p>
-                                                <p class="small_p_black">Chassis No.: {{ $car->chassis_no }}</p>
-                                                <p class="small_p_black">Color: {{ $car->color }}</p>
-                                                <p class="small_p_black">Year: {{ $car->year }}</p>
-                                                <p class="small_p_black">Mileage: {{ $car->mileage }}</p>
-                                                <p class="small_p_black">Transmission: {{ $car->trans }}</p>
-                                                <p class="small_p_black">Inventory Loc: {{ $car->inv_loc }}</p>
-                                            </td>
-                                            <td class="text-bold-500"><br>
-                                                <h6>${{ number_format($car->price, 2) }}</h6>
-                                                <p class="small_p">Flash ($): {{ $car->flash }}</p>
-                                                <p class="small_p_black">Drive: {{ $car->drive }}</p>
-                                                <p class="small_p_black">Steering: {{ $car->steer }}</p>
-                                                <p class="small_p_black">Seats: {{ $car->seat }}</p>
-                                                <p class="small_p_black">Doors: {{ $car->door }}</p>
-                                                <p class="small_p_black">Engine Type: {{ $car->eng_type }}</p>
-                                                <p class="small_p_black">Engine Size: {{ $car->eng_size }}</p>
-                                            </td>
-                                            <td class="text-bold-500"><br>
-                                                <p class="small_p_black">Body Type: {{ $car->body_type }}</p>
-                                                <p class="small_p_black">Fuel Type: {{ $car->fuel }}</p>
-                                                <p class="small_p_black">Body Length: {{ $car->body_len }}</p>
-                                                <p class="small_p_black">Vehicle Weight: {{ $car->vweight }}</p>
-                                                <p class="small_p_black">Width/Height/Length: {{ $car->vwidth }}</p>
-                                                <p class="small_p_black">Gross Veh. Weight: {{ $car->gvweight }}</p>
-                                                <p class="small_p_black">Max. Load Cap.: {{ $car->max_load }}</p>
-                                             </td>
-                                            <td class="text-bold-500">
-                                                <!--p class="accessory_box">Airbag</p>
-                                                <p class="accessory_box">Bluetooth Connect</p-->
-                                                <p class="small_p_black">{{ $car->accessory }}</p>
-                                                <p class="small_p">Status: {{ $car->status }}</p>
-                                            </td>
-
-                                            <form action="{{ action('CardashController@update', $car->id) }}" method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_method" value="PUT">
-                                                @csrf
-
-
-                                                @if ($car->del == 'yes')
-                                                    <td class="text-bold-500 align_right action_size">
-                                                        <button type="submit" name="update_action" value="restore_car" class="my_trash" onclick="return confirm('Do you want to restore this record?')"><i class="fa fa-reply"></i></button>
-                                                    </td>
-                                                @else
-                                                    <td class="text-bold-500 align_right action_size">
-                                                        @if ($car->flash < 1)
-                                                            @if ($car->promote == 'no')
-                                                                <button type="submit" name="update_action" value="publish_car" class="my_trash_small" onclick="return confirm('Click ok to promote this car to front page?')" title="Publish"><i class="fa fa-clipboard"></i></button>
-                                                            @else
-                                                                <button type="submit" name="update_action" value="unpublish_car" class="my_trash_small bg7" onclick="return confirm('Do you want to remove this car from front page?')"><i class="fa fa-clipboard"></i></button>
-                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#leave{{$car->id}}" class="my_trash_small"><i class="fa fa-clipboard"></i></button> --}}
-                                                            @endif
-                                                        @endif
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{$car->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
-                                                        <button type="submit" name="update_action" value="del_car" class="my_trash_small" onclick="return confirm('Are you sure you want to delete this record?')"><i class="fa fa-trash"></i></button>
-                                                    </td>
-                                                @endif
-                                            </form>
-
-                                        </tr>
+    @if (count($cars) > 0)
+        <div class="cms_records">
+            @foreach ($cars as $car)
+                @php $shot = $car->gallery->first(); @endphp
+                <article class="cms_record">
+                    @if ($shot)
+                        <img src="{{ \App\Support\Media::url('classified/cars/'.$car->stock_id.'/'.$shot->img) }}" alt="">
+                    @else
+                        <img alt="">
+                    @endif
+                    <div>
+                        <div class="cms_record_top">
+                            <h2>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h2>
+                            <span class="cms_pill {{ $car->status == 'Sold' ? 'sold' : ($car->status == 'Active' ? 'on' : '') }}">{{ $car->status }}</span>
+                            @if ($car->del == 'yes')
+                                <span class="cms_pill">Deleted</span>
+                            @elseif ($car->promote != 'no' && $car->flash < 1)
+                                <span class="cms_pill on">Promoted</span>
+                            @endif
+                        </div>
+                        <p>{{ $car->stock_id }} · {{ $car->chassis_no }} · {{ $car->year }} · {{ $car->mileage }} · {{ $car->color }} · {{ $car->inv_loc }}</p>
+                        <p>{{ $car->trans }} · {{ $car->drive }} · {{ $car->steer }} · {{ $car->body_type }} · {{ $car->fuel }} · {{ $shot ? count($car->gallery).' '.(count($car->gallery) === 1 ? 'photo' : 'photos') : 'No photos' }}</p>
+                        <p class="cms_price">USD {{ number_format((float) $car->price, 0) }}@if ($car->flash > 0) · Flash {{ $car->flash }}%@endif</p>
+                    </div>
+                    <form action="{{ action('CardashController@update', $car->id) }}" method="POST">
+                        <input type="hidden" name="_method" value="PUT">
+                        @csrf
+                        @if ($car->del == 'yes')
+                            <button type="submit" name="update_action" value="restore_car" class="cms_icon_btn" title="Restore" onclick="return confirm('Restore this vehicle?')"><i class="fa fa-reply"></i></button>
+                        @else
+                            @if ($car->flash < 1)
+                                @if ($car->promote == 'no')
+                                    <button type="submit" name="update_action" value="publish_car" class="cms_icon_btn" title="Promote" onclick="return confirm('Promote this vehicle to the homepage?')"><i class="fa fa-star-o"></i></button>
+                                @else
+                                    <button type="submit" name="update_action" value="unpublish_car" class="cms_icon_btn is_on" title="Remove from homepage" onclick="return confirm('Remove this vehicle from the homepage?')"><i class="fa fa-star"></i></button>
+                                @endif
+                            @endif
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{ $car->id }}" class="cms_icon_btn" title="Edit"><i class="fa fa-pencil"></i></button>
+                            <button type="submit" name="update_action" value="del_car" class="cms_icon_btn danger" title="Delete" onclick="return confirm('Delete this vehicle?')"><i class="fa fa-trash"></i></button>
+                        @endif
+                    </form>
+                </article>
 
                                         <!-- Update Vehicle -->
                                         <div class="modal fade" id="edit{{$car->id}}" tabindex="-1" role="dialog"
@@ -405,40 +342,13 @@
                                             </div>
                                         </div>
 
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            {{ $cars->links() }}
-                        @else
-                            <div class="alert alert-danger">
-                                No Records Found on Vehicles
-                            </div>
-                        @endif
-                    </div>
-
-                </div>
-            </div>
+            @endforeach
         </div>
-    </div>
-
-    <div class="search_div">
-        <form action="">
-            <input id="search_fd" type="text" class="search_field" placeholder="Search...">
-            <button type="button" onclick="showsearch()"><i class="fa fa-search"></i></button>
-        </form>
-        <script>
-            function showsearch() {
-                if (document.getElementById('search_fd').style.opacity != 1) {
-                    document.getElementById('search_fd').style.opacity = 1;
-                    // document.getElementById('search_fd').style.display = "none";
-                } else {
-                    document.getElementById('search_fd').style.opacity = 0;
-                }
-            }
-        </script>
-    </div>
-        
-
+        <div style="margin-top:16px">{{ $cars->links() }}</div>
+    @else
+        <p class="cms_empty">No vehicles yet.</p>
+    @endif
+</div>
 @endsection
 
  

@@ -101,6 +101,86 @@
     <script src="/dashdir/js/pages/dashboard.js"></script>
 
     <script src="/dashdir/js/main.js"></script>
+    <script>
+        (function () {
+            var tip = document.createElement('div');
+            tip.className = 'cms_tip';
+            tip.hidden = true;
+            document.body.appendChild(tip);
+            var wait;
+            var current;
+
+            function label(el) {
+                if (el.hasAttribute('title') && el.getAttribute('title')) {
+                    el.setAttribute('data-tip', el.getAttribute('title'));
+                    if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('title'));
+                    el.removeAttribute('title');
+                }
+                return el.getAttribute('data-tip') || '';
+            }
+
+            function host(node) {
+                return node && node.closest ? node.closest('[title], [data-tip]') : null;
+            }
+
+            function place(el, text) {
+                tip.textContent = text;
+                tip.hidden = false;
+                tip.classList.remove('above', 'below');
+                tip.style.left = '0px';
+                tip.style.top = '0px';
+                var box = el.getBoundingClientRect();
+                var width = tip.offsetWidth;
+                var height = tip.offsetHeight;
+                var center = box.left + box.width / 2;
+                var left = Math.max(12 + width / 2, Math.min(center, window.innerWidth - 12 - width / 2));
+                var top = box.bottom + 8;
+                var placeAbove = top + height > window.innerHeight - 8 && box.top - height - 8 > 8;
+                if (placeAbove) top = box.top - height - 8;
+                tip.classList.add(placeAbove ? 'above' : 'below');
+                tip.style.setProperty('--cms-tip-arrow', (center - left + width / 2) + 'px');
+                tip.style.left = (left - width / 2) + 'px';
+                tip.style.top = top + 'px';
+            }
+
+            function show(el) {
+                var text = label(el);
+                if (!text) return;
+                current = el;
+                clearTimeout(wait);
+                wait = setTimeout(function () {
+                    if (current === el) place(el, text);
+                }, 60);
+            }
+
+            function hide(el) {
+                if (current !== el) return;
+                current = null;
+                clearTimeout(wait);
+                tip.hidden = true;
+            }
+
+            document.addEventListener('pointerover', function (event) {
+                var el = host(event.target);
+                if (!el || (event.relatedTarget && el.contains(event.relatedTarget))) return;
+                show(el);
+            });
+            document.addEventListener('pointerout', function (event) {
+                var el = host(event.target);
+                if (!el || (event.relatedTarget && el.contains(event.relatedTarget))) return;
+                hide(el);
+            });
+            document.addEventListener('focusin', function (event) {
+                var el = host(event.target);
+                if (el) show(el);
+            });
+            document.addEventListener('focusout', function (event) {
+                var el = host(event.target);
+                if (el) hide(el);
+            });
+            window.addEventListener('scroll', function () { tip.hidden = true; }, true);
+        })();
+    </script>
 
 </body>
 
