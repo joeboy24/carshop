@@ -198,4 +198,18 @@ return [
 
     'same_site' => 'lax',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Session Serialization
+    |--------------------------------------------------------------------------
+    |
+    | This value controls how session data is serialized. "php" keeps the
+    | existing session files readable after the framework upgrade.
+    |
+    | Supported: "php", "json"
+    |
+    */
+
+    'serialization' => 'php',
+
 ];

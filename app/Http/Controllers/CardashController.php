@@ -24,7 +24,7 @@ use App\Support\InquiryGuard;
 use Exception;
 use Session;
 use Auth;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\Laravel\Facades\Image;
 
 class CardashController extends Controller
 {
@@ -384,7 +384,7 @@ class CardashController extends Controller
                 
                 try {
                     // \Storage::move(storage_path("/storage/classified/cars/SM052300/0523_f42a37d.jpg"), storage_path("/storage/classified"));
-                    $img = \Image::make("/public/storage/classified/cars/SM052300/0523_f42a37d.jpg");
+                    $img = \Image::decode("/public/storage/classified/cars/SM052300/0523_f42a37d.jpg");
                     $img->save("/storage/classified/cars/SM052300/newcar.jpg");
                     return 'Done..!';
                     if($files = $request->file('photo')){
@@ -397,8 +397,8 @@ class CardashController extends Controller
                             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                             $fileExt = $file->getClientOriginalExtension();
                             $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.'.$fileExt;
-                            $img = Image::make($file);
-                            // $img = Image::make($file)->insert('/Users/jbazz/Documents/Lara/carshop/public/maindir/images/maca_wt.png');
+                            $img = Image::decode($file);
+                            // $img = Image::decode($file)->insert('/Users/jbazz/Documents/Lara/carshop/public/maindir/images/maca_wt.png');
                             
                             // $img->save(\public_path($filenameToStore), 30);
                             $img->save(storage_path().$filenameToStore, 30);
@@ -489,7 +489,7 @@ class CardashController extends Controller
                                     // mkdir(storage_path("app/public/classified"), 0775, true);
                                 }
                                 // Upload (IMAGE INTERVENTION - LARAVEL)
-                                $img = Image::make($file)->resize(500, 375)
+                                $img = Image::decode($file)->resize(500, 375)
                                 ->insert(storage_path('app/public/classified/maca_wt.png'))
                                 ->save(storage_path("app/public/classified/cars/".$car_insert->stock_id.'/'.$filenameToStore));
                                     
@@ -536,7 +536,7 @@ class CardashController extends Controller
                             if (!is_dir(storage_path("app/public/classified/parts/".$part_insert->stock_id))) {
                                 mkdir(storage_path("app/public/classified/parts/".$part_insert->stock_id), 0775, true);
                             }
-                            $img = Image::make($file)->resize(500, 375)
+                            $img = Image::decode($file)->resize(500, 375)
                             ->insert(storage_path('app/public/classified/maca_wt.png'))
                             ->save(storage_path("app/public/classified/parts/".$part_insert->stock_id.'/'.$filenameToStore));
                                 
@@ -606,7 +606,7 @@ class CardashController extends Controller
                                 mkdir(storage_path("app/public/classified/cars/".$car_insert->stock_id), 0775, true);
                             }
                             
-                            $img = Image::make($file)->resize(500, 375)
+                            $img = Image::decode($file)->resize(500, 375)
                             ->insert(storage_path('app/public/classified/maca_wt.png'))
                             ->save(storage_path("app/public/classified/cars/".$car_insert->stock_id.'/'.$filenameToStore));
                                 

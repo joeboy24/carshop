@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\CardashController;
+use App\Http\Controllers\CarpagesController;
+use App\Http\Controllers\CarsController;
+use App\Http\Controllers\PagesController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Models\Event;
 use App\Models\Homepage;
@@ -25,34 +31,34 @@ use App\Models\Homepage;
 
 /* Start Car Here */  
  
-Route::get('/', 'PagesController@index');
-Route::get('/runs', 'PagesController@runs');
-Route::get('/about', 'PagesController@car_about');
+Route::get('/', [PagesController::class, 'index']);
+Route::get('/runs', [PagesController::class, 'runs']);
+Route::get('/about', [PagesController::class, 'car_about']);
 // Route::get('/how_to_buy', 'PagesController@car_about');
-Route::get('/services', 'PagesController@car_services');
-Route::get('/contact', 'PagesController@car_contact');
-Route::get('/more_flash', 'PagesController@car_more_flash');
-Route::get('/more_makes', 'PagesController@car_more_makes');
-Route::get('/more_cars', 'PagesController@view_more');
-Route::get('/cart', 'PagesController@car_cart');
-Route::get('/more_parts', 'PagesController@car_more_parts');
+Route::get('/services', [PagesController::class, 'car_services']);
+Route::get('/contact', [PagesController::class, 'car_contact']);
+Route::get('/more_flash', [PagesController::class, 'car_more_flash']);
+Route::get('/more_makes', [PagesController::class, 'car_more_makes']);
+Route::get('/more_cars', [PagesController::class, 'view_more']);
+Route::get('/cart', [PagesController::class, 'car_cart']);
+Route::get('/more_parts', [PagesController::class, 'car_more_parts']);
 // Route::get('/contact', 'PagesController@car_about');
-Route::get('/addabout', 'CarpagesController@car_addabout');
-Route::get('/addservice', 'CarpagesController@car_addservice');
-Route::get('/car_dashboard', 'CarpagesController@car_dashboard');
-Route::get('/adduser', 'CarpagesController@car_adduser');
-Route::get('/companysetup', 'CarpagesController@car_company');
-Route::get('/new_entry', 'CarpagesController@car_new_entry');
-Route::get('/add_part', 'CarpagesController@car_add_part');
-Route::get('/model_mgt', 'CarpagesController@car_model_mgt');
-Route::get('/view_vehicle', 'CarpagesController@car_view_vehicle');
-Route::get('/view_parts', 'CarpagesController@car_view_parts');
-Route::get('/vehicle_types', 'CarpagesController@car_vehicle_types');
-Route::get('/inquiry', 'CarpagesController@car_inquire');
-Route::get('/variables', 'CarpagesController@car_variables');
- 
-Route::resource('/cars', 'CarsController');
-Route::resource('/cardash', 'CardashController');
+Route::get('/addabout', [CarpagesController::class, 'car_addabout']);
+Route::get('/addservice', [CarpagesController::class, 'car_addservice']);
+Route::get('/car_dashboard', [CarpagesController::class, 'car_dashboard']);
+Route::get('/adduser', [CarpagesController::class, 'car_adduser']);
+Route::get('/companysetup', [CarpagesController::class, 'car_company']);
+Route::get('/new_entry', [CarpagesController::class, 'car_new_entry']);
+Route::get('/add_part', [CarpagesController::class, 'car_add_part']);
+Route::get('/model_mgt', [CarpagesController::class, 'car_model_mgt']);
+Route::get('/view_vehicle', [CarpagesController::class, 'car_view_vehicle']);
+Route::get('/view_parts', [CarpagesController::class, 'car_view_parts']);
+Route::get('/vehicle_types', [CarpagesController::class, 'car_vehicle_types']);
+Route::get('/inquiry', [CarpagesController::class, 'car_inquire']);
+Route::get('/variables', [CarpagesController::class, 'car_variables']);
+
+Route::resource('/cars', CarsController::class);
+Route::resource('/cardash', CardashController::class);
 /* End Car */
 
 /* Start Fuel */  
@@ -189,7 +195,7 @@ Route::get('/db_dump', function () {
     SET SESSION sql_mode = '';
     */
     $get_all_table_query = "SHOW TABLES";
-    $result = DB::select(DB::raw($get_all_table_query));
+    $result = DB::select($get_all_table_query);
 
     // $tables = [
     //     'exams',
@@ -219,14 +225,14 @@ Route::get('/db_dump', function () {
     foreach ($tables as $table) {
         $show_table_query = "SHOW CREATE TABLE " . $table . "";
 
-        $show_table_result = DB::select(DB::raw($show_table_query));
+        $show_table_result = DB::select($show_table_query);
 
         foreach ($show_table_result as $show_table_row) {
             $show_table_row = (array)$show_table_row;
             $structure .= "\n\n" . $show_table_row["Create Table"] . ";\n\n";
         }
         $select_query = "SELECT * FROM " . $table;
-        $records = DB::select(DB::raw($select_query));
+        $records = DB::select($select_query);
 
         foreach ($records as $record) {
             $record = (array)$record;
