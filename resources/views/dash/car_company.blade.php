@@ -59,7 +59,7 @@
                 </label>
                 <label class="wide">Logo
                     <input type="file" name="company_logo" accept="image/png,image/jpeg">
-                    <span class="cms_hint">PNG or JPEG. Leave this empty to keep the current logo.</span>
+                    <span class="cms_hint">PNG or JPEG, up to 5 MB. Leave this empty to keep the current logo.</span>
                 </label>
             </div>
             <button type="submit" name="store_action" value="admi_config" class="cms_save">Save company</button>

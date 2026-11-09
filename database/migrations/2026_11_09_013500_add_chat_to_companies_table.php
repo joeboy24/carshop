@@ -8,6 +8,10 @@ class AddChatToCompaniesTable extends Migration
 {
     public function up()
     {
+        if (Schema::hasColumn('companies', 'chat')) {
+            return;
+        }
+
         Schema::table('companies', function (Blueprint $table) {
             $table->string('chat')->default('on')->after('website');
         });

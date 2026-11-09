@@ -24,6 +24,8 @@ use App\Support\InquiryGuard;
 use Exception;
 use Session;
 use Auth;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Intervention\Image\Laravel\Facades\Image;
 
 class CardashController extends Controller
@@ -163,109 +165,53 @@ class CardashController extends Controller
 
             case 'admi_config':
 
-                $name = $request->input('name');
-                $abrv = $request->input('abrv');
-                $loc = $request->input('loc');
-                
-
                 $results = Company::find(1);
 
                 if ($results){
 
                     $company = Company::find(1);
                     try {
-                        $this->validate($request, [
-                            'company_logo'  => 'max:5000|mimes:jpeg,jpg,png'
-                        ]);
-                        if($request->hasFile('company_logo')){
-                            //get filename with ext
-                            $filenameWithExt = $request->file('company_logo')->getClientOriginalName();
-                            //get filename
-                            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                            //get file ext
-                            $fileExt = $request->file('company_logo')->getClientOriginalExtension();
-                            //filename to store
-                            $filenameToStore = $company->logo;
-                            //upload path
-                            $path = $request->file('company_logo')->storeAs('public/classified/company', $filenameToStore);
-                        }else{
-                            $filenameToStore = $company->logo;
-                        }
-            
-                    } catch (Exception $ex) {
-                        return redirect('/companysetup')->with('error', 'Ooops..! File Error');
+                        $filenameToStore = $this->storedLogo($request, $company->logo);
+                    } catch (\RuntimeException $ex) {
+                        return redirect('/companysetup')->with('error', $ex->getMessage());
                     }
 
                     try {
-                        // $company = Company::find(1);
-                        $company->user_id = auth()->user()->id;
-                        $company->name = $name;
-                        $company->abrv = $abrv;
-                        $company->comp_add = $request->input('company_add');
-
-                        $company->location = $loc;
-                        $company->contact = $request->input('contact');
-
-                        $company->email = $request->input('email');
-                        $company->website = $request->input('company_web');
-                        $company->chat = $request->input('chat') === 'off' ? 'off' : 'on';
-                        $company->reg_date = Date('d-m-Y');
-                        $company->logo = $filenameToStore;
-
+                        $previousLogo = basename((string) $company->logo);
+                        $this->fillCompany($company, $request, (string) $filenameToStore, false);
                         $company->save();
+                        if ($previousLogo !== '' && $previousLogo !== $filenameToStore) {
+                            $oldLogo = storage_path('app/public/classified/company/'.$previousLogo);
+                            if (is_file($oldLogo)) {
+                                @unlink($oldLogo);
+                            }
+                        }
                         return redirect('/companysetup')->with('success', 'Company`s details successfully updated');
-                    } catch(Exception $ex){
-                        return redirect('/companysetup')->with('error', 'Oops..! Something went wrong');
+                    } catch (\Throwable $ex) {
+                        report($ex);
+                        return redirect('/companysetup')->with('error', 'The company details could not be saved. '.$ex->getMessage());
                     }
 
                 }else{
 
                     try {
-                        $this->validate($request, [
-                            'company_logo'   => 'required|max:5000|mimes:jpeg,jpg,png'
-                        ]);
-                        if($request->hasFile('company_logo')){
-                            //get filename with ext
-                            $filenameWithExt = $request->file('company_logo')->getClientOriginalName();
-                            //get filename
-                            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                            //get file ext
-                            $fileExt = $request->file('company_logo')->getClientOriginalExtension();
-                            //filename to store
-                            $filenameToStore = 'company_logo.'.$fileExt;
-                            //upload path
-                            $path = $request->file('company_logo')->storeAs('public/classified/company', $filenameToStore);
-                        }else{
-                            $filenameToStore = '';
+                        if (! $request->file('company_logo')) {
+                            return redirect('/companysetup')->with('error', 'Add a PNG or JPEG logo.');
                         }
-            
-                    } catch (\Throwable $th) {
-                        throw $th;
-                        return redirect('/companysetup')->with('error', 'Ooops..! Something went wrong33');
+                        $filenameToStore = $this->storedLogo($request, null);
+                    } catch (\RuntimeException $ex) {
+                        return redirect('/companysetup')->with('error', $ex->getMessage());
                     }
                     
 
                     try {
                         $company = new Company;
-                        $company->user_id = auth()->user()->id;
-                        $company->name = $name;
-                        $company->abrv = $abrv;
-                        $company->comp_add = $request->input('company_add');
-
-                        $company->location = $loc;
-                        $company->contact = $request->input('contact');
-
-                        $company->email = $request->input('email');
-                        $company->website = $request->input('company_web');
-                        $company->chat = $request->input('chat') === 'off' ? 'off' : 'on';
-                        $company->reg_date = Date('d-m-Y');
-                        $company->logo = $filenameToStore;
-
+                        $this->fillCompany($company, $request, (string) $filenameToStore, true);
                         $company->save();
                         return redirect('/companysetup')->with('success', 'Company`s details successfully added');
-                    } catch(\Throwable $th){
-                        throw $th;
-                        return redirect('/companysetup')->with('error', 'Ooops..! Something went wrong22');
+                    } catch (\Throwable $ex) {
+                        report($ex);
+                        return redirect('/companysetup')->with('error', 'The company details could not be saved. '.$ex->getMessage());
                     }
                     
                 }
@@ -1048,5 +994,60 @@ class CardashController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Write the company fields. Chat is included only when that column exists.
+     */
+    private function fillCompany(Company $company, Request $request, string $logo, bool $creating): void
+    {
+        $company->user_id = auth()->user()->id;
+        $company->name = $request->input('name');
+        $company->abrv = $request->input('abrv');
+        $company->comp_add = $request->input('company_add');
+        $company->location = $request->input('loc');
+        $company->contact = $request->input('contact');
+        $company->email = $request->input('email');
+        $company->website = $request->input('company_web');
+        $company->logo = $logo;
+        if ($creating) {
+            $company->reg_date = date('Y-m-d');
+        }
+        if ($this->companyChatReady()) {
+            $company->chat = $request->input('chat') === 'off' ? 'off' : 'on';
+        }
+    }
+
+    /**
+     * Add the chat column on a database that has not been migrated yet.
+     */
+    private function companyChatReady(): bool
+    {
+        if (Schema::hasColumn('companies', 'chat')) {
+            return true;
+        }
+
+        try {
+            Schema::table('companies', function (Blueprint $table) {
+                $table->string('chat')->default('on');
+            });
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Keep the current logo, or save a new one under a public name.
+     */
+    private function storedLogo(Request $request, ?string $current): string
+    {
+        $upload = $request->file('company_logo');
+        if (! $upload) {
+            return (string) $current;
+        }
+
+        return \App\Support\Media::storePublic('classified/company', $upload, 'logo');
     }
 }

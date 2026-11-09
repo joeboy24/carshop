@@ -625,6 +625,24 @@ body input:focus, .ds:focus, button:focus {
   font-size: 11px;
 }
 
+.home .vehicle_grid_parts {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home .vehicle_grid_parts .vehicle_card_name,
+.home .vehicle_grid_parts .vehicle_card_price {
+  font-size: 11px;
+}
+
+.home .vehicle_grid_parts .vehicle_card_name {
+  padding: 8px 8px 0;
+}
+
+.home .vehicle_grid_parts .vehicle_card_price {
+  padding: 2px 8px 10px;
+}
+
 .vehicle_card {
   display: flex;
   flex-direction: column;

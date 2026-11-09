@@ -185,10 +185,10 @@
               document.body.classList.remove('part_modal_open');
             }
 
-            document.querySelectorAll('.part_card').forEach(function (card) {
-              card.addEventListener('click', function () {
-                open(card.getAttribute('data-part'));
-              });
+            document.addEventListener('click', function (event) {
+              var card = event.target.closest('.part_card');
+              if (!card) return;
+              open(card.getAttribute('data-part'));
             });
             modal.querySelectorAll('[data-part-close]').forEach(function (el) {
               el.addEventListener('click', close);

@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use Illuminate\Http\UploadedFile;
+
 class Media
 {
     /**
@@ -19,5 +21,103 @@ class Media
         }
 
         return 'https://macademiagroup.com/storage/'.$path;
+    }
+
+    /**
+     * Store an image where the web server can read it.
+     */
+    public static function storePublic(string $directory, UploadedFile $file, string $prefix): string
+    {
+        if (! $file->isValid()) {
+            $limit = ini_get('upload_max_filesize') ?: 'the server limit';
+            if (in_array($file->getError(), [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)) {
+                throw new \RuntimeException('That logo is larger than the server allows ('.$limit.').');
+            }
+
+            throw new \RuntimeException('The logo could not be uploaded.');
+        }
+
+        $ext = strtolower($file->getClientOriginalExtension() ?: $file->extension());
+        if ($ext === 'jpeg') {
+            $ext = 'jpg';
+        }
+        if (! in_array($ext, ['jpg', 'png'], true)) {
+            throw new \RuntimeException('Use a PNG or JPEG logo.');
+        }
+
+        try {
+            $mime = $file->getMimeType();
+        } catch (\Throwable $e) {
+            $mime = null;
+        }
+        if ($mime && ! in_array($mime, ['image/jpeg', 'image/png', 'image/jpg', 'application/octet-stream'], true)) {
+            throw new \RuntimeException('Use a PNG or JPEG logo.');
+        }
+
+        if ($file->getSize() > 5 * 1024 * 1024) {
+            throw new \RuntimeException('The logo must be 5 MB or smaller.');
+        }
+
+        $directory = trim($directory, '/');
+        $dir = storage_path('app/public/'.$directory);
+        if (! is_dir($dir) && ! @mkdir($dir, 0755, true) && ! is_dir($dir)) {
+            throw new \RuntimeException('The server could not create the logo folder.');
+        }
+
+        self::openDirectory($dir);
+
+        $name = $prefix.'-'.date('YmdHis').'-'.bin2hex(random_bytes(3)).'.'.$ext;
+        try {
+            $file->move($dir, $name);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('The server could not save the logo. Check that storage is writable.');
+        }
+
+        $stored = $dir.'/'.$name;
+        @chmod($stored, 0644);
+        self::openDirectory($dir);
+        self::linkStorage();
+
+        if ((fileperms($dir) & 0001) === 0) {
+            @unlink($stored);
+            throw new \RuntimeException('The logo folder is private, so the site cannot show a new logo.');
+        }
+
+        return $name;
+    }
+
+    /**
+     * Let the web server enter this folder and its public parents.
+     */
+    private static function openDirectory(string $dir): void
+    {
+        $stop = storage_path('app/public');
+        $current = $dir;
+        while (str_starts_with($current, $stop) && is_dir($current)) {
+            @chmod($current, 0755);
+            if ($current === $stop) {
+                break;
+            }
+            $parent = dirname($current);
+            if ($parent === $current) {
+                break;
+            }
+            $current = $parent;
+        }
+    }
+
+    /**
+     * Publish storage/app/public at /storage when the link is missing.
+     */
+    private static function linkStorage(): void
+    {
+        $link = public_path('storage');
+        $target = storage_path('app/public');
+        if (is_link($link)) {
+            return;
+        }
+        if (! file_exists($link)) {
+            @symlink($target, $link);
+        }
     }
 }

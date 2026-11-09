@@ -27,7 +27,7 @@ class PagesController extends Controller
         $patch = [
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
-            'parts' => Car::with('gallery')->where('del', 'vpart')->orderBy('id', 'DESC')->limit(4)->get(),
+            'parts' => Car::with('gallery')->where('del', 'vpart')->orderBy('id', 'DESC')->limit(12)->get(),
             'flash_deals' => Car::with(['make', 'submodel', 'gallery'])->where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(16)->get(),
             'cars' => Car::with(['make', 'submodel', 'gallery'])
                 ->where('del', 'no')

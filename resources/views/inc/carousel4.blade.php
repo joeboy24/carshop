@@ -17,12 +17,47 @@
               <a href="/more_parts">View all</a>
             </div>
           @endif
-            @php $partsShown = 0; @endphp
-            <div class="vehicle_grid">
-            @foreach ($parts as $part)
-              @php $partPhoto = optional($part->gallery->first())->img; @endphp
-              @if ($partPhoto)
-                @php $partsShown++; @endphp
+            @php
+              $shopDb = [];
+              foreach ($parts as $part) {
+                  if (optional($part->gallery->first())->img) {
+                      $shopDb[] = $part;
+                  }
+              }
+              $shopFolder = $partUrls ?? [];
+              $shopLimit = !empty($homeLayout) ? 5 : count($shopDb);
+              $shopItems = [];
+              if (!empty($homeLayout) && $shopFolder) {
+                  $dbTake = min(count($shopDb), intdiv($shopLimit, 2));
+                  $folderTake = min(count($shopFolder), $shopLimit - $dbTake);
+                  if ($dbTake + $folderTake < $shopLimit) {
+                      $dbTake = min(count($shopDb), $shopLimit - $folderTake);
+                  }
+                  $dbPool = $shopDb;
+                  $folderPool = $shopFolder;
+                  shuffle($dbPool);
+                  shuffle($folderPool);
+                  foreach (array_slice($dbPool, 0, $dbTake) as $part) {
+                      $shopItems[] = ['type' => 'db', 'part' => $part];
+                  }
+                  foreach (array_slice($folderPool, 0, $folderTake) as $url) {
+                      $shopItems[] = ['type' => 'file', 'url' => $url];
+                  }
+                  shuffle($shopItems);
+              } else {
+                  foreach (array_slice($shopDb, 0, $shopLimit) as $part) {
+                      $shopItems[] = ['type' => 'db', 'part' => $part];
+                  }
+              }
+              $partsShown = count($shopItems);
+            @endphp
+            <div class="vehicle_grid {{ !empty($homeLayout) ? 'vehicle_grid_parts' : '' }}">
+            @foreach ($shopItems as $item)
+              @if ($item['type'] === 'db')
+                @php
+                  $part = $item['part'];
+                  $partPhoto = $part->gallery->first()->img;
+                @endphp
                 <a class="vehicle_card" href="/more_parts">
                     <span class="vehicle_card_photo">
                       <img src="{{ \App\Support\Media::url('classified/cars/'.$part->stock_id.'/'.$partPhoto) }}" alt="">
@@ -32,6 +67,14 @@
                       <span class="vehicle_card_price">Price <strong>USD {{ number_format((float) $part->price) }}</strong></span>
                     @endif
                 </a>
+              @else
+                <button type="button" class="vehicle_card part_card" data-part="{{ $item['url'] }}">
+                  <span class="vehicle_card_photo">
+                    <img src="{{ $item['url'] }}" alt="">
+                  </span>
+                  <span class="vehicle_card_name">Parts</span>
+                  <span class="vehicle_card_price">View photos</span>
+                </button>
               @endif
             @endforeach
             </div>
