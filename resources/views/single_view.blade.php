@@ -6,47 +6,35 @@
 
 @section('content')
 
-<section class="car_header" style="background: rgb(53, 53, 53); background-size: 100%">
-    <div style="height: 100px"></div>
-</section>
-
-<!-- By Model -->
-<section class="by_model">
+<section class="detail">
   <div class="container">
-    
-
     <div class="row">
       @include('inc.makes')
 
-      <div class="col-md-10 by_model_right">
-
+      <div class="col-md-10 detail_main">
         @include('inc.messages')
-        <div class="key_search">
-          <form action="{{ action('CardashController@store') }}" method="POST">
+        @php
+          $vehicleName = trim((optional($car->make)->model_name ?? '').' '.(optional($car->submodel)->sub_name ?? ''));
+          $vehicleListPrice = (float) $car->price;
+          $vehicleSave = $car->flash ? ($car->flash / 100) * $vehicleListPrice : 0;
+        @endphp
+        <div class="detail_top">
+          <div>
+            <p class="detail_stock">Stock {{ $car->stock_id }}</p>
+            <h1>{{ $vehicleName ?: 'Vehicle' }}
+              @if ($car->status == 'Sold')
+                <span class="sold_tag2">Sold</span>
+              @endif
+            </h1>
+          </div>
+          <form class="detail_search" action="{{ action('CardashController@store') }}" method="POST">
             @csrf
-          <p><span>Search &nbsp;</span><i class="fa fa-car"></i></p>
-          <input type="text" name="search_veh" placeholder="By Stock ID or Keyword">
-          <button type="submit" name="store_action" value="search_veh"><i class="fa fa-search"></i></button>
+            <input type="text" name="search_veh" placeholder="Stock id or keyword">
+            <button type="submit" name="store_action" value="search_veh" aria-label="Search"><i class="fa fa-search"></i></button>
           </form>
         </div>
 
         <div class="row">
-          <div class="col-md-12">
-            <div class="sv_header">
-              <p>Stock Id: {{$car->stock_id}}</p>
-              <h4>{{ $car->make->model_name.' '.$car->submodel->sub_name }} &nbsp;
-                @if ($car->status == 'Sold')
-                    <span class="sold_tag2">SOLD</span>
-                @endif
-              </h4>
-              <p class="color7"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i>
-              </p>
-              {{-- <p id="xx">{{date('s', strtotime($car->created_at))}} Views</p> --}}
-              
-              <script>
-              </script>
-            </div>
-          </div>
           
           <div class="col-md-8">
             @php
@@ -62,14 +50,13 @@
             <div class="related_imgs" id="related_imgs">
               @foreach ($car_imgs as $item)
                 @php $thumbUrl = \App\Support\Media::url('classified/cars/'.$car->stock_id.'/'.$item->img); @endphp
-                <img src="{{ $thumbUrl }}" alt="" onclick="document.getElementById('single_view').src=this.src">
+                <img src="{{ $thumbUrl }}" alt="" class="{{ $loop->first ? 'is_on' : '' }}" onclick="document.getElementById('single_view').src=this.src; [].forEach.call(this.parentNode.children, function (el) { el.classList.remove('is_on'); }); this.classList.add('is_on');">
               @endforeach
             </div>
 
-            <div class="tbl_cont">   
+            <section class="detail_block">
+              <h2>Details</h2>
               <table class="vehicle_det">
-                <p>&nbsp;</p>
-                <h6 class="vehicle_det_header">{{ $car->make->model_name.' '.$car->submodel->sub_name }} - Car Details</h6>
                 <tbody>
                   <tr>
                     <td class="td1">Stock Id:</td>
@@ -137,57 +124,45 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </section>
 
-            <div class="car_accessory">
-              <h6 class="vehicle_det_header">Accessories</h6>
+            <section class="detail_block">
+              <h2>Accessories</h2>
+              <div class="car_accessory">
               @foreach ($accessory as $asc)
-                <p><i class="fa fa-check color4"></i> {{$asc}}</p>
+                @if (trim($asc) !== '' && trim($asc) !== '-')
+                  <p><i class="fa fa-check color4"></i> {{ trim($asc) }}</p>
+                @endif
               @endforeach
-              <!--p><i class="fa fa-check color4"></i> CD Player</p>
-              <p class="active_acc">Power Steering</p>
-              <p class="active_acc">Leather Seat</p>
-              <p>Alloy Wheels</p>
-              <p>Rear Spoiler</p>
-              <p class="active_acc">Wheel Spanner</p>
-              <p class="active_acc">Central Locking</p>
-              <p>Power Seat</p>
-              <p class="active_acc">Navigation</p>
-              <p class="active_acc">Sun Roof</p-->
-            </div>
+              </div>
+            </section>
           </div>
 
           <div class="col-md-4">
+            <div class="detail_price">
             <table class="price_calc">
               <thead>
-                <th>Total Price Calculator</th>
+                <th>Price</th>
                 <th class="align_right">
                   <select name="" id="">
                     <option value="1">USD</option>
-                    {{-- <option value="2">EUR</option>
-                    <option value="3">GBP</option>
-                    <option value="4">CAD</option> --}}
                   </select>
                 </th>
               </thead>
               <tbody>
                 <tr>
-                  <td>Vehicle Price</td>
-                  <td class="align_right vprice color6">{{number_format($car->price)}}</td>
+                  <td>Vehicle</td>
+                  <td class="align_right vprice">{{ number_format($vehicleListPrice) }}</td>
                 </tr>
-                @if ($car->flash != 0)
+                @if ($vehicleSave > 0)
                   <tr>
-                    <td></td>
-                    <td class="align_right color6"><p class="small_p color10">- <del>${{number_format(($car->flash/100)*$car->price)}}</del></p></td>
-                  </tr>
-                  <tr>
-                    <td><p class="small_p">Save</p></td>
-                    <td class="align_right color6">{{$car->flash}}%</td>
+                    <td>Save {{ $car->flash }}%</td>
+                    <td class="align_right detail_save">− ${{ number_format($vehicleSave) }}</td>
                   </tr>
                 @endif
                 {{-- <tr class="line_br"><td><p></p></td></tr> --}}
                 <tr class="tr_br">
-                  <td>Destination Country</td>
+                  <td>Country</td>
                   <td class="align_right color6">
                     <select name="" id="" style="width: 100%">
                       @foreach ($countries as $ct)
@@ -220,22 +195,18 @@
                   <td class="align_right color6"><label for="check3">$<span id="insure">{{number_format($vr[0]->insurance)}}</span>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="" id="check3"></label></td>
                 </tr>
                 <tr class="tr_br">
-                  <td>Total Price</td>
-                  <td class="align_right color6"><h5 id="tot_price">${{number_format($car->price)}}</h5></td>
+                  <td>Total</td>
+                  <td class="align_right"><h5 id="tot_price">${{ number_format($vehicleListPrice) }}</h5></td>
                 </tr>
               </tbody>
             </table>
-            {{-- <button class="inquiry_btn bg11 color8" data-toggle="modal" data-target="#inqure"><i class="fa fa-envelope-open-o">&nbsp;</i>&nbsp;&nbsp;Inquiry</button> --}}
-            <a href="javascript:void(Tawk_API.toggle())"><button type="button" class="inquiry_btn bg11 color8"><i class="fa fa-envelope-open-o">&nbsp;</i>&nbsp;&nbsp;Inquiry</button>
-            <a href="/cart"><button type="button" class="buynow_btn bg6 color8"><i class="fa fa-shopping-basket">&nbsp;</i>&nbsp;&nbsp;Buy Now</button></a>
+            <a class="inquiry_btn" href="javascript:void(Tawk_API.toggle())">Inquiry</a>
+            <a class="buynow_btn" href="/cart">Buy now</a>
+            </div>
           </div>
         </div>
 
         <script>
-
-          tot = t + x + y + z;
-          tot_price.innerHTML = tot.toLocaleString('en-US');
-
           function shipment(t, u, v, w, x, y, z) {
             // alert(z);
             ship = document.getElementById('ship');
@@ -256,13 +227,13 @@
               insp.innerHTML = v.toLocaleString('en-US');
               insure.innerHTML = w.toLocaleString('en-US');
               tot = t + u + v + w;
-              tot_price.innerHTML = tot.toLocaleString('en-US');
+              tot_price.innerHTML = '$' + tot.toLocaleString('en-US');
             } else {
               freight.innerHTML = x.toLocaleString('en-US');
               insp.innerHTML = y.toLocaleString('en-US');
               insure.innerHTML = z.toLocaleString('en-US');
               tot = t + x + y + z;
-              tot_price.innerHTML = tot.toLocaleString('en-US');
+              tot_price.innerHTML = '$' + tot.toLocaleString('en-US');
             }
 
             // alert(ship.value);
