@@ -103,7 +103,7 @@
       @foreach ($makes as $item)
         <div class="col_make">
           <a href="/cardash/{{$item->id}}"><p class="model_name2">
-            <img src="/storage/classified/makes/{{$item->logo}}" alt=""><br>
+            <img src="{{ \App\Support\Media::url('classified/makes/'.$item->logo) }}" alt=""><br>
             <span>{{$item->model_name}}</span></p>
           </a>
         </div>

@@ -20,7 +20,7 @@
             <div class="col_25 car_thumb">
                 <div class="car_thumb_img_container">
                     @foreach ($part->gallery as $item)
-                        <img class="car_prev" src="/storage/classified/cars/{{$part->stock_id}}/{{$item->img}}" width="100" alt="">
+                        <img class="car_prev" src="{{ \App\Support\Media::url('classified/cars/'.$part->stock_id.'/'.$item->img) }}" alt="">
                     @endforeach
                     {{-- <img class="car_prev" src="/storage/classified/cars/{{$part->stock_id}}/{{$part->gallery[0]->img}}" width="100" alt=""> --}}
                 </div>

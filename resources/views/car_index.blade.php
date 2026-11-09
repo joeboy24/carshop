@@ -1,105 +1,149 @@
-
 @extends('layouts.app')
 
-
-
-
 @section('content')
+@php
+  $companyName = optional(session('company'))->name ?: 'Vehicles and parts';
+  $withPhoto = collect($cars ?? [])->filter(function ($car) {
+      return optional($car->gallery->first())->img;
+  })->values();
+  $heroCar = $withPhoto->get(2) ?: $withPhoto->first();
+  $heroUrl = $heroCar
+      ? \App\Support\Media::url('classified/cars/'.$heroCar->stock_id.'/'.$heroCar->gallery->first()->img)
+      : null;
+@endphp
 
-<section class="car_header" style="background: rgb(53, 53, 53); background-size: 100%">
-  <div class="container">
-    <div style="height: 100px"></div>
-  </div>
-</section>
-
-<!-- Showcase By Model -->
-@include('inc.showcase_searchby')
-
-
-<!-- By Model -->
-<section class="by_model">
-  <div class="container">
-    <div class="row">
-      @include('inc.makes')
-
-      <div class="col-md-10 by_model_right" id="search_veh">
-
-        <div class="key_search">
-          <form action="{{ action('CardashController@store') }}" method="POST">
-            @csrf
-          <p><span>Search &nbsp;</span><i class="fa fa-car"></i></p>
-          <input type="text" name="search_veh" placeholder="By Stock ID or Keyword">
-          <button type="submit" name="store_action" value="search_veh"><i class="fa fa-search"></i></button>
-          </form>
-        </div>
-
-        <div class="col-12 car_display" id="car_display">
-
-          @if (count($cars) > 0)
-            @foreach ($cars as $car)
-              <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
-                <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
-                {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
-                <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
-                @if ($car->status == 'Sold')
-                  <h5 class="sold_tag">Sold</h5>
-                @endif
-              </div></a>
-              {{-- <div class="item">
-                  <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
-                    <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
-                    
-                    <h3 class="flash_price_tag">PRICE ${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
-                    
-                    <h5 class="flash_tag">{{$flash_deals[$i]->flash}}% off</h5>
-                  </div></a>
-              </div> --}}
+<div class="home">
+  <section class="home_hero" @if ($heroUrl) style="background-image: url('{{ $heroUrl }}')" @endif>
+    <div class="container home_hero_copy">
+      <p class="home_kicker">{{ $companyName }}</p>
+      <h1>Find a vehicle</h1>
+      <p class="home_lead">Japanese stock. Search by make, type, year, or stock id.</p>
+    </div>
+    <div class="container">
+      <div class="home_finder">
+        <form class="home_keyword" action="{{ action('CardashController@store') }}" method="POST">
+          @csrf
+          <input type="text" name="search_veh" placeholder="Stock id or keyword">
+          <button type="submit" name="store_action" value="search_veh">Search</button>
+        </form>
+        <form class="home_fields" action="{{ action('CarsController@index') }}">
+          <select name="make">
+            <option value="0">Make</option>
+            @foreach ($makes as $item)
+              <option value="{{ $item->id }}">{{ $item->model_name }}</option>
             @endforeach
-
-            <p class="clear_both"></p>
-            <a href="/more_cars"><button class="show_more_gray"><i class="fa fa-folder-open">&nbsp;</i>&nbsp;View More</button></a>
-          @else
-            <div class="alert alert-danger">
-              No Records Found
-            </div>  
-          @endif
-        </div>
-
-        <!-- Carousel -->
-        {{-- <h6 class="pannel_header2"><span>Vehicle Parts</span> </h6> --}}
-        
-        @include('inc.carousel4')
-        {{-- @include('inc.carousel2') --}}
-
-        <div class="col-12 by_type">
-          <p>&nbsp;</p>
-          <h6 class="pannel_header"><span>Search By Type</span> </h6>
-          @foreach ($types as $item)
-            <a href="/cardash/{{$item->name}}/edit"><div class="by_type_cont">
-              <img src="/storage/classified/types/{{$item->img}}" alt="">
-              <p>{{$item->name}}</p>
-          </div></a>
-          @endforeach
-
-          <a href="/cardash/ /edit"><div class="by_type_cont">
-            <p><i class="fa fa-warning"></i></p>
-            <p>Others</p></a>
-          </div>
-        </div>
-
-        {{-- @include('inc.carousel3') --}}
-        
+          </select>
+          <select name="type">
+            <option value="0">Type</option>
+            @foreach ($types as $item)
+              <option>{{ $item->name }}</option>
+            @endforeach
+          </select>
+          <select name="trans">
+            <option value="0">Transmission</option>
+            <option value="Auto">Automatic</option>
+            <option>Manual</option>
+          </select>
+          <select name="steer">
+            <option value="0">Steering</option>
+            <option value="Lhd">Left hand drive</option>
+            <option value="Rhd">Right hand drive</option>
+          </select>
+          <select name="color">
+            <option value="0">Color</option>
+            @if (session('car_color'))
+              @foreach (session('car_color') as $item)
+                <option>{{ $item->color }}</option>
+              @endforeach
+            @endif
+          </select>
+          <select name="from">
+            <option value="0">From year</option>
+            @for ($i = date('Y') - 25; $i <= date('Y'); $i++)
+              <option>{{ $i }}</option>
+            @endfor
+          </select>
+          <select name="to">
+            <option value="{{ date('Y') }}">To year</option>
+            @for ($i = date('Y') - 24; $i <= date('Y'); $i++)
+              <option>{{ $i }}</option>
+            @endfor
+          </select>
+          <input type="number" min="0" name="min_price" placeholder="Min price">
+          <input type="number" min="0" name="max_price" placeholder="Max price">
+          <button type="submit">Search</button>
+        </form>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <section class="home_makes">
+    <div class="container">
+      <div class="home_makes_row">
+        @foreach ($makes as $item)
+          <a class="home_make" href="/cardash/{{ $item->id }}">
+            <img src="{{ \App\Support\Media::url('classified/makes/'.$item->logo) }}" alt="">
+            <span>{{ $item->model_name }}</span>
+          </a>
+        @endforeach
+        <a class="home_make home_make_more" href="/more_makes">All makes</a>
+      </div>
+    </div>
+  </section>
 
+  <section class="home_band">
+    <div class="container">
+      <div class="home_head">
+        <h2>Promoted vehicles</h2>
+        <a href="/more_cars">View more</a>
+      </div>
 
-<!-- Flash Deals -->
-@include('inc.flash_deals')
+      @php $shown = 0; @endphp
+      <div class="vehicle_grid">
+        @foreach ($cars as $car)
+          @if (optional($car->gallery->first())->img)
+            @php $shown++; @endphp
+            @include('inc.vehicle_card')
+          @endif
+        @endforeach
+      </div>
 
+      @if ($shown === 0)
+        <p class="home_empty">No promoted vehicles right now. Try a make or a stock id.</p>
+      @endif
+    </div>
+  </section>
+
+  <section class="home_band home_band_white">
+    <div class="container">
+      @include('inc.carousel4', ['homeLayout' => true])
+    </div>
+  </section>
+
+  <section class="home_band">
+    <div class="container">
+      <div class="home_head">
+        <h2>Search by type</h2>
+      </div>
+      <div class="by_type">
+        @foreach ($types as $item)
+          <a href="/cardash/{{ $item->name }}/edit">
+            <div class="by_type_cont">
+              <img src="{{ \App\Support\Media::url('classified/types/'.$item->img) }}" alt="">
+              <p>{{ $item->name }}</p>
+            </div>
+          </a>
+        @endforeach
+        <a href="/cardash/ /edit">
+          <div class="by_type_cont">
+            <span class="type_mark"></span>
+            <p>Others</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  @include('inc.flash_deals', ['homeLayout' => true])
+</div>
 @endsection
-    
-  

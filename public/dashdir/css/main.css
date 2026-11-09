@@ -128,6 +128,8 @@ a:hover {
 
 .logo img{
     height: 25px!important;
+    width: auto;
+    object-fit: contain;
 }
 
 .footer_txt {
@@ -978,6 +980,11 @@ a:hover {
 }
 
 .car_prev {
+    width: auto;
+    max-width: 120px;
+    height: 80px;
+    object-fit: contain;
+    background: #f3f3f3;
     border-radius: 5px;
 }
 
@@ -1029,3 +1036,8 @@ a:hover {
     }
 
   }
+
+img {
+    object-fit: contain;
+    object-position: center;
+}

@@ -25,15 +25,17 @@ class PagesController extends Controller
 
     public function index(){
         $patch = [
-            // 'c' => 1,
-            // 'y' => 1,
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
-            // 'parts' => Part::orderBy('id', 'ASC')->limit(4)->get(),
-            'parts' => Car::where('del', 'vpart')->orderBy('id', 'DESC')->limit(4)->get(),
-            // 'submodels' => Submodel::orderBy('sub_name', 'ASC')->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
-            'cars' => Car::where('del', 'no')->where('promote', 'yes')->where('flash', '0')->orderBy('id', 'DESC')->limit(10)->get()
+            'parts' => Car::with('gallery')->where('del', 'vpart')->orderBy('id', 'DESC')->limit(4)->get(),
+            'flash_deals' => Car::with('gallery')->where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
+            'cars' => Car::with(['make', 'submodel', 'gallery'])
+                ->where('del', 'no')
+                ->where('promote', 'yes')
+                ->where('flash', '0')
+                ->orderBy('id', 'DESC')
+                ->limit(10)
+                ->get(),
         ];
         return view('car_index')->with($patch);
     }
@@ -164,17 +166,17 @@ class PagesController extends Controller
     }
 
     public function view_more(){
-        
-        $where = [
-            'flash' => 5
-        ];
         $patch = [
-            // 'c' => 1,
-            // 'y' => 1,
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
-            'flash_deals' => Car::where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
-            'cars' => Car::where('del', 'no')->orderBy('id', 'DESC')->limit(10)->paginate(20)
+            'flash_deals' => Car::with('gallery')->where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
+            'listing_title' => 'Promoted vehicles',
+            'cars' => Car::with(['make', 'submodel', 'gallery'])
+                ->where('del', 'no')
+                ->where('promote', 'yes')
+                ->where('flash', '0')
+                ->orderBy('id', 'DESC')
+                ->paginate(20),
         ];
         return view('showcase')->with($patch);
     }

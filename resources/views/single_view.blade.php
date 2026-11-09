@@ -49,19 +49,20 @@
           </div>
           
           <div class="col-md-8">
-            <div class="single_img_cont" id="single_view"
-             style="background: url(/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}); background-size: 100%; background-position: center;
-             background-repeat: no-repeat;">
+            @php
+              $leadPhoto = optional($car->gallery->first())->img;
+              $leadUrl = $leadPhoto ? \App\Support\Media::url('classified/cars/'.$car->stock_id.'/'.$leadPhoto) : null;
+            @endphp
+            <div class="single_img_cont">
+              @if ($leadUrl)
+                <img id="single_view" src="{{ $leadUrl }}" alt="">
+              @endif
             </div>
             
             <div class="related_imgs" id="related_imgs">
               @foreach ($car_imgs as $item)
-                <img src="/storage/classified/cars/{{$car->stock_id}}/{{$item->img}}" width="15.5%" alt="" onclick="changeImg{{$item->id}}()">
-                <script>
-                  function changeImg{{$item->id}}() {
-                    document.getElementById("single_view").style.backgroundImage = "url(/storage/classified/cars/{{$car->stock_id}}/{{$item->img}})";
-                  }
-                </script>
+                @php $thumbUrl = \App\Support\Media::url('classified/cars/'.$car->stock_id.'/'.$item->img); @endphp
+                <img src="{{ $thumbUrl }}" alt="" onclick="document.getElementById('single_view').src=this.src">
               @endforeach
             </div>
 

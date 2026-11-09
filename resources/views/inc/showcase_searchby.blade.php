@@ -1,6 +1,6 @@
 
 
-<section class="showcase_searchby">
+<section class="showcase_searchby {{ $searchClass ?? '' }}">
     <div class="container">
       <form action="{{ action('CarsController@index') }}">
         {{-- @csrf --}}

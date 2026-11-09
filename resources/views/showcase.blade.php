@@ -106,33 +106,22 @@
         </div>
 
         <div class="col-12 car_display" id="car_display">
+          @if (!empty($listing_title))
+            <h6 class="pannel_header2"><span>{{ $listing_title }}</span></h6>
+          @endif
 
-          @if (count($cars) != 0)
-            @foreach ($cars as $car)
-              @if ($car->del == 'no')
-                @if ($car->flash == 0)
-                  <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                    <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
-                    {{-- <img class="car_prev" src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" width="100" alt=""> --}}
-                    <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
-                    {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
-                    <h5>Price <span>USD&nbsp;{{ number_format($car->price) }}</span></h5>
-                  </div></a>
-                @else
-                  <a href="/cars/{{$car->id}}"><div class="col_20 car_thumb float-left">
-                    <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt="">
-                    <h5 class="flash_tag">{{$car->flash}}% off</h5>
-                    <h6>{{ $car->make->model_name.' '.$car->submodel->sub_name }}</h6>
-                    {{-- <p>{{date('s', strtotime($car->created_at))}} Views</p> --}}
-                    <h5>Price <span>USD&nbsp;{{ number_format($car->price+(($car->flash/100)*$car->price)) }}</span></h5>
-                  </div></a>
-                @endif
-              @endif
-            @endforeach
-          @else
-            <div class="alert alert-danger">
-              Oops..! No Records Found
-            </div>  
+          @php $shown = 0; @endphp
+          <div class="vehicle_grid">
+          @foreach ($cars as $car)
+            @if ($car->del == 'no' && optional($car->gallery->first())->img)
+              @php $shown++; @endphp
+              @include('inc.vehicle_card')
+            @endif
+          @endforeach
+          </div>
+
+          @if ($shown === 0)
+            <p class="home_empty">No vehicles match this list.</p>
           @endif
 
           <p class="clear_both"></p>
@@ -144,7 +133,7 @@
           <h6 class="pannel_header"><span>Search By Type</span> </h6>
           @foreach ($types as $item)
             <a href="/cardash/{{$item->name}}/edit"><div class="by_type_cont">
-              <img src="/storage/classified/types/{{$item->img}}" alt="">
+              <img src="{{ \App\Support\Media::url('classified/types/'.$item->img) }}" alt="">
               <p>{{$item->name}}</p>
           </div></a>
           @endforeach

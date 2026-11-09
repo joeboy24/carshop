@@ -45,6 +45,8 @@ class CarsController extends Controller
         
         if ($min == '') { $min = 0; }else { $min = $min*1; } 
         if ($max == '') { $max = 1000000; }else { $max = $max*1; }
+        if ($from === null || $from === '') { $from = 0; }
+        if ($to === null || $to === '') { $to = date('Y'); }
 
         $where = [
             $make => $make_val,

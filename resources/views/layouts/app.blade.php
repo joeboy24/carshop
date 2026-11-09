@@ -39,8 +39,13 @@
     
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
+        @php
+          $companyLogo = session('company') && session('company')->logo
+            ? \App\Support\Media::url('classified/company/'.session('company')->logo)
+            : '/maindir/images/pivo.png';
+        @endphp
         @if (session('company'))
-          <img class="sch_logo" src="{{ session('company')->logo ? '/storage/classified/company/'.session('company')->logo : '/maindir/images/pivo.png' }}" alt="{{ session('company')->name }}">
+          <img class="sch_logo" src="{{ $companyLogo }}" alt="">
           <a class="navbar-brand" href="/">{{ session('company')->abrv }}<span></span>
             <p class="sch_name">{{ session('company')->name }}</p>
           </a>
@@ -113,7 +118,7 @@
         <div class="col-md-5 footer_right">
           
           @if (session('company'))
-            <img src="{{ session('company')->logo ? '/storage/classified/company/'.session('company')->logo : '/maindir/images/pivo.png' }}" style="width: 60px" alt="{{ session('company')->name }}">
+            <img class="footer_logo" src="{{ $companyLogo }}" alt="">
             <h3 class="ftco-heading-2" style="color: #fff">{{ session('company')->abrv }}</h3>
             <p class="home_copyright">Copyright © {{ date('Y') }} {{ session('company')->abrv ?: session('company')->name }}</p>
             @if (session('company')->contact)
