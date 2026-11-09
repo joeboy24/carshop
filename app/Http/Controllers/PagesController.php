@@ -14,7 +14,7 @@ use App\Models\Service;
 use App\Models\Gallery;
 use App\Models\Variable;
 use DateTime;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\Laravel\Facades\Image;
 
 class PagesController extends Controller
 {
@@ -153,7 +153,7 @@ class PagesController extends Controller
                 mkdir(storage_path("app/public/classified"), 0775, true);
             }
             // Upload (IMAGE INTERVENTION - LARAVEL)
-            $img = Image::make(storage_path("app/public/classified/cars/".$gal->car->stock_id.'/'.$gal->img))->resize(500, 375)
+            $img = Image::decode(storage_path("app/public/classified/cars/".$gal->car->stock_id.'/'.$gal->img))->resize(500, 375)
             ->insert(storage_path('app/public/classified/maca_wt.png'))
             ->save(storage_path("app/public/classified/cars/".$gal->car->stock_id.'/'.$gal->img));
         }
@@ -163,7 +163,7 @@ class PagesController extends Controller
         //     mkdir(storage_path("app/public/classified/cars"), 0775, true);
         // }
         // // Upload (IMAGE INTERVENTION - LARAVEL)
-        // $img = Image::make('/Users/jbazz/Downloads/IMG_6094.jpg')->resize(500, 375)
+        // $img = Image::decode('/Users/jbazz/Downloads/IMG_6094.jpg')->resize(500, 375)
         // ->insert(storage_path('app/public/classified/maca_wt.png'))
         // ->save(storage_path("app/public/classified/cars/".date('is').".jpg"));
         // return $img->response('jpg');
