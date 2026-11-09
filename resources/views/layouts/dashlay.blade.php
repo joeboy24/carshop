@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - PivoApps Hotel Assist</title>
+    <title>{{ session('company') != '' ? session('company')->abrv : 'MACADEMIA' }} · Content</title>
  
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/dashdir/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="/dashdir/css/app.css">
     <link rel="stylesheet" href="/dashdir/css/main.css">
+    <link rel="stylesheet" href="/dashdir/css/cms.css">
     <link rel="stylesheet" href="/maindir/css/feed_style_clean.css">
     <link rel="shortcut icon" href="/dashdir/images/favicon.svg" type="image/x-icon">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -33,12 +34,17 @@
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            @if (session('company') != '')
-                                {{-- <img class="sch_logo" src="/storage/classified/company/{{session('company')->logo}}"> --}}
-                                <a href="/car_dashboard"><img src="/storage/classified/company/company_logo.png" alt="Logo" srcset=""></a>
-                            @else
-                                <a href="/car_dashboard"><img src="/maindir/images/pivo.png" alt="Logo" srcset=""></a>
-                            @endif
+                            <a class="cms_brand" href="/car_dashboard">
+                                @if (session('company') != '' && session('company')->logo)
+                                    <img src="{{ \App\Support\Media::url('classified/company/'.session('company')->logo) }}" alt="">
+                                @else
+                                    <span class="cms_brand_mark"><i class="fa fa-car"></i></span>
+                                @endif
+                                <span>
+                                    <strong>{{ session('company') != '' ? session('company')->abrv : 'CMS' }}</strong>
+                                    <em>Content</em>
+                                </span>
+                            </a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -78,9 +84,7 @@
                     </div> --}}
                     <div class="">
                         {{-- <div class="float-end"> --}}
-                        <p class="footer_txt">&nbsp;&nbsp;&nbsp;{{Date('Y')}} &copy; <span class="text-danger"></span> - 
-                            <a href="https://pivoapps.net">PivoApps</a>
-                        </p>
+                        <p class="footer_txt">Copyright © {{ date('Y') }} {{ session('company') != '' ? session('company')->abrv : 'MACADEMIA' }}</p>
                     </div>
                 </div>
             </footer> 

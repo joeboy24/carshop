@@ -39,39 +39,32 @@
                         </ul> --}}
                     </li>
                 </ul>
+                <a class="cms_site" href="/">View site</a>
                 <div class="dropdown">
                     <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="user-menu d-flex">
-                            <div class="user-name text-end me-3">
-                                <p class="mb-0 text-sm text-gray-300">Hello!</p>
-                                <h6 class="mb-0 text-gray-300">{{auth()->user()->name}}</h6>
+                        <div class="user-menu cms_user">
+                            <div class="user-name text-end">
+                                <p>Signed in</p>
+                                <h6>{{ auth()->user()->name }}</h6>
                             </div>
-                            <div class="user-img d-flex align-items-center">
-                                <div class="avatar avatar-md"> 
-                                    {{-- Joe024Joe4epH --}}
-                                    <img src="/dashdir/images/faces/user3.png">
-                                </div>
-                            </div>
+                            <span class="cms_avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                         </div>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            <h6 class="dropdown-header">Welcome {{auth()->user()->name}}</h6>
+                    <ul class="dropdown-menu dropdown-menu-end cms_account" aria-labelledby="dropdownMenuButton">
+                        <li class="cms_account_who">
+                            <span class="cms_avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                            <span>
+                                <strong>{{ auth()->user()->name }}</strong>
+                                <em>{{ auth()->user()->status }}</em>
+                            </span>
                         </li>
                         @if(auth()->user()->status != 'Administrator')
-                            <li><a class="dropdown-item" @if(auth()->user()->status == 'Lecturer') href="/lprofile" @elseif(auth()->user()->status == 'Student') href="/sprofile" @endif>
-                            <i class="icon-mid bi bi-person me-2"></i> My Profile</a></li>
+                            <li><a class="dropdown-item" @if(auth()->user()->status == 'Lecturer') href="/lprofile" @elseif(auth()->user()->status == 'Student') href="/sprofile" @endif><i class="fa fa-user"></i> Profile</a></li>
                         @endif
                         @if(auth()->user()->status == 'Administrator')
-                             <li><a class="dropdown-item" href="/companysetup"><i class="icon-mid bi bi-gear me-2"></i>Settings</a></li>
+                            <li><a class="dropdown-item" href="/companysetup"><i class="fa fa-cog"></i> Company settings</a></li>
                         @endif
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/logout"><i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a>
-                            
-                        </li>
+                        <li><a class="dropdown-item cms_logout" href="/logout"><i class="fa fa-sign-out"></i> Log out</a></li>
                     </ul>
                 </div>
             </div>

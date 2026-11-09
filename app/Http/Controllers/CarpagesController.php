@@ -25,10 +25,10 @@ class CarpagesController extends Controller
     public function car_dashboard(){
         $patch = [
             'c' => 1,
-            'pays' => '12,000',
-            'analytics' => 277,
-            'car_count' => Car::all()->count(),
-            'user_count' => User::all()->count(),
+            'car_count' => Car::whereNull('gvweight')->orWhere('gvweight', '!=', 'vpart')->count(),
+            'part_count' => Car::where('gvweight', 'vpart')->count(),
+            'inquiry_count' => Inquire::count(),
+            'user_count' => User::count(),
         ];
         return view('dash.car_dashboard')->with($patch);
     }
