@@ -1,64 +1,40 @@
+@extends('auth.sign')
 
-@extends('layouts.app3')
+@section('title', 'Sign in')
+@section('heading', 'Sign in')
+@section('lead', 'Use the phone or email on your account.')
 
-@section('header_text')
-  <div class="header_top_col">
-    <p class="logo_text1">{{ optional(session('company'))->abrv ?: optional(session('company'))->name }}</p>
-  </div>
-@endsection
-
-@section('main_content')
-
-  <div class="login_body">
-
-  </div>
-
-    <div class="login_body2">
-
-      {{-- <div class="row"> --}}
-        {{-- <div class="col-md-6"> --}}
-
-          <div class="lock_container">
-            <p><i class="fa fa-unlock-alt"></i></p>
-          </div>
-
-          <section class="login_content">
-            {{-- <div style="height: 50px"></div> --}}
-            <form action="{{ route('login') }}" method="POST">
-              @csrf
-              <input placeholder="Phone / Email" id="email" type="text" class="@error('email') is-invalid @enderror login_input" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-              @error('email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-
-              <input placeholder="Password" id="password" type="password" class="@error('password') is-invalid @enderror login_input" name="password" required autocomplete="current-password">
-              @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-
-              <div class="login_btn_container">
-                <button type="submit" class="login_btn">Login</button>
-                {{-- <button type="submit" class="login_btn2">Login</button> --}}
-              </div>
-            </form>
-          </section>
-
-        {{-- </div> --}}
-
-        {{-- <div class="col-md-6">
-          <img class="sf_img1" src="/maindir/images/sf3.webp" width="100%" alt="">
-          <img class="sf_img2" src="/maindir/images/sf2.jpeg" width="100%" alt="">
-        </div>
-      </div> --}}
-
+@section('body')
+    <form action="{{ route('login') }}" method="POST">
+        @csrf
+        @if (isset($errors) && $errors->any())
+            <p class="sign_error">{{ $errors->first() }}</p>
+        @endif
+        <label class="sign_field">
+            <span>Phone or email</span>
+            <span class="sign_control">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <rect x="6" y="3" width="12" height="18" rx="2"></rect>
+                    <path d="M10 18h4"></path>
+                </svg>
+                <input id="email" type="text" name="email" value="{{ old('email') }}" autocomplete="username" required autofocus>
+            </span>
+        </label>
+        <label class="sign_field">
+            <span>Password</span>
+            <span class="sign_control has_reveal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                    <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+                </svg>
+                <input id="password" type="password" name="password" autocomplete="current-password" required>
+                <button class="sign_reveal" type="button">Show</button>
+            </span>
+        </label>
+        <button type="submit">Sign in</button>
+    </form>
+    <div class="sign_links">
+        <a href="{{ route('password.request') }}">Forgot password</a>
+        <a href="/">Back to the site</a>
     </div>
-
-
 @endsection
-
-    
-  
