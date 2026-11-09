@@ -11,11 +11,9 @@ use App\Models\Type;
 use App\Models\Make;
 use App\Models\About;
 use App\Models\Service;
-use App\Models\Company;
 use App\Models\Gallery;
 use App\Models\Variable;
 use DateTime;
-use Session;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class PagesController extends Controller
@@ -26,26 +24,6 @@ class PagesController extends Controller
     }
 
     public function index(){
-
-        // return view('auth.cust_register');
-        // return view('auth.cust_login');
-        // return view('single_view');
-        // return view('inc.carousel3');
-
-        $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
-        $car_color = Car::select('color')->distinct('color')->get();
-        $car_year = Car::select('year')->distinct('year')->get();
-        
-        session::put('about', About::find(1));
-        session::put('avail', $available);
-        session::put('car_color', $car_color);
-        session::put('company', Company::find(1));
-        session::put('cars', Car::where('del', 'no')->limit(3)->get());
-        // session::put('flash_deals', $available);
-        
-        $where = [
-            'flash' => 5
-        ];
         $patch = [
             // 'c' => 1,
             // 'y' => 1,
@@ -61,13 +39,6 @@ class PagesController extends Controller
     }
     
     public function car_about(){
-        $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
-        session::put('about', About::find(1));
-        // return session('about');
-        session::put('avail', $available);
-        session::put('company', Company::find(1));
-        session::put('cars', Car::where('del', 'no')->limit(3)->get());
-
         $patch = [
             // 'c' => 1,
             // 'y' => 1,
@@ -82,13 +53,6 @@ class PagesController extends Controller
     }
     
     public function car_services(){
-        $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
-        session::put('about', About::find(1));
-        // return session('about');
-        session::put('avail', $available);
-        session::put('company', Company::find(1));
-        session::put('cars', Car::where('del', 'no')->limit(3)->get());
-
         $patch = [
             // 'c' => 1,
             // 'y' => 1,
@@ -103,13 +67,6 @@ class PagesController extends Controller
     }
     
     public function car_contact(){
-        $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
-        session::put('about', About::find(1));
-        // return session('about');
-        session::put('avail', $available);
-        session::put('company', Company::find(1));
-        session::put('cars', Car::where('del', 'no')->limit(3)->get());
-
         $patch = [
             // 'c' => 1,
             // 'y' => 1,
@@ -124,13 +81,6 @@ class PagesController extends Controller
     }
     
     public function car_more_flash(){
-        $available = Car::select(['id','make_id'])->distinct('make_id')->limit(5)->get();
-        session::put('about', About::find(1));
-        // return session('about');
-        session::put('avail', $available);
-        session::put('company', Company::find(1));
-        session::put('cars', Car::where('del', 'no')->limit(3)->get());
-
         $patch = [
             // 'c' => 1,
             // 'y' => 1,

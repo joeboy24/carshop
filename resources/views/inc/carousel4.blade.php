@@ -18,7 +18,7 @@
                     <div class="col_25 car_thumb">
                       {{-- <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt=""> --}}
                       <img class="car_prev" src="/storage/classified/cars/{{$part->stock_id}}/{{$part->gallery[0]->img}}" width="100" alt="">
-                      {{-- <img src="https://macademiagroup.com/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt=""> --}}
+                      {{-- <img src="/storage/classified/cars/{{$car->stock_id}}/{{$car->gallery[0]->img}}" alt=""> --}}
                       <h3>{{ $part->vwidth }}</h3>
                   </div>
                 </a>

@@ -27,6 +27,11 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class CardashController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['load_auth']);
+    }
+
     /**
      * Display a listing of the resource.
      *

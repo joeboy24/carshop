@@ -4,7 +4,7 @@
         @foreach ($parts as $part)
             @if ($part->del != 'yes' || $part->status != 'Inactive')
                 @for ($i = 0; $i < count($part->gallery); $i++)
-                    <img src="https://macademiagroup.com/storage/classified/parts/{{$part->stock_id}}/{{$part->gallery[$i]->img}}" alt="">
+                    <img src="/storage/classified/parts/{{$part->stock_id}}/{{$part->gallery[$i]->img}}" alt="">
                 @endfor
             @endif
         @endforeach

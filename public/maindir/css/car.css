@@ -426,6 +426,10 @@ body input:focus, .ds:focus, button:focus {
   padding: 10px 3px;
 }
 
+.home_contact a {
+  color: #fff;
+}
+
 .home_copyright {
   margin: -10px 0 10px 0;
 }

@@ -16,7 +16,7 @@
                 {{-- <a href="/cars/{{$part->id}}"> --}}
                 <a href="/more_parts">
                     <div class="col_25 car_thumb">
-                      <img src="https://macademiagroup.com/storage/classified/parts/{{$part->stock_id}}/{{$part->gallery[0]->img}}" alt="">
+                      <img src="/storage/classified/parts/{{$part->stock_id}}/{{$part->gallery[0]->img}}" alt="">
                       <h6>{{ $part->name }}</h6>
                   </div>
                 </a>

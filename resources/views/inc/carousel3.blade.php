@@ -129,7 +129,7 @@
             @if ($i == 0)
                 <div class="item active">
                     <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
-                        <img src="https://macademiagroup.com/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
+                        <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
                         
                         <h3 class="flash_price_tag">PRICE ${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
                         
@@ -142,7 +142,7 @@
             @else
                 <div class="item">
                     <a href="/cars/{{$flash_deals[$i]->id}}"><div class="cust_col car_thumb">
-                        <img src="https://macademiagroup.com/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
+                        <img src="/storage/classified/cars/{{$flash_deals[$i]->stock_id}}/{{$flash_deals[$i]->gallery[0]->img}}" class="img-responsive">
                         
                         <h3 class="flash_price_tag">PRICE ${{ number_format($flash_deals[$i]->price+(($flash_deals[$i]->flash/100)*$flash_deals[$i]->price)) }}</h3>
                         

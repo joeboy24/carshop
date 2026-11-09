@@ -14,6 +14,11 @@ use Session;
 
 class CarsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['load_auth']);
+    }
+
     /**
      * Display a listing of the resource.
      *

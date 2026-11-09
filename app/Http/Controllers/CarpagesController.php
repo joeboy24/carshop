@@ -14,7 +14,6 @@ use App\Models\Service;
 use App\Models\Inquire;
 use App\Models\Submodel;
 use App\Models\Variable;
-use Session;
 
 class CarpagesController extends Controller
 {
@@ -24,10 +23,6 @@ class CarpagesController extends Controller
     }
 
     public function car_dashboard(){
-        session::put('about', About::find(1));
-        session::put('company', Company::find(1));
-        session::put('cars', Car::where('del', 'no')->limit(3)->get());
-
         $patch = [
             'c' => 1,
             'pays' => '12,000',
@@ -67,10 +62,6 @@ class CarpagesController extends Controller
     }
 
     public function car_new_entry(){
-        session::put('about', About::find(1));
-        session::put('company', Company::find(1));
-        session::put('cars', Car::where('del', 'no')->limit(3)->get());
-
         $types = Type::where('status', 'active')->get();
         $makes = Make::orderBy('model_name', 'ASC')->get();
         $submodels = Submodel::orderBy('sub_name', 'ASC')->get();

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>MacademiaGroup</title>
+    <title>{{ optional(session('company'))->name ?: 'Car Shop' }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -39,15 +39,15 @@
     
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-        @if (session('company') != '')
-          <img class="sch_logo" src="/storage/classified/company/{{session('company')->logo}}">
-          <a class="navbar-brand" href="/">{{session('company')->abrv}}<span></span>
-            <p class="sch_name">{{session('company')->name}}</p>
+        @if (session('company'))
+          <img class="sch_logo" src="{{ session('company')->logo ? '/storage/classified/company/'.session('company')->logo : '/maindir/images/pivo.png' }}" alt="{{ session('company')->name }}">
+          <a class="navbar-brand" href="/">{{ session('company')->abrv }}<span></span>
+            <p class="sch_name">{{ session('company')->name }}</p>
           </a>
         @else
-          <img class="sch_logo" src="/maindir/images/pivo.png">
-          <a class="navbar-brand" href="/">Company<span>Name</span>
-            <p class="sch_name">Company Fullname Here</p>
+          <img class="sch_logo" src="/maindir/images/pivo.png" alt="">
+          <a class="navbar-brand" href="/">Car Shop<span></span>
+            <p class="sch_name">Vehicles and parts</p>
           </a>
         @endif
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-align-right"></span>
@@ -56,7 +56,7 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 
-            @yield('navlist')
+            @include('inc.storefront_nav')
 
 	        </ul>
 	      </div>
@@ -76,30 +76,31 @@
             <div class="col-md-3">
               <h6>Company</h6>
               <a href="/"><p>Home</p></a>
-              <a href="/about"><p>About Us?</p></a>
-              <a href="/how_to_buy"><p>How to buy</p></a>
-              {{-- <a href="#"><p>News & Promos</p></a> --}}
+              <a href="/about"><p>About Us</p></a>
               <a href="/services"><p>Services</p></a>
-              <a href="/about#contact"><p>Contact</p></a>
+              <a href="/contact"><p>Contact</p></a>
             </div>
 
             <div class="col-md-3 footer_brand">
               <h6>Available</h6>
-              @if (count(session('avail')) > 0)
-                @foreach (session('avail') as $item)
-                  <a href="/cardash/1"><p>{{$item->make->model_name}}</p></a>
+              @if (session('avail') && count(session('avail')) > 0)
+                @foreach (session('avail') as $make)
+                  <a href="/cardash/{{ $make->id }}"><p>{{ $make->model_name }}</p></a>
                 @endforeach
               @else
-                <a href="#"><p>Nothing here...</p></a>
+                <a href="/more_makes"><p>View makes</p></a>
               @endif
             </div>
 
             <div class="col-md-6 footer_cars">
               <h6>About Us</h6>
-              @if (session('about'))
-                <a href="/about"><p>{{session('about')->title.' '.substr(session('about')->body, 0, 100)}}...</p></a>
+              @if (session('about') && (session('about')->title || session('about')->body))
+                @php
+                  $aboutText = trim(session('about')->title.' '.strip_tags(session('about')->body ?? ''));
+                @endphp
+                <a href="/about"><p>{{ \Illuminate\Support\Str::limit($aboutText, 140) }}</p></a>
               @else
-                <a href="#"><p>Text goes here...</p></a>
+                <a href="/about"><p>Read about us</p></a>
               @endif
               <!--a href="#"><p>FAQ's</p></a>
               <a href="#"><p>Information</p></a>
@@ -111,11 +112,13 @@
         
         <div class="col-md-5 footer_right">
           
-          @if (session('company') != '')
-            <img src="/storage/classified/company/{{session('company')->logo}}" style="width: 60px" alt="">
-            <h3 class="ftco-heading-2" style="color: #fff">{{session('company')->abrv}}</h3>
-            <p class="home_copyright">Copyright © {{date('Y')}} {{session('company')->abrv}}</p>
-            <p class="home_contact">{{session('company')->contact}}</p>
+          @if (session('company'))
+            <img src="{{ session('company')->logo ? '/storage/classified/company/'.session('company')->logo : '/maindir/images/pivo.png' }}" style="width: 60px" alt="{{ session('company')->name }}">
+            <h3 class="ftco-heading-2" style="color: #fff">{{ session('company')->abrv }}</h3>
+            <p class="home_copyright">Copyright © {{ date('Y') }} {{ session('company')->abrv ?: session('company')->name }}</p>
+            @if (session('company')->contact)
+              <p class="home_contact"><a href="tel:{{ session('company')->contact }}">{{ session('company')->contact }}</a></p>
+            @endif
           @endif
           <ul class="ftco-footer-social list-unstyled float-md-left float-lft ">
             <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
