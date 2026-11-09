@@ -28,14 +28,18 @@ class PagesController extends Controller
             'types' => Type::all(),
             'makes' => Make::orderBy('id', 'ASC')->limit(15)->get(),
             'parts' => Car::with('gallery')->where('del', 'vpart')->orderBy('id', 'DESC')->limit(4)->get(),
-            'flash_deals' => Car::with('gallery')->where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(10)->get(),
+            'flash_deals' => Car::with(['make', 'submodel', 'gallery'])->where('del', 'no')->where('flash', '!=', '0')->orderBy('id', 'DESC')->limit(16)->get(),
             'cars' => Car::with(['make', 'submodel', 'gallery'])
                 ->where('del', 'no')
-                ->where('promote', 'yes')
-                ->where('flash', '0')
                 ->orderBy('id', 'DESC')
-                ->limit(10)
-                ->get(),
+                ->limit(40)
+                ->get()
+                ->sortBy(function ($car) {
+                    $promoted = ($car->promote === 'yes' && !$car->flash) ? 0 : 1;
+
+                    return sprintf('%d-%010d', $promoted, PHP_INT_MAX - $car->id);
+                })
+                ->values(),
         ];
         return view('car_index')->with($patch);
     }

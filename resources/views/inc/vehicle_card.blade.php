@@ -12,7 +12,7 @@
     <span class="vehicle_card_photo">
         <img src="{{ $photoUrl }}" alt="">
         @if ($car->flash)
-            <span class="flash_tag">{{ $car->flash }}% off</span>
+            <span class="flash_tag"><strong>{{ $car->flash }}%</strong><em>off</em></span>
         @endif
         @if (($car->status ?? null) == 'Sold')
             <span class="sold_tag">Sold</span>

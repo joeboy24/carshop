@@ -99,9 +99,9 @@
       </div>
 
       @php $shown = 0; @endphp
-      <div class="vehicle_grid">
+      <div class="vehicle_grid vehicle_grid_wide">
         @foreach ($cars as $car)
-          @if (optional($car->gallery->first())->img)
+          @if ($shown < 12 && optional($car->gallery->first())->img)
             @php $shown++; @endphp
             @include('inc.vehicle_card')
           @endif
