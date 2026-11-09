@@ -13,7 +13,7 @@
     <div class="cms_page">
         @include('inc.messages')
         <div class="cms_head">
-            <h1>Dashboard</h1>
+            <h1><i class="fa fa-th-large"></i>Dashboard</h1>
             <p>Vehicles, parts, inquiries, and the pages on the public site.</p>
         </div>
         <div class="cms_stats">

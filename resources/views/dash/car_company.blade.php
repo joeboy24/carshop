@@ -50,6 +50,13 @@
                 <label>Website
                     <input type="text" name="company_web" value="{{ $company->website ?? '' }}" placeholder="https://">
                 </label>
+                <label>Live chat
+                    <select name="chat">
+                        <option value="on" {{ ($company->chat ?? 'on') !== 'off' ? 'selected' : '' }}>On</option>
+                        <option value="off" {{ ($company->chat ?? 'on') === 'off' ? 'selected' : '' }}>Off</option>
+                    </select>
+                    <span class="cms_hint">The chat button on the public site.</span>
+                </label>
                 <label class="wide">Logo
                     <input type="file" name="company_logo" accept="image/png,image/jpeg">
                     <span class="cms_hint">PNG or JPEG. Leave this empty to keep the current logo.</span>

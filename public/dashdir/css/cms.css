@@ -428,14 +428,14 @@ body,
     height: 42px;
     flex: 0 0 42px;
     border-radius: 12px;
-    background: #f3f4f6;
-    color: #1c1c1c;
+    background: #fff1ec;
+    color: rgb(255, 76, 31) !important;
     font-size: 16px;
 }
 
 .cms_tile:hover i {
     background: #1c1c1c;
-    color: #fff;
+    color: #fff !important;
 }
 
 .cms_tile span {
@@ -763,12 +763,14 @@ tr.is_deleted .cms_record {
 
 .cms_list_head h1 i,
 .cms_form_head h1 i,
+.cms_head h1 i,
 .cms_mark {
     color: rgb(255, 76, 31);
 }
 
 .cms_list_head h1 i,
-.cms_form_head h1 i {
+.cms_form_head h1 i,
+.cms_head h1 i {
     margin-right: 8px;
     font-size: 0.72em;
 }

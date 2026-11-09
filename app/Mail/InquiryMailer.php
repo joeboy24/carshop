@@ -35,7 +35,7 @@ class InquiryMailer extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'A message from MACADEMIA',
+            subject: 'A message from '.(optional(session('company'))->abrv ?: optional(session('company'))->name ?: 'us'),
         );
     }
 

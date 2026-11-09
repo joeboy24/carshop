@@ -157,7 +157,9 @@ Route::post('importExcel', 'MaatwebsiteController@importExcel');
 Route::get('/staff', 'PagesController@staff');
 // Route::get('/student', 'PagesController@student');
 Route::get('/code80', 'PagesController@code80');
-Auth::routes(['register' => false]);
+Route::middleware('load_auth')->group(function () {
+    Auth::routes(['register' => false]);
+});
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', function () {
     return redirect(url()->previous());

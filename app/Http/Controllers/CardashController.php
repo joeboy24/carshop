@@ -208,6 +208,7 @@ class CardashController extends Controller
 
                         $company->email = $request->input('email');
                         $company->website = $request->input('company_web');
+                        $company->chat = $request->input('chat') === 'off' ? 'off' : 'on';
                         $company->reg_date = Date('d-m-Y');
                         $company->logo = $filenameToStore;
 
@@ -256,6 +257,7 @@ class CardashController extends Controller
 
                         $company->email = $request->input('email');
                         $company->website = $request->input('company_web');
+                        $company->chat = $request->input('chat') === 'off' ? 'off' : 'on';
                         $company->reg_date = Date('d-m-Y');
                         $company->logo = $filenameToStore;
 
@@ -681,8 +683,12 @@ class CardashController extends Controller
                     ]);
                     InquiryGuard::record($request);
 
+                    $company = session('company');
+                    $reached = $company && $company->website
+                        ? preg_replace('#^https?://#', '', rtrim($company->website, '/'))
+                        : ($company->name ?? 'us');
                     Session::put('mailTo', $inquire->name);
-                    Session::put('mailMsg', 'Thank you for contacting macademiagroup.com. Our customer service team will reach out to you in less than 24 hours.');
+                    Session::put('mailMsg', 'Thank you for contacting '.$reached.'. Our customer service team will reach out to you in less than 24 hours.');
                     Mail::to($inquire->email)->send(new InquiryResponse);
 
                 } catch (\Throwable $th) {

@@ -28,6 +28,15 @@ class InquiryResponse extends Mailable
      */
     public function build()
     {
-        return $this->subject('A message from MACADEMIA')->view('mail.inquiry_response');
+        $company = session('company');
+        $brand = optional($company)->abrv ?: optional($company)->name ?: 'us';
+        $fromName = optional($company)->name ?: optional($company)->abrv;
+
+        $message = $this->subject('A message from '.$brand)->view('mail.inquiry_response');
+        if ($fromName) {
+            $message->from(config('mail.from.address'), $fromName);
+        }
+
+        return $message;
     }
 }

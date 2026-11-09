@@ -8,7 +8,7 @@
 
         <li class="sidebar-item {{ request()->is('car_dashboard') ? 'active' : '' }}">
             <a href="/car_dashboard" class="sidebar-link">
-                <i class="bi bi-grid-fill"></i>
+                <i class="fa fa-th-large"></i>
                 <span>Dashboard</span>
             </a>
         </li>

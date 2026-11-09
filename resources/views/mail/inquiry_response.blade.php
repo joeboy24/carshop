@@ -2,8 +2,8 @@
     $who = session('mailTo');
     $note = (string) session('mailMsg');
     $company = session('company');
-    $brand = $company && $company->abrv ? $company->abrv : 'MACADEMIA';
-    $legal = $company && $company->name ? $company->name : 'MACADEMIA GROUP COMPANY LIMITED';
+    $brand = $company && $company->abrv ? $company->abrv : ($company->name ?? '');
+    $legal = $company && $company->name ? $company->name : $brand;
     $line1 = $legal;
     $line2 = '';
     if (preg_match('/^(.*)\s+(LIMITED)$/i', trim($legal), $nameLines)) {
@@ -17,7 +17,7 @@
             $logo = rtrim(config('app.url'), '/').$logo;
         }
     }
-    $site = $company && $company->website ? $company->website : 'https://macademiagroup.com/';
+    $site = $company && $company->website ? $company->website : '';
     $phones = $company && $company->contact ? preg_split('/\s*\/\s*/', $company->contact) : [];
 @endphp
 <!DOCTYPE html>
@@ -75,7 +75,7 @@
                         <td class="email-text" style="padding:24px 32px 28px;color:#1c1c1c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.65;">
                             <p style="margin:0 0 16px;">Hi {{ $who ?: 'there' }},</p>
                             <p style="margin:0 0 16px;">{!! nl2br(e($note)) !!}</p>
-                            <p style="margin:0;">Best regards<br><strong>{{ $brand }}</strong></p>
+                            <p style="margin:0;">Best regards@if ($brand)<br><strong>{{ $brand }}</strong>@endif</p>
                         </td>
                     </tr>
                     <tr>
@@ -96,7 +96,9 @@
                             @if ($company && $company->email)
                                 <p style="margin:0;"><a class="email-link" href="mailto:{{ $company->email }}" style="color:#ff4c1f;text-decoration:none;">{{ $company->email }}</a></p>
                             @endif
-                            <p style="margin:8px 0 0;"><a class="email-link" href="{{ $site }}" style="color:#ff4c1f;text-decoration:none;">{{ preg_replace('#^https?://#', '', rtrim($site, '/')) }}</a></p>
+                            @if ($site !== '')
+                                <p style="margin:8px 0 0;"><a class="email-link" href="{{ $site }}" style="color:#ff4c1f;text-decoration:none;">{{ preg_replace('#^https?://#', '', rtrim($site, '/')) }}</a></p>
+                            @endif
                         </td>
                     </tr>
                 </table>

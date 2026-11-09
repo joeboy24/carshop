@@ -43,8 +43,8 @@
           $companyLogo = session('company') && session('company')->logo
             ? \App\Support\Media::url('classified/company/'.session('company')->logo)
             : null;
-          $brand = session('company')->abrv ?? 'Car Shop';
-          $brandName = session('company')->name ?? 'Vehicles and parts';
+          $brand = optional(session('company'))->abrv ?: optional(session('company'))->name;
+          $brandName = optional(session('company'))->name;
         @endphp
         <a class="nav_brand" href="/">
           @if ($companyLogo)
@@ -103,8 +103,8 @@
                 <span class="nav_mark" aria-hidden="true"><i class="fa fa-car"></i></span>
               @endif
               <span>
-                <strong>{{ $company->abrv ?? 'MACADEMIA' }}</strong>
-                <em>{{ $company->name ?? 'Vehicles and parts' }}</em>
+                <strong>{{ optional($company)->abrv ?: optional($company)->name }}</strong>
+                <em>{{ optional($company)->name }}</em>
               </span>
             </a>
             @if ($aboutText !== '')
@@ -152,7 +152,7 @@
         </div>
 
         <div class="site_footer_bar">
-          <p>Copyright © {{ date('Y') }} {{ $company->abrv ?? ($company->name ?? 'MACADEMIA') }}@if ($company && $company->location) <span>{{ $company->location }}</span>@endif</p>
+          <p>Copyright © {{ date('Y') }} {{ optional($company)->abrv ?: optional($company)->name }}@if ($company && $company->location) <span>{{ $company->location }}</span>@endif</p>
         </div>
       </div>
     </footer>
@@ -231,7 +231,7 @@
     <script src="/maindir/js/google-map.js"></script>
     <script src="/maindir/js/main.js"></script>
 
-    <!--Start of Tawk.to Script-->
+    @if (optional(session('company'))->chat !== 'off')
     <script type="text/javascript">
       var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
       (function(){
@@ -243,7 +243,7 @@
       s0.parentNode.insertBefore(s1,s0);
       })();
     </script>
-    <!--End of Tawk.to Script-->
+    @endif
     
   </body>
 </html>

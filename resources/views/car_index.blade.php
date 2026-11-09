@@ -17,7 +17,7 @@
     <div class="container home_hero_copy">
       <p class="home_kicker">
         <span class="home_kicker_full">{{ $companyName }}</span>
-        <span class="home_kicker_short">{{ optional(session('company'))->abrv ?: 'Macademia' }}</span>
+        <span class="home_kicker_short">{{ optional(session('company'))->abrv ?: $companyName }}</span>
       </p>
       <h1>Find a vehicle</h1>
       <p class="home_lead">Search vehicle or parts <span class="home_lead_break"></span>By make, type, year, or stock id.</p>
