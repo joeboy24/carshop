@@ -583,6 +583,43 @@ body,
     background: #f3f4f6;
 }
 
+.cms_fields input[type="file"] {
+    height: auto;
+    padding: 8px 12px;
+}
+
+.cms_hint {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.cms_split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+}
+
+.cms_brand_preview {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: #f7f7f7;
+}
+
+.cms_record.cms_setting {
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+}
+
+.cms_record.cms_setting img {
+    width: 56px;
+    height: 40px;
+    object-fit: contain;
+    background: #f7f7f7;
+}
+
 .cms_fields input:focus,
 .cms_fields select:focus,
 .cms_fields textarea:focus,
@@ -1000,6 +1037,7 @@ tr.is_deleted .cms_record {
     }
 
     .cms_fields,
+    .cms_split,
     #main .modal-body {
         grid-template-columns: 1fr;
     }

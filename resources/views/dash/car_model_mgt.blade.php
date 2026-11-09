@@ -1,8 +1,7 @@
-
 @extends('layouts.dashlay')
 
 @section('header_nav')
-    @include('inc.header_nav')  
+    @include('inc.header_nav')
 @endsection
 
 @section('sidebar_menu')
@@ -10,422 +9,179 @@
 @endsection
 
 @section('content')
-
-
-    <div class="page-heading">
-        <h3><i class="fa fa-align-center color4"></i>&nbsp;&nbsp;Car Model Mgt.</h3>
-        {{-- <a href="/emp_report"><p class="print_report">&nbsp;<i class="fa fa-print"></i>&nbsp; Print Emp. Report</p></a>
-        <a href="#"><button type="submit" class="print_btn_small"><i class="fa fa-refresh"></i></button></a> --}}
+<div class="cms_page cms_wide">
+    @include('inc.messages')
+    <div class="cms_list_head">
+        <div>
+            <h1><i class="fa fa-car"></i>Makes and models</h1>
+            <p>Makes shown in the public finder, and the models under each make.</p>
+        </div>
     </div>
 
-    <div class="row">
-        @include('inc.messages') 
+    <div class="cms_split">
+        <div>
+            <form action="{{ action('CardashController@store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <section class="cms_panel">
+                    <h2>New make</h2>
+                    <div class="cms_fields">
+                        <label>Name
+                            <input type="text" name="model_name" placeholder="Toyota" required>
+                        </label>
+                        <label>Code
+                            <input type="text" name="model_code" placeholder="TYT" required>
+                        </label>
+                        <label class="wide">Logo
+                            <input type="file" name="pass_photo" accept="image/png,image/jpeg" required>
+                            <span class="cms_hint">32 × 32 PNG with a transparent background.</span>
+                        </label>
+                    </div>
+                    <button type="submit" name="store_action" value="add_make" class="cms_save">Save make</button>
+                </section>
+            </form>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    {{-- <p>&nbsp;</p> --}}
-                    <h6>Add Model</h6>
-                    <!-- Add Model -->
-                    <form action="{{ action('CardashController@store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                
-                        <div class="filter_div" id="newtitle">
-                            <i class="fa fa-car"></i> &nbsp; Name
-                            <input type="text" name="model_name" required>
-                        </div>
-                
-                        <div class="filter_div" id="newtitle">
-                            <i class="fa fa-calculator"></i> &nbsp; Code
-                            <input type="text" name="model_code" required>
-                        </div>
-                    
-                        <div class="filter_div">
-                            <i class="fa fa-camera"></i> &nbsp; Logo
-                            <input type="file" name="pass_photo" required>
-                        </div>
-                        <p class="small_p">Note: Logo Size: 32 x 32 .png(Transparent Background)</p>
+            @if ($makes_page->count() > 0)
+                <div class="cms_records">
+                    @foreach ($makes_page as $make)
+                        <article class="cms_record cms_setting">
+                            <img src="{{ \App\Support\Media::url('classified/makes/'.$make->logo) }}" alt="">
+                            <div>
+                                <div class="cms_record_top">
+                                    <h2>{{ $make->model_name }}</h2>
+                                    <span class="cms_pill {{ $make->status == 'active' ? 'on' : '' }}">{{ $make->status == 'active' ? 'Active' : 'Inactive' }}</span>
+                                </div>
+                                <p>{{ $make->model_code }}</p>
+                            </div>
+                            <button type="button" class="cms_icon_btn" data-bs-toggle="modal" data-bs-target="#edit{{ $make->id }}" title="Edit"><i class="fa fa-pencil"></i></button>
+                        </article>
 
-                        <div class="form-group modal_footer">
-                            <button type="submit" name="store_action" value="add_make" class="load_btn"><i class="fa fa-save"></i>&nbsp; Save Model</button>
-                        </div>
-
-                    </form>
-
-                    <p>&nbsp;</p>
-                    <!-- Make View -->
-                    @if (count($makes) != 0)
-                        <div class="table-responsive">
-                            <h6>All Models</h6>
-                            <table class="table mb-0 table-lg">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Model Name</th>
-                                        <th>Logo</th>
-                                        <th>Code</th>
-                                        <th class="align_right">Action</th>
-                                    </tr>
-                                </thead>   
-                                <tbody>
-                                    @foreach ($makes_page as $make)
-                                        
-                                        @if ($c % 2 == 1)
-                                            <tr class="bg9">
-                                        @else
-                                            <tr>
-                                        @endif
-                                            <td class="text-bold-500">{{$c++}}</td>
-                                            <td class="text-bold-500">{{$make->model_name}}<br>
-                                                <p class="small_p">Logo: {{$make->logo}}</p>
-                                            </td>
-                                            <td class="text-bold-500"><img src="/storage/classified/makes/{{$make->logo}}" width="30" alt=""></td>
-                                            <td class="text-bold-500">{{ $make->model_code }}</td>
-                                            <td class="text-bold-500 align_right">
-
-                                                <form action="{{ action('CardashController@update', $make->id) }}" method="POST">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_method" value="PUT">
-                                                    @csrf
-                                                    
-                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{$make->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
-
-                                                </form>
-
-                                            </td>
-                                        </tr>
-
-                                        <!-- Update Make -->
-                                        <div class="modal fade" id="edit{{$make->id}}" tabindex="-1" role="dialog"
-                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                                                role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalCenterTitle">
-                                                            Edit Make Here
-                                                        </h5>
-                                                        <button type="button" class="close" data-bs-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </div>
-                                                    <form action="{{ action('CardashController@update', $make->id) }}" method="POST">
-                                                        <input type="hidden" name="_method" value="PUT">
-                                                        @csrf
-                                                        <div class="modal-body">
-                
-                                                            <div class="filter_div" id="newtitle">
-                                                                <i class="fa fa-car"></i> &nbsp; Name
-                                                                <input type="text" name="model_name" value="{{ $make->model_name }}" required>
-                                                            </div>
-                                                    
-                                                            <div class="filter_div" id="newtitle">
-                                                                <i class="fa fa-calculator"></i> &nbsp; Code
-                                                                <input type="text" name="model_code" value="{{ $make->model_code }}" required>
-                                                            </div>
-                
-                                                            <div class="filter_div" id="">
-                                                                <i class="fa fa-car"></i> &nbsp; Status
-                                                                <select name="status" id="" onchange="">
-                                                                    @if ($make->status == 'active')
-                                                                        <option value="active" selected>Active</option>
-                                                                        <option value="inactive">Inactive</option>
-                                                                    @else
-                                                                        <option value="active">Active</option>
-                                                                        <option value="inactive" selected>Inactive</option>
-                                                                    @endif
-                                                                </select>
-                                                            </div>
-                                                            
-                                                        </div> 
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span>
-                                                            </button>
-                                                            <button type="submit" name="update_action" value="update_make" class="btn btn-primary me-1 mb-1">Update</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                        <div class="modal fade" id="edit{{ $make->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit {{ $make->model_name }}</h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                                    </div>
+                                    <form action="{{ action('CardashController@update', $make->id) }}" method="POST">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="cms_fields">
+                                                <label>Name
+                                                    <input type="text" name="model_name" value="{{ $make->model_name }}" required>
+                                                </label>
+                                                <label>Code
+                                                    <input type="text" name="model_code" value="{{ $make->model_code }}" required>
+                                                </label>
+                                                <label>Status
+                                                    <select name="status">
+                                                        <option value="active" {{ $make->status == 'active' ? 'selected' : '' }}>Active</option>
+                                                        <option value="inactive" {{ $make->status != 'active' ? 'selected' : '' }}>Inactive</option>
+                                                    </select>
+                                                </label>
                                             </div>
                                         </div>
-
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                        <div class="modal-footer">
+                                            <button type="submit" name="update_action" value="update_make" class="cms_save">Update make</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        {{ $makes_page->links() }}
-                    @else
-                        <div class="alert alert-danger">
-                            No Models Available
-                        </div>
-                    @endif
-
+                    @endforeach
                 </div>
-            </div>
+                {{ $makes_page->links() }}
+            @else
+                <p class="cms_empty">No makes yet.</p>
+            @endif
         </div>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h6>Add Sub Model</h6>
-                    <!-- Add Model -->
-                    <form action="{{ action('CardashController@store') }}" method="POST">
-                        @csrf
-                
-                        <div class="filter_div" id="">
-                            <i class="fa fa-edit"></i> &nbsp; Model
-                            <select name="make_id" id="" onchange="" required>
+        <div>
+            <form action="{{ action('CardashController@store') }}" method="POST">
+                @csrf
+                <section class="cms_panel">
+                    <h2>New model</h2>
+                    <div class="cms_fields">
+                        <label class="wide">Make
+                            <select name="make_id" required>
                                 @foreach ($makes as $item)
-                                    <option value="{{$item->id}}">{{$item->model_name}}</option>
+                                    <option value="{{ $item->id }}">{{ $item->model_name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                
-                        <div class="filter_div" id="newtitle">
-                            <i class="fa fa-car"></i> &nbsp; Sub Name
-                            <input type="text" name="sub_name" required>
-                        </div>
-                
-                        <div class="filter_div" id="newtitle">
-                            <i class="fa fa-calculator"></i> &nbsp; Code
-                            <input type="text" name="sub_code" required>
-                        </div>
+                        </label>
+                        <label>Model
+                            <input type="text" name="sub_name" placeholder="Corolla" required>
+                        </label>
+                        <label>Code
+                            <input type="text" name="sub_code" placeholder="CRL" required>
+                        </label>
+                    </div>
+                    <button type="submit" name="store_action" value="add_submodel" class="cms_save">Save model</button>
+                </section>
+            </form>
 
-                        <div class="form-group modal_footer">
-                            <button type="submit" name="store_action" value="add_submodel" class="load_btn"><i class="fa fa-save"></i>&nbsp; Save Sub Model</button>
-                        </div>
+            @if ($submodels_page->count() > 0)
+                <div class="cms_records">
+                    @foreach ($submodels_page as $subm)
+                        <article class="cms_record cms_note">
+                            <span class="cms_mark"><i class="fa fa-car"></i></span>
+                            <div>
+                                <div class="cms_record_top">
+                                    <h2>{{ optional($subm->make)->model_name }} {{ $subm->sub_name }}</h2>
+                                    <span class="cms_pill {{ $subm->status == 'active' ? 'on' : '' }}">{{ $subm->status == 'active' ? 'Active' : 'Inactive' }}</span>
+                                </div>
+                                <p>{{ $subm->sub_code }}</p>
+                            </div>
+                            <button type="button" class="cms_icon_btn" data-bs-toggle="modal" data-bs-target="#editsub{{ $subm->id }}" title="Edit"><i class="fa fa-pencil"></i></button>
+                        </article>
 
-                    </form>
-
-                    <p>&nbsp;</p>
-                    <!-- Submodel View -->
-                    @if (count($submodels) != 0)
-                        <div class="table-responsive">
-                            <h6>Add Sub Models</h6>
-                            <table class="table mb-0 table-lg">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Sub Name</th>
-                                        <th>Sub Code</th>
-                                        <th class="align_right">Action</th>
-                                    </tr>
-                                </thead>   
-                                <tbody>
-                                    @foreach ($submodels_page as $subm)
-                                        
-                                        @if ($c % 2 == 1)
-                                            <tr class="bg9">
-                                        @else
-                                            <tr>
-                                        @endif
-                                            <td class="text-bold-500">{{$y++}}</td>
-                                            <td class="text-bold-500">{{ $subm->make->model_name.' '.$subm->sub_name }}</td>
-                                            <td class="text-bold-500">{{ $subm->sub_code }}</td>
-                                            <td class="text-bold-500 align_right">
-
-                                                <form action="{{ action('HrdashController@update', $subm->id) }}" method="POST">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_method" value="PUT">
-                                                    @csrf
-                                                    
-                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#editsub{{$subm->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
-
-                                                </form>
-
-                                            </td>
-                                        </tr>
-
-                                        <!-- Update Salary Category -->
-                                        <div class="modal fade" id="editsub{{$subm->id}}" tabindex="-1" role="dialog"
-                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                                                role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalCenterTitle">
-                                                            Edit Sub Model Here
-                                                        </h5>
-                                                        <button type="button" class="close" data-bs-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </div>
-                                                    <form action="{{ action('CardashController@update', $subm->id) }}" method="POST">
-                                                        <input type="hidden" name="_method" value="PUT">
-                                                        @csrf
-                                                        <div class="modal-body">
-
-                                                            <div class="filter_div" id="">
-                                                                <i class="fa fa-edit"></i> &nbsp; Model
-                                                                <select name="make_id" id="" onchange="" required>
-                                                                    @foreach ($makes as $item)
-                                                                        @if ($item->id == $subm->make_id)
-                                                                            <option value="{{$item->id}}" selected>{{$item->model_name}}</option>
-                                                                        @else
-                                                                            <option value="{{$item->id}}">{{$item->model_name}}</option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                
-                                                            <div class="filter_div" id="newtitle">
-                                                                <i class="fa fa-car"></i> &nbsp; Sub Name
-                                                                <input type="text" name="sub_name" value="{{$subm->sub_name}}" required>
-                                                            </div>
-                                                    
-                                                            <div class="filter_div" id="newtitle">
-                                                                <i class="fa fa-calculator"></i> &nbsp; Code
-                                                                <input type="text" name="sub_code" value="{{$subm->sub_code}}" required>
-                                                            </div>
-                
-                                                            <div class="filter_div" id="">
-                                                                <i class="fa fa-car"></i> &nbsp; Status
-                                                                <select name="status" id="" onchange="">
-                                                                    @if ($subm->status == 'active')
-                                                                        <option value="active" selected>Active</option>
-                                                                        <option value="inactive">Inactive</option>
-                                                                    @else
-                                                                        <option value="active">Active</option>
-                                                                        <option value="inactive" selected>Inactive</option>
-                                                                    @endif
-                                                                </select>
-                                                            </div>
-                                                            
-                                                        </div> 
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span>
-                                                            </button>
-                                                            <button type="submit" name="update_action" value="update_submodel" class="btn btn-primary me-1 mb-1">Update</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                        <div class="modal fade" id="editsub{{ $subm->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit {{ $subm->sub_name }}</h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                                    </div>
+                                    <form action="{{ action('CardashController@update', $subm->id) }}" method="POST">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="cms_fields">
+                                                <label class="wide">Make
+                                                    <select name="make_id" required>
+                                                        @foreach ($makes as $item)
+                                                            <option value="{{ $item->id }}" {{ $item->id == $subm->make_id ? 'selected' : '' }}>{{ $item->model_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </label>
+                                                <label>Model
+                                                    <input type="text" name="sub_name" value="{{ $subm->sub_name }}" required>
+                                                </label>
+                                                <label>Code
+                                                    <input type="text" name="sub_code" value="{{ $subm->sub_code }}" required>
+                                                </label>
+                                                <label>Status
+                                                    <select name="status">
+                                                        <option value="active" {{ $subm->status == 'active' ? 'selected' : '' }}>Active</option>
+                                                        <option value="inactive" {{ $subm->status != 'active' ? 'selected' : '' }}>Inactive</option>
+                                                    </select>
+                                                </label>
                                             </div>
                                         </div>
-
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        {{ $submodels_page->links() }}
-                    @else
-                        <div class="alert alert-danger">
-                            No Sub-Models Available
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    {{-- {{ $departments->links() }}
-    <div class="row">
-        <div class="col-12 col-xl-10">
-            <div class="card">
-                <div class="card-body">
-
-                    <p>&nbsp;</p>
-                    <div class="col-md-10 offset-md-1">
-                        <!-- Leaves View -->
-                        <div class="table-responsive">
-                            @if (count($departments) > 0)
-                                <table class="table mb-0 table-lg">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th class="align_right">Action</th>
-                                        </tr>
-                                    </thead>   
-                                    <tbody>
-                                        @foreach ($departments as $dept)
-                                            
-                                            @if ($c % 2 == 1)
-                                                <tr class="bg9">
-                                            @else
-                                                <tr>
-                                            @endif
-                                                <td class="text-bold-500">{{$c++}}</td>
-                                                <td class="text-bold-500">{{ $dept->dept_name }}</td>
-                                                <td class="text-bold-500 align_right">
-
-                                                    <form action="{{ action('HrdashController@update', $dept->id) }}" method="POST">
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <input type="hidden" name="_method" value="PUT">
-                                                        @csrf
-                                                        
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{$dept->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
-
-                                                    </form>
-
-                                                </td>
-                                            </tr>
-
-                                            <!-- Update Salary Category -->
-                                            <div class="modal fade" id="edit{{$dept->id}}" tabindex="-1" role="dialog"
-                                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTitle">
-                                                                Edit Department Here
-                                                            </h5>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i class="fa fa-times"></i>
-                                                            </button>
-                                                        </div>
-                                                        <form action="{{ action('CardashController@update', $dept->id) }}" method="POST">
-                                                            <input type="hidden" name="_method" value="PUT">
-                                                            @csrf
-                                                            <div class="modal-body">
-                                                                
-                                                                <div class="col-md-12">
-                                                                    <label>Department Name</label>
-                                                                    <div class="form-group has-icon-left">
-                                                                        <div class="position-relative">
-                                                                            <input name="dept_name" type="text" class="form-control" placeholder="Title" id="first-name-icon" value="{{ $dept->dept_name }}" required>
-                                                                            <div class="form-control-icon">
-                                                                                <i class="fa fa-align-center"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                            </div> 
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                    <i class="bx bx-x d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span>
-                                                                </button>
-                                                                <button type="submit" name="update_action" value="update_dept" class="btn btn-primary me-1 mb-1">Update</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $departments->links() }}
-                            @else
-                                <div class="alert alert-danger">
-                                    No Records Found
+                                        <div class="modal-footer">
+                                            <button type="submit" name="update_action" value="update_submodel" class="cms_save">Update model</button>
+                                        </div>
+                                    </form>
                                 </div>
-                            @endif
+                            </div>
                         </div>
-                    </div>
-
+                    @endforeach
                 </div>
-            </div>
+                {{ $submodels_page->links() }}
+            @else
+                <p class="cms_empty">No models yet.</p>
+            @endif
         </div>
-    </div> --}}
-        
-
+    </div>
+</div>
 @endsection
-
- 

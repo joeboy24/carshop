@@ -28,6 +28,6 @@ class InquiryResponse extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.inquiry_response');
+        return $this->subject('A message from MACADEMIA')->view('mail.inquiry_response');
     }
 }

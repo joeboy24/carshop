@@ -1,8 +1,7 @@
-
 @extends('layouts.dashlay')
 
 @section('header_nav')
-    @include('inc.header_nav')  
+    @include('inc.header_nav')
 @endsection
 
 @section('sidebar_menu')
@@ -10,224 +9,108 @@
 @endsection
 
 @section('content')
-
-
-    <div class="page-heading">
-        <h3><i class="fa fa-address-card color5"></i>&nbsp;&nbsp;Manage User</h3>
-        {{-- <a href="/emp_report"><p class="print_report">&nbsp;<i class="fa fa-print"></i>&nbsp; Print Emp. Report</p></a>
-        <a href="#"><button type="submit" class="print_btn_small"><i class="fa fa-refresh"></i></button></a> --}}
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-xl-10">
-            @include('inc.messages') 
-            <div class="card">
-                <div class="card-body">
-
-                    <p>&nbsp;</p>
-                    <div class="col-md-10 offset-md-1">
-
-                        <!-- Add Employee -->
-                        <form action="{{ action('CardashController@store') }}" method="POST">
-                            @csrf
-                    
-                            <div class="filter_div" id="">
-                                <i class="fa fa-user"></i> &nbsp; Username
-                                <input type="text" name="name" placeholder="Name" id="first-name-icon" autofocus required>
-                            </div>
-                  
-                            <div class="filter_div" id="">
-                                <i class="fa fa-envelope"></i> &nbsp; Email
-                                <input type="email" name="email" placeholder="Email" id="first-name-icon" required>
-                            </div>
-                  
-                            <div class="filter_div" id="">
-                                <i class="fa fa-phone"></i> &nbsp; Phone
-                                <input type="number" name="contact" placeholder="Mobile" required>
-                            </div>
-                  
-                            <div class="filter_div">
-                                <i class="fa fa-address-card"></i> &nbsp; Status
-                                <select name="status">
-                                  <option value="0">Select User/Administrator</option>
-                                  {{-- <option value="User">User</option> --}}
-                                  <option value="user">User</option>
-                                  <option value="admin">Administrator</option>
-                                  {{-- <option value="Administrator">Administrator</option> --}}
-                                </select>
-                            </div>
-                  
-                            <div class="filter_div" id="">
-                                <i class="fa fa-lock"></i> &nbsp; Password
-                                <input type="password" name="password" placeholder="Password" required>
-                            </div>
-                  
-                            <div class="filter_div" id="">
-                                <i class="fa fa-lock"></i> &nbsp; Confirm Ps.
-                                <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
-                            </div>
-
-                            <div class="form-group modal_footer">
-                                <button type="submit" name="store_action" value="create_user" class="load_btn"><i class="fa fa-save"></i>&nbsp; Create User</button>
-                            </div>
-
-                        </form>
-                    </div>
-
-                </div>
-            </div>
+<div class="cms_page">
+    @include('inc.messages')
+    <div class="cms_list_head">
+        <div>
+            <h1><i class="fa fa-address-card"></i>Users</h1>
+            <p>People who can sign in to this desk.</p>
         </div>
     </div>
 
-    {{ $users->links() }}
-    <div class="row">
-        <div class="col-12 col-xl-10">
-            <div class="card">
-                <div class="card-body">
+    <form action="{{ action('CardashController@store') }}" method="POST">
+        @csrf
+        <section class="cms_panel">
+            <h2>New user</h2>
+            <div class="cms_fields">
+                <label>Name
+                    <input type="text" name="name" placeholder="Name" required>
+                </label>
+                <label>Email
+                    <input type="email" name="email" placeholder="Email" required>
+                </label>
+                <label>Phone
+                    <input type="text" name="contact" placeholder="Phone" required>
+                </label>
+                <label>Role
+                    <select name="status" required>
+                        <option value="0">Select a role</option>
+                        <option value="user">User</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </label>
+                <label>Password
+                    <input type="password" name="password" placeholder="Password" required>
+                </label>
+                <label>Confirm password
+                    <input type="password" name="password_confirmation" placeholder="Confirm password" required>
+                </label>
+            </div>
+            <button type="submit" name="store_action" value="create_user" class="cms_save">Create user</button>
+        </section>
+    </form>
 
-                    <p>&nbsp;</p>
-                    <div class="col-md-10 offset-md-1">
-                        <!-- Leaves View -->
-                        <div class="table-responsive">
-                            @if (count($users) > 0)
-                                <table class="table mb-0 table-lg">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Contact</th>
-                                            <th>Status</th>
-                                            <th class="align_right">Action</th>
-                                        </tr>
-                                    </thead>   
-                                    <tbody>
-                                        @foreach ($users as $user)
-                                            @if ($user->del != 'null')
-                                                @if ($c % 2 == 1)
-                                                    <tr class="bg9">
-                                                @else
-                                                    <tr>
-                                                @endif
-                                                    <td class="text-bold-500">{{$c++}}</td>
-                                                    <td class="text-bold-500">{{ $user->name }}</td>
-                                                    <td class="text-bold-500">{{ $user->email }}</td>
-                                                    <td class="text-bold-500">{{ $user->contact }}</td>
-                                                    <td class="text-bold-500">{{ $user->status }}</td>
-                                                    {{-- <td class="text-bold-500">@if ($lv->dob != '') {{date('D.. M, d Y', strtotime($lv->dob))}} @endif</td> --}}
-                                                    <td class="text-bold-500 align_right">
+    @if ($users->count() > 0)
+        <div class="cms_records">
+            @foreach ($users as $user)
+                @if ($user->del != 'null')
+                    <article class="cms_record cms_note">
+                        <span class="cms_mark">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                        <div>
+                            <div class="cms_record_top">
+                                <h2>{{ $user->name }}</h2>
+                                <span class="cms_pill {{ $user->status == 'admin' ? 'on' : '' }}">{{ $user->status == 'admin' ? 'Administrator' : ($user->status == 'user' ? 'User' : $user->status) }}</span>
+                            </div>
+                            <p>{{ $user->email }} · {{ $user->contact }}</p>
+                        </div>
+                        <button type="button" class="cms_icon_btn" data-bs-toggle="modal" data-bs-target="#edit{{ $user->id }}" title="Edit"><i class="fa fa-pencil"></i></button>
+                    </article>
 
-                                                        <form action="{{ action('HrdashController@update', $user->id) }}" method="POST">
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_method" value="PUT">
-                                                            @csrf
-                                                            
-                                                            <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{$user->id}}" class="my_trash_small"><i class="fa fa-pencil"></i></button>
-
-                                                        </form>
-
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Update Users -->
-                                                <div class="modal fade" id="edit{{$user->id}}" tabindex="-1" role="dialog"
-                                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                                                        role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalCenterTitle">
-                                                                    Edit User Here
-                                                                </h5>
-                                                                <button type="button" class="close" data-bs-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                            <form action="{{ action('EmployeeController@update', $user->id) }}" method="POST">
-                                                                <input type="hidden" name="_method" value="PUT">
-                                                                @csrf
-                                                                <div class="modal-body">
-                                                                    
-                                                                    <div class="col-md-12">
-                                                                        <label>Username</label>
-                                                                        <div class="form-group has-icon-left">
-                                                                            <div class="position-relative">
-                                                                                <input name="name" type="text" class="form-control" placeholder="Title" id="first-name-icon" value="{{ $user->name }}" required>
-                                                                                <div class="form-control-icon">
-                                                                                    <i class="bi bi-person"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="col-md-12">
-                                                                        <label>Email</label>
-                                                                        <div class="form-group has-icon-left">
-                                                                            <div class="position-relative">
-                                                                                <input name="email" type="email" class="form-control" placeholder="Email" id="first-name-icon" value="{{ $user->email }}" required>
-                                                                                <div class="form-control-icon">
-                                                                                    <i class="bi bi-envelope"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="col-md-12">
-                                                                        <label>Contact</label>
-                                                                        <div class="form-group has-icon-left">
-                                                                            <div class="position-relative">
-                                                                                <input name="contact" type="number" min="0" class="form-control" placeholder="Title" id="first-name-icon" value="{{ $user->contact }}" required>
-                                                                                <div class="form-control-icon">
-                                                                                    <i class="fa fa-phone"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="col-md-12">
-                                                                        <div class="filter_div" id="region">
-                                                                            <i class="fa fa-clipboard"></i> &nbsp; Status
-                                                                            <select name="status">
-                                                                                <option value="{{ $user->status }}" selected>Same</option>
-                                                                                <option value="hradmin">HR Administrator</option>
-                                                                                <option value="financeadmin">Finance Administrator</option>
-                                                                                <option value="disabled">Disable Account</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                </div> 
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                        <i class="fa fa-times d-block d-sm-none"></i><span class="d-none d-sm-block">Close</span>
-                                                                    </button>
-                                                                    <!--button id="success" class="btn btn-outline-success btn-lg btn-block" type="submit" name="update_action" value="update_user">Update</button-->
-                                                                    <button type="submit" name="update_action" value="update_user" class="btn btn-primary me-1 mb-1">Update</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $users->links() }}
-                            @else
-                                <div class="alert alert-danger">
-                                    No Records Found
+                    <div class="modal fade" id="edit{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit {{ $user->name }}</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
                                 </div>
-                            @endif
+                                <form action="{{ action('CardashController@update', $user->id) }}" method="POST">
+                                    <input type="hidden" name="_method" value="PUT">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="cms_fields">
+                                            <label>Name
+                                                <input type="text" name="name" value="{{ $user->name }}" required>
+                                            </label>
+                                            <label>Email
+                                                <input type="email" name="email" value="{{ $user->email }}" required>
+                                            </label>
+                                            <label>Phone
+                                                <input type="text" name="contact" value="{{ $user->contact }}" required>
+                                            </label>
+                                            <label>Role
+                                                <select name="status" required>
+                                                    <option value="user" {{ $user->status == 'user' ? 'selected' : '' }}>User</option>
+                                                    <option value="admin" {{ $user->status == 'admin' ? 'selected' : '' }}>Administrator</option>
+                                                    @if (!in_array($user->status, ['user', 'admin']))
+                                                        <option value="{{ $user->status }}" selected>{{ $user->status }}</option>
+                                                    @endif
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="update_action" value="update_user" class="cms_save">Update user</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-
-                </div>
-            </div>
+                @endif
+            @endforeach
         </div>
-    </div>
-        
-
+        {{ $users->links() }}
+    @else
+        <p class="cms_empty">No users yet.</p>
+    @endif
+</div>
 @endsection
-
- 

@@ -812,6 +812,31 @@ class CardashController extends Controller
         switch ($request->input('update_action')) {
 
             // Update
+            case 'update_user':
+                $user = User::find($id);
+                if (!$user) {
+                    return redirect(url()->previous())->with('error', 'That user could not be found.');
+                }
+                $user->name = $request->input('name');
+                $user->email = $request->input('email');
+                $user->contact = $request->input('contact');
+                $user->status = $request->input('status');
+                try {
+                    $user->save();
+                } catch (\Throwable $th) {
+                    return redirect(url()->previous())->with('error', 'That email is already in use.');
+                }
+                return redirect(url()->previous())->with('success', $user->name.' updated');
+            break;
+
+            case 'update_type':
+                $type = Type::find($id);
+                $type->name = $request->input('model_name');
+                $type->status = $request->input('status');
+                $type->save();
+                return redirect(url()->previous())->with('success', $type->name.' updated');
+            break;
+
             case 'update_make':
                 $make = Make::find($id);
                 $make->model_name = $request->input('model_name');

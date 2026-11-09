@@ -35,7 +35,7 @@ class InquiryMailer extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Inquiry Response',
+            subject: 'A message from MACADEMIA',
         );
     }
 
