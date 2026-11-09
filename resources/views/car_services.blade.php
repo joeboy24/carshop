@@ -6,9 +6,7 @@
 
 @section('content')
 
-<section class="car_header" style="background: rgb(53, 53, 53); background-size: 100%">
-    <div style="height: 100px"></div>
-</section>
+@include('inc.showcase_searchby')
 
 <!-- By Model -->
 <section class="by_model">

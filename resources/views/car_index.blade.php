@@ -20,60 +20,7 @@
       <p class="home_lead">Japanese stock. Search by make, type, year, or stock id.</p>
     </div>
     <div class="container">
-      <div class="home_finder">
-        <form class="home_keyword" action="{{ action('CardashController@store') }}" method="POST">
-          @csrf
-          <input type="text" name="search_veh" placeholder="Stock id or keyword">
-          <button type="submit" name="store_action" value="search_veh">Search</button>
-        </form>
-        <form class="home_fields" action="{{ action('CarsController@index') }}">
-          <select name="make">
-            <option value="0">Make</option>
-            @foreach ($makes as $item)
-              <option value="{{ $item->id }}">{{ $item->model_name }}</option>
-            @endforeach
-          </select>
-          <select name="type">
-            <option value="0">Type</option>
-            @foreach ($types as $item)
-              <option>{{ $item->name }}</option>
-            @endforeach
-          </select>
-          <select name="trans">
-            <option value="0">Transmission</option>
-            <option value="Auto">Automatic</option>
-            <option>Manual</option>
-          </select>
-          <select name="steer">
-            <option value="0">Steering</option>
-            <option value="Lhd">Left hand drive</option>
-            <option value="Rhd">Right hand drive</option>
-          </select>
-          <select name="color">
-            <option value="0">Color</option>
-            @if (session('car_color'))
-              @foreach (session('car_color') as $item)
-                <option>{{ $item->color }}</option>
-              @endforeach
-            @endif
-          </select>
-          <select name="from">
-            <option value="0">From year</option>
-            @for ($i = date('Y') - 25; $i <= date('Y'); $i++)
-              <option>{{ $i }}</option>
-            @endfor
-          </select>
-          <select name="to">
-            <option value="{{ date('Y') }}">To year</option>
-            @for ($i = date('Y') - 24; $i <= date('Y'); $i++)
-              <option>{{ $i }}</option>
-            @endfor
-          </select>
-          <input type="number" min="0" name="min_price" placeholder="Min price">
-          <input type="number" min="0" name="max_price" placeholder="Max price">
-          <button type="submit">Search</button>
-        </form>
-      </div>
+      @include('inc.vehicle_search')
     </div>
   </section>
 

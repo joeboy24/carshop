@@ -6,84 +6,6 @@
 
 @section('content')
 
-<section class="car_header" style="background: rgb(53, 53, 53); background-size: 100%">
-  <div class="container">
-    {{-- <img src="/maindir/images/picanto/c2.jpeg" width="100%" alt=""> --}}
-    <div style="height: 100px"></div>
-    {{-- <div class="row">
-      <div class="col2_25">
-        <select class="search_sel" name="make" id="">
-          <option value="">Select Make</option>
-          <option value="">2</option>
-          <option value="">3</option>
-        </select>
-      </div>
-
-      <div class="col2_25">
-        <select class="search_sel" name="make" id="">
-          <option value="">Select Category</option>
-          <option value="">2</option>
-          <option value="">3</option>
-        </select>
-      </div>
-
-      <div class="col2_25">
-        <select class="search_sel" name="make" id="">
-          <option value="">Select Model</option>
-          <option value="">2</option>
-          <option value="">3</option>
-        </select>
-      </div>
-
-      <div class="col2_25">
-        <select class="search_sel" name="make" id="">
-          <option value="">Select Type</option>
-          <option value="">2</option>
-          <option value="">3</option>
-        </select>
-      </div>
-
-      <div class="col2_25">
-        <select class="search_sel" name="make" id="">
-          <option value="">Select Steering</option>
-          <option value="">2</option>
-          <option value="">3</option>
-        </select>
-      </div>
-
-      <div class="col2_25">
-        <div class="double_select">
-          <select class="ds ds1" name="make" id="">
-            <option value="">From Year</option>
-            <option value="">2</option>
-            <option value="">3</option>
-          </select>
-
-          <select class="ds ds2" name="make" id="">
-            <option value="">To Year</option>
-            <option value="">2</option>
-            <option value="">3</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col2_25">
-        <div class="">
-            <input class="search_input ds1" type="text" name="min_price" placeholder="Min Price">
-            <input class="search_input ds2" type="text" name="max_price" placeholder="Max Price" id="">
-          </select>
-        </div>
-      </div>
-
-      <div class="col2_25">
-        <button type="button" class="sb_btn2"><i class="fa fa-search"></i>&nbsp; Search</button>
-      </div>
-      
-    </div> --}}
-  </div>
-</section>
-
-<!-- Showcase By Model -->
 @include('inc.showcase_searchby')
 
 <!-- By Model -->
@@ -96,15 +18,6 @@
 
       <div class="col-md-10 by_model_right">
         
-        <div class="key_search">
-          <form action="{{ action('CardashController@store') }}" method="POST">
-            @csrf
-          <p><span>Search &nbsp;</span><i class="fa fa-car"></i></p>
-          <input type="text" name="search_veh" placeholder="By Stock ID or Keyword">
-          <button type="submit" name="store_action" value="search_veh"><i class="fa fa-search"></i></button>
-          </form>
-        </div>
-
         <div class="col-12 car_display" id="car_display">
           @if (!empty($listing_title))
             <h6 class="pannel_header2"><span>{{ $listing_title }}</span></h6>

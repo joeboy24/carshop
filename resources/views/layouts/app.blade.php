@@ -73,66 +73,82 @@
       @yield('content')
 
  
-    <!-- New Footer -->
-    <section class="my_section1">
-      <div class="row">
-        <div class="col-md-7 footer_left">
-          <div class="row">
-            <div class="col-md-3">
-              <h6>Company</h6>
-              <a href="/"><p>Home</p></a>
-              <a href="/about"><p>About Us</p></a>
-              <a href="/services"><p>Services</p></a>
-              <a href="/contact"><p>Contact</p></a>
-            </div>
-
-            <div class="col-md-3 footer_brand">
-              <h6>Available</h6>
-              @if (session('avail') && count(session('avail')) > 0)
-                @foreach (session('avail') as $make)
-                  <a href="/cardash/{{ $make->id }}"><p>{{ $make->model_name }}</p></a>
-                @endforeach
-              @else
-                <a href="/more_makes"><p>View makes</p></a>
-              @endif
-            </div>
-
-            <div class="col-md-6 footer_cars">
-              <h6>About Us</h6>
-              @if (session('about') && (session('about')->title || session('about')->body))
-                @php
-                  $aboutText = trim(session('about')->title.' '.strip_tags(session('about')->body ?? ''));
-                @endphp
-                <a href="/about"><p>{{ \Illuminate\Support\Str::limit($aboutText, 140) }}</p></a>
-              @else
-                <a href="/about"><p>Read about us</p></a>
-              @endif
-              <!--a href="#"><p>FAQ's</p></a>
-              <a href="#"><p>Information</p></a>
-              <a href="#"><p>Knowledge Base</p></a-->
-            </div>
-          </div>
-          
-        </div>
-        
-        <div class="col-md-5 footer_right">
-          
-          @if (session('company'))
-            <img class="footer_logo" src="{{ $companyLogo }}" alt="">
-            <h3 class="ftco-heading-2" style="color: #fff">{{ session('company')->abrv }}</h3>
-            <p class="home_copyright">Copyright © {{ date('Y') }} {{ session('company')->abrv ?: session('company')->name }}</p>
-            @if (session('company')->contact)
-              <p class="home_contact"><a href="tel:{{ session('company')->contact }}">{{ session('company')->contact }}</a></p>
+    <footer class="site_footer">
+      @php
+        $company = session('company');
+        $about = session('about');
+        $aboutText = '';
+        if ($about) {
+            $raw = trim(preg_replace('/\s+/', ' ', trim(($about->title ?? '').' '.strip_tags($about->body ?? ''))));
+            if (preg_match('/^(.{40,}?\.)\s+(.{20,}?\.)/', $raw, $aboutMatch)) {
+                $aboutText = $aboutMatch[1].' '.$aboutMatch[2];
+            } else {
+                $aboutText = \Illuminate\Support\Str::limit($raw, 160);
+            }
+        }
+        $phones = $company && $company->contact ? preg_split('/\s*\/\s*/', $company->contact) : [];
+        $site = $company->website ?? '';
+        $siteLabel = preg_replace('#^https?://#', '', rtrim((string) $site, '/'));
+      @endphp
+      <div class="container">
+        <div class="site_footer_grid">
+          <div class="site_footer_brand">
+            <a class="site_footer_lockup" href="/">
+              <img src="{{ $companyLogo }}" alt="">
+              <span>
+                <strong>{{ $company->abrv ?? 'MACADEMIA' }}</strong>
+                <em>{{ $company->name ?? 'Vehicles and parts' }}</em>
+              </span>
+            </a>
+            @if ($aboutText !== '')
+              <p>{{ \Illuminate\Support\Str::limit($aboutText, 150) }}</p>
             @endif
-          @endif
-          <ul class="ftco-footer-social list-unstyled float-md-left float-lft ">
-            <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-            <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-            <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-          </ul>
+          </div>
+
+          <div>
+            <h6>Company</h6>
+            <nav class="site_footer_links">
+              <a href="/">Home</a>
+              <a href="/about">About Us</a>
+              <a href="/services">Services</a>
+              <a href="/contact">Contact</a>
+            </nav>
+          </div>
+
+          <div>
+            <h6>Browse</h6>
+            <nav class="site_footer_links">
+              <a href="/cars">Vehicles</a>
+              <a href="/more_parts">Parts</a>
+              <a href="/more_flash">Flash deals</a>
+              <a href="/more_makes">All makes</a>
+            </nav>
+          </div>
+
+          <div class="site_footer_contact">
+            <h6>Contact</h6>
+            @if ($company && $company->comp_add)
+              <p>{{ $company->comp_add }}</p>
+            @endif
+            @foreach ($phones as $phone)
+              @if (trim($phone) !== '')
+                <p><a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}">{{ trim($phone) }}</a></p>
+              @endif
+            @endforeach
+            @if ($company && $company->email)
+              <p><a href="mailto:{{ $company->email }}">{{ $company->email }}</a></p>
+            @endif
+            @if ($siteLabel !== '')
+              <p><a href="{{ $site }}" target="_blank" rel="noopener">{{ $siteLabel }}</a></p>
+            @endif
+          </div>
+        </div>
+
+        <div class="site_footer_bar">
+          <p>Copyright © {{ date('Y') }} {{ $company->abrv ?? ($company->name ?? 'MACADEMIA') }}@if ($company && $company->location) <span>{{ $company->location }}</span>@endif</p>
         </div>
       </div>
-    </section>
+    </footer>
     
   
 
