@@ -21,9 +21,10 @@ use App\Models\Variable;
 use App\Mail\InquiryMailer;
 use App\Mail\InquiryResponse;
 use App\Support\InquiryGuard;
+use App\Support\Media;
 use Exception;
-use Session;
-use Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Intervention\Image\Laravel\Facades\Image;
@@ -246,7 +247,7 @@ class CardashController extends Controller
                 }
                 try {
                     $add_make = Make::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'model_name' => $request->input('model_name'),
                         'model_code' => $request->input('model_code'),
                         'logo' => $filenameToStore,
@@ -294,7 +295,7 @@ class CardashController extends Controller
                 }
                 try {
                     $add_type = Type::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'name' => $request->input('name'),
                         'img' => $filenameToStore,
                     ]);
@@ -314,7 +315,7 @@ class CardashController extends Controller
 
                 try {
                     $add_submodel = Submodel::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'make_id' => $request->input('make_id'),
                         'sub_name' => $request->input('sub_name'),
                         'sub_code' => $request->input('sub_code'),
@@ -330,7 +331,7 @@ class CardashController extends Controller
                 
                 try {
                     // \Storage::move(storage_path("/storage/classified/cars/SM052300/0523_f42a37d.jpg"), storage_path("/storage/classified"));
-                    $img = \Image::decode("/public/storage/classified/cars/SM052300/0523_f42a37d.jpg");
+                    $img = Image::decode("/public/storage/classified/cars/SM052300/0523_f42a37d.jpg");
                     $img->save("/storage/classified/cars/SM052300/newcar.jpg");
                     return 'Done..!';
                     if($files = $request->file('photo')){
@@ -369,8 +370,8 @@ class CardashController extends Controller
             case 'add_vehicle':
                 $add = $request->input('add');
 
-                if ($request->input('year') == 0) {
-                    return redirect(url()->previous())->with('error', 'Oops..! Select Year to Proceed');
+                if ($request->input('year') == 0 || $request->input('year') === null || $request->input('year') === '') {
+                    return redirect(url()->previous())->withInput()->with('error', 'Oops..! Select Year to Proceed');
                 }
 
                 $model_code = $request->input('model_code');
@@ -378,13 +379,13 @@ class CardashController extends Controller
                 $emp_check = Car::where('chassis_no', $chassis_no)->get();
                 
                 if (count($emp_check) > 0) {
-                    return redirect(url()->previous())->with('error', 'Oops..! Details already exist');
+                    return redirect(url()->previous())->withInput()->with('error', 'Oops..! Details already exist');
                 } else {
                 
                     try {
 
                         $car_insert = Car::firstOrCreate([
-                            'user_id' => auth()->user()->id,
+                            'user_id' => Auth::id(),
                             'stock_id' => $request->input('stock_id'),
                             'chassis_no' => $request->input('chassis_no'),
                             'make_id' => $request->input('make_id'),
@@ -430,17 +431,10 @@ class CardashController extends Controller
                                 $filenameToStore = date('my_').substr(md5(rand(1000, 10000)), 0, 7).'.jpg';
                                 // $path = $file->storeAs('public/classified/cars/'.$car_insert->stock_id, $filenameToStore);
                                 
-                                if (!is_dir(storage_path("app/public/classified/cars/".$car_insert->stock_id))) {
-                                    mkdir(storage_path("app/public/classified/cars/".$car_insert->stock_id), 0775, true);
-                                    // mkdir(storage_path("app/public/classified"), 0775, true);
-                                }
-                                // Upload (IMAGE INTERVENTION - LARAVEL)
-                                $img = Image::decode($file)->resize(500, 375)
-                                ->insert(storage_path('app/public/classified/maca_wt.png'))
-                                ->save(storage_path("app/public/classified/cars/".$car_insert->stock_id.'/'.$filenameToStore));
+                                Media::saveStampedPhoto($file, 'classified/cars/'.$car_insert->stock_id, $filenameToStore);
                                     
                                 $gallery = Gallery::firstOrCreate([
-                                    'user_id' => auth()->user()->id,
+                                    'user_id' => Auth::id(),
                                     'car_id' => $car_insert->id,
                                     'img' => $filenameToStore
                                 ]);
@@ -448,7 +442,7 @@ class CardashController extends Controller
                         }
                         return redirect(url()->previous())->with('success', 'Upload Successfull!');
                     } catch (\Throwable $th) {
-                        return redirect(url()->previous())->with('error', 'Ooops..! Check inputs, file type and size');
+                        return redirect(url()->previous())->withInput()->with('error', 'Ooops..! Check inputs, file type and size');
                     }
 
                     return redirect(url()->previous())->with('success', 'Vehicle details successfully added');
@@ -461,7 +455,7 @@ class CardashController extends Controller
                 try {
 
                     $part_insert = Part::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'stock_id' => $request->input('stock_id'),
                         'name' => $request->input('name'),
                         'desc' => $request->input('desc')
@@ -487,7 +481,7 @@ class CardashController extends Controller
                             ->save(storage_path("app/public/classified/parts/".$part_insert->stock_id.'/'.$filenameToStore));
                                 
                             $gallery = Gallery::firstOrCreate([
-                                'user_id' => auth()->user()->id,
+                                'user_id' => Auth::id(),
                                 'part_id' => $part_insert->id,
                                 'img' => $filenameToStore
                             ]);
@@ -508,7 +502,7 @@ class CardashController extends Controller
                 
                 try {
                     $car_insert = Car::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'stock_id' => $request->input('stock_id'),
                         'chassis_no' => '-',
                         'make_id' => '-',
@@ -557,7 +551,7 @@ class CardashController extends Controller
                             ->save(storage_path("app/public/classified/cars/".$car_insert->stock_id.'/'.$filenameToStore));
                                 
                             $gallery = Gallery::firstOrCreate([
-                                'user_id' => auth()->user()->id,
+                                'user_id' => Auth::id(),
                                 'car_id' => $car_insert->id,
                                 'img' => $filenameToStore
                             ]);
@@ -649,7 +643,7 @@ class CardashController extends Controller
 
                 try {
                     $about = About::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'title' => $request->input('title'),
                         'body' => $request->input('body'),
                     ]);
@@ -664,7 +658,7 @@ class CardashController extends Controller
 
                 try {
                     $service = Service::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'title' => $request->input('title'),
                         'body' => $request->input('body'),
                     ]);
@@ -689,7 +683,7 @@ class CardashController extends Controller
 
                 try {
                     $about = Variable::firstOrCreate([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => Auth::id(),
                         'item' => $request->input('item'),
                         'freight' => $request->input('freight'),
                         'inspection' => $request->input('inspection'),
@@ -1001,7 +995,7 @@ class CardashController extends Controller
      */
     private function fillCompany(Company $company, Request $request, string $logo, bool $creating): void
     {
-        $company->user_id = auth()->user()->id;
+        $company->user_id = Auth::id();
         $company->name = $request->input('name');
         $company->abrv = $request->input('abrv');
         $company->comp_add = $request->input('company_add');

@@ -10,8 +10,8 @@
       })->values();
     @endphp
     @if ($flashWithPhotos->count() > 0)
-      <div class="vehicle_grid {{ !empty($homeLayout) ? 'vehicle_grid_wide' : '' }}">
-        @foreach ($flashWithPhotos->take(!empty($homeLayout) ? 6 : 4) as $car)
+      <div class="vehicle_grid vehicle_grid_wide">
+        @foreach ($flashWithPhotos->take(6) as $car)
           @include('inc.vehicle_card')
         @endforeach
       </div>

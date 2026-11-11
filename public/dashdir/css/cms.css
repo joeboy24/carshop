@@ -620,6 +620,11 @@ body,
     background: #f7f7f7;
 }
 
+.cms_entry .is_invalid {
+  border-color: #b42318 !important;
+  box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.12);
+}
+
 .cms_fields input:focus,
 .cms_fields select:focus,
 .cms_fields textarea:focus,

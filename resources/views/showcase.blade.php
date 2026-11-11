@@ -40,24 +40,32 @@
           <p class="clear_both"></p>
           {{$cars->links()}}
         </div>
-
-        <div class="col-12 by_type">
-          <p>&nbsp;</p>
-          <h6 class="pannel_header"><span>Search By Type</span> </h6>
-          @foreach ($types as $item)
-            <a href="/cardash/{{$item->name}}/edit"><div class="by_type_cont">
-              <img src="{{ \App\Support\Media::url('classified/types/'.$item->img) }}" alt="">
-              <p>{{$item->name}}</p>
-          </div></a>
-          @endforeach
-          
-          <a href="/cardash/ /edit"><div class="by_type_cont">
-            <p><i class="fa fa-warning"></i></p>
-            <p>Others</p></a>
-          </div>
-        </div>
         
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="home home_band">
+  <div class="container">
+    <div class="home_head">
+      <h2>Search by type</h2>
+    </div>
+    <div class="by_type">
+      @foreach ($types as $item)
+        <a href="/cardash/{{ $item->name }}/edit">
+          <div class="by_type_cont">
+            <img src="{{ \App\Support\Media::url('classified/types/'.$item->img) }}" alt="">
+            <p>{{ $item->name }}</p>
+          </div>
+        </a>
+      @endforeach
+      <a href="/cardash/ /edit">
+        <div class="by_type_cont">
+          <span class="type_mark"></span>
+          <p>Others</p>
+        </div>
+      </a>
     </div>
   </div>
 </section>

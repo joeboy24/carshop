@@ -3,9 +3,12 @@
 namespace App\Support;
 
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\Alignment;
+use Intervention\Image\Laravel\Facades\Image;
 
 class Media
 {
+    private static ?string $watermarkBinary = null;
     /**
      * Public storage path when the file is on this machine, otherwise the live copy.
      */
@@ -84,6 +87,108 @@ class Media
         }
 
         return $name;
+    }
+
+    /**
+     * Resize a vehicle photo and stamp the company mark in the center.
+     */
+    public static function saveStampedPhoto(mixed $source, string $directory, string $filename): void
+    {
+        $directory = trim($directory, '/');
+        $dir = storage_path('app/public/'.$directory);
+        if (! is_dir($dir) && ! @mkdir($dir, 0755, true) && ! is_dir($dir)) {
+            throw new \RuntimeException('The server could not create the photo folder.');
+        }
+
+        self::openDirectory($dir);
+
+        $photo = Image::decode($source)->resize(500, 375);
+        $mark = Image::decode(self::watermarkBinary())->scale(width: (int) round($photo->width() * 0.42));
+        $photo->insert($mark, alignment: Alignment::CENTER)->save($dir.'/'.$filename);
+        @chmod($dir.'/'.$filename, 0644);
+        self::linkStorage();
+    }
+
+    /**
+     * Crop maca_wt.png to the logo and raise its opacity so it shows on a photo.
+     */
+    private static function watermarkBinary(): string
+    {
+        if (self::$watermarkBinary !== null) {
+            return self::$watermarkBinary;
+        }
+
+        $path = storage_path('app/public/classified/maca_wt.png');
+        $src = is_file($path) ? @imagecreatefrompng($path) : false;
+        if ($src === false) {
+            throw new \RuntimeException('The photo watermark is missing.');
+        }
+
+        imagealphablending($src, false);
+        imagesavealpha($src, true);
+        $width = imagesx($src);
+        $height = imagesy($src);
+        $minX = $width;
+        $minY = $height;
+        $maxX = 0;
+        $maxY = 0;
+
+        for ($y = 0; $y < $height; $y++) {
+            for ($x = 0; $x < $width; $x++) {
+                $color = imagecolorat($src, $x, $y);
+                $opacity = (127 - (($color >> 24) & 0x7F)) / 127;
+                if ($opacity < 0.06) {
+                    continue;
+                }
+                $minX = min($minX, $x);
+                $minY = min($minY, $y);
+                $maxX = max($maxX, $x);
+                $maxY = max($maxY, $y);
+                $boosted = min(1, $opacity * 3.4);
+                $alpha = (int) round(127 * (1 - $boosted));
+                $pixel = imagecolorallocatealpha(
+                    $src,
+                    ($color >> 16) & 255,
+                    ($color >> 8) & 255,
+                    $color & 255,
+                    $alpha
+                );
+                imagesetpixel($src, $x, $y, $pixel);
+            }
+        }
+
+        if ($maxX <= $minX || $maxY <= $minY) {
+            imagedestroy($src);
+            throw new \RuntimeException('The photo watermark is missing.');
+        }
+
+        $pad = 8;
+        $cropX = max(0, $minX - $pad);
+        $cropY = max(0, $minY - $pad);
+        $crop = imagecrop($src, [
+            'x' => $cropX,
+            'y' => $cropY,
+            'width' => min($width, $maxX + $pad + 1) - $cropX,
+            'height' => min($height, $maxY + $pad + 1) - $cropY,
+        ]);
+        imagedestroy($src);
+        if ($crop === false) {
+            throw new \RuntimeException('The photo watermark is missing.');
+        }
+
+        imagealphablending($crop, false);
+        imagesavealpha($crop, true);
+        ob_start();
+        imagepng($crop);
+        $binary = ob_get_clean();
+        imagedestroy($crop);
+        if ($binary === false || $binary === '') {
+            throw new \RuntimeException('The photo watermark is missing.');
+        }
+
+        self::$watermarkBinary = $binary;
+
+        return $binary;
     }
 
     /**
