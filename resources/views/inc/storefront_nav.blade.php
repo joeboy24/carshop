@@ -22,4 +22,8 @@
     <span class="nav_cart_count">{{ $cartCount }}</span>
   </a>
 </li>
-<li class="nav-item cta {{ request()->is('login') || request()->is('car_dashboard') ? 'active' : '' }}"><a href="/car_dashboard" class="nav-link"><i class="fa fa-lock nav_ico"></i>Login</a></li>
+@auth
+<li class="nav-item cta {{ request()->is('car_dashboard') ? 'active' : '' }}"><a href="/car_dashboard" class="nav-link"><i class="fa fa-th-large nav_ico"></i>Dashboard</a></li>
+@else
+<li class="nav-item cta {{ request()->is('login') ? 'active' : '' }}"><a href="/login" class="nav-link"><i class="fa fa-lock nav_ico"></i>Login</a></li>
+@endauth
