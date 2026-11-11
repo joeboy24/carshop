@@ -10,6 +10,20 @@
   $heroUrl = $heroCar
       ? \App\Support\Media::url('classified/cars/'.$heroCar->stock_id.'/'.$heroCar->gallery->first()->img)
       : null;
+  if (! $heroUrl) {
+      $partDir = storage_path('app/public/classified/maca-parts');
+      $partFiles = [];
+      if (is_dir($partDir)) {
+          foreach (scandir($partDir) as $partFile) {
+              if (preg_match('/\.(jpe?g|png|webp|gif)$/i', $partFile)) {
+                  $partFiles[] = $partFile;
+              }
+          }
+      }
+      if ($partFiles) {
+          $heroUrl = '/storage/classified/maca-parts/'.rawurlencode($partFiles[array_rand($partFiles)]);
+      }
+  }
 @endphp
 
 <div class="home">

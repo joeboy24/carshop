@@ -102,8 +102,17 @@ class Media
 
         self::openDirectory($dir);
 
-        $photo = Image::decode($source)->resize(500, 375);
-        $mark = Image::decode(self::watermarkBinary())->scale(width: (int) round($photo->width() * 0.42));
+        $photo = Image::decode($source);
+        $mark = Image::decode(self::watermarkBinary());
+        if ($photo->width() < $mark->width()) {
+            $mark = $mark->scale(width: max(1, $photo->width()));
+        } else {
+            $photo = $photo->resize(500, 375);
+            $mark = $mark->scale(width: (int) round($photo->width() * 0.42));
+        }
+        if ($mark->height() > $photo->height()) {
+            $mark = $mark->scale(height: max(1, $photo->height()));
+        }
         $photo->insert($mark, alignment: Alignment::CENTER)->save($dir.'/'.$filename);
         @chmod($dir.'/'.$filename, 0644);
         self::linkStorage();
